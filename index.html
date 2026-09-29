@@ -1,35 +1,1252 @@
-<!doctype html>
-<html lang="pt-BR">
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Selk Cell | Loja</title>
-<style>
-*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#eef6ff;color:#10243e}.top{background:linear-gradient(135deg,#087cf5,#0046a8);color:white;padding:16px;display:flex;align-items:center;gap:14px}.dots{font-size:28px;background:none;border:0;color:#fff;cursor:pointer}.logo{font-size:25px;font-weight:800}.hero{padding:34px 18px;text-align:center;background:#fff}.hero h1{margin:0 0 8px;font-size:32px}.hero p{margin:0;color:#55708f}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;padding:20px;max-width:1100px;margin:auto}.card{background:#fff;border-radius:18px;padding:15px;box-shadow:0 6px 22px #1232  ;}.pic{height:190px;border-radius:13px;background:#e8f2ff;display:flex;align-items:center;justify-content:center;font-size:70px;overflow:hidden}.pic img{width:100%;height:100%;object-fit:cover}.price{font-size:22px;font-weight:800;color:#087cf5}.buy,.save{width:100%;border:0;border-radius:12px;padding:12px;background:#087cf5;color:white;font-weight:700;cursor:pointer}.modal{display:none;position:fixed;inset:0;background:#0008;align-items:center;justify-content:center;padding:18px}.box{background:#fff;border-radius:18px;padding:22px;max-width:430px;width:100%;max-height:90vh;overflow:auto}.box input,.box textarea,.box select{width:100%;padding:11px;margin:6px 0 10px;border:1px solid #ccd9e8;border-radius:9px}.close{float:right;border:0;background:none;font-size:24px}.menu{display:none;position:absolute;top:58px;left:10px;background:#fff;border-radius:12px;box-shadow:0 8px 25px #0003;padding:8px;z-index:5}.menu button{border:0;background:white;padding:12px 18px;cursor:pointer}.admin{display:none}.notice{padding:12px 18px;background:#fff3cd;color:#765b00;display:none}
-</style></head>
-<body>
-<header class="top"><button class="dots" onclick="toggleMenu()">⋮</button><div class="logo">📱 Selk Cell</div></header>
-<div id="menu" class="menu"><button onclick="developerLogin()">⚙️ Desenvolvedor</button></div>
-<section class="hero"><h1>Celulares e acessórios do seu jeito.</h1><p>Escolha seu produto e faça seu pedido.</p></section>
-<div id="notice" class="notice"></div>
-<main id="client"><div id="products" class="grid"></div></main>
-<section id="admin" class="admin"><div class="hero"><h1>Editor da Selk Cell</h1><p>As alterações são enviadas para o banco online quando o Supabase estiver configurado.</p></div><div id="editor" class="grid"></div></section>
-<div id="modal" class="modal"><div class="box"><button class="close" onclick="closeModal()">×</button><h2 id="modalTitle">Comprar</h2><div id="modalBody"></div></div></div>
-<script>
-const SUPABASE_URL='https://xylvkfcaxsexldyjfzmk.supabase.co';
-const SUPABASE_ANON_KEY='sb_publishable_FhDbPsdcwYmB3e0rcmfPvQ_jKZCcjNy';
-const phone='5564996609321';
-const defaults=[['iPhone 15','3999,00','128 GB • Novo','📱'],['Galaxy S24','3499,00','256 GB • 5G','📱'],['Redmi Note 14','1599,00','256 GB • 8 GB RAM','📱'],['Moto G55','1299,00','128 GB • 5G','📱'],['AirPods','899,00','Áudio sem fio','🎧'],['Smartwatch','349,00','Monitoramento e notificações','⌚'],['Carregador Turbo','99,90','Carga rápida','🔌'],['Capa Premium','59,90','Proteção e estilo','🛡️'],['Película 3D','39,90','Proteção de tela','✨'],['Power Bank','149,90','10.000 mAh','🔋']];
-let products=defaults.map((x,i)=>({id:i+1,name:x[0],price:x[1],description:x[2],emoji:x[3],image:''}));
-function configured(){return SUPABASE_URL.startsWith('https://')&&SUPABASE_ANON_KEY.startsWith('sb_publishable_')}
-async function load(){if(configured()){try{let r=await fetch(SUPABASE_URL+'/rest/v1/products?select=*&order=id',{headers:{apikey:SUPABASE_ANON_KEY,Authorization:'Bearer '+SUPABASE_ANON_KEY}});if(r.ok){let d=await r.json();if(d.length)products=d}}catch(e){}}else{let l=localStorage.getItem('selkProducts');if(l)try{products=JSON.parse(l)}catch(e){}}render()}
-function render(){products.sort((a,b)=>a.id-b.id);productsEl=document.getElementById('products');productsEl.innerHTML=products.map(p=>`<article class="card"><div class="pic">${p.image?`<img src="${esc(p.image)}">`:p.emoji||'📦'}</div><h2>${esc(p.name)}</h2><p>${esc(p.description)}</p><div class="price">R$ ${esc(p.price)}</div><br><button class="buy" onclick="buy(${p.id})">Comprar agora</button></article>`).join('')}
-function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function toggleMenu(){let m=document.getElementById('menu');m.style.display=m.style.display==='block'?'none':'block'}
-function developerLogin(){toggleMenu();let p=prompt('Senha do desenvolvedor:');if(p==='1943'){document.getElementById('client').style.display='none';document.getElementById('admin').style.display='block';renderEditor()}else if(p!==null)alert('Senha incorreta.');}
-function renderEditor(){document.getElementById('editor').innerHTML=products.map(p=>`<article class="card"><label>Nome<input id="n${p.id}" value="${esc(p.name)}"></label><label>Preço<input id="p${p.id}" value="${esc(p.price)}"></label><label>Descrição<textarea id="d${p.id}">${esc(p.description)}</textarea></label><label>URL da foto<input id="i${p.id}" value="${esc(p.image||'')}" placeholder="https://..."></label><label>Emoji<input id="e${p.id}" value="${esc(p.emoji||'📦')}"></label><button class="save" onclick="save(${p.id})">Salvar produto</button></article>`).join('')}
-async function save(id){let p=products.find(x=>x.id==id);Object.assign(p,{name:document.getElementById('n'+id).value,price:document.getElementById('p'+id).value,description:document.getElementById('d'+id).value,image:document.getElementById('i'+id).value,emoji:document.getElementById('e'+id).value});localStorage.setItem('selkProducts',JSON.stringify(products));let ok=false;if(configured()){try{let r=await fetch(SUPABASE_URL+'/rest/v1/products?id=eq.'+id,{method:'PATCH',headers:{apikey:SUPABASE_ANON_KEY,Authorization:'Bearer '+SUPABASE_ANON_KEY,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify(p)});ok=r.ok}catch(e){}}render();renderEditor();alert(ok?'Produto salvo online!':'Produto salvo neste navegador. Configure o Supabase para sincronizar com todos os clientes.')}
-function buy(id){let p=products.find(x=>x.id==id);document.getElementById('modalTitle').textContent='Comprar: '+p.name;document.getElementById('modalBody').innerHTML=`<p><b>R$ ${esc(p.price)}</b></p><input id="cn" placeholder="Seu nome"><input id="ct" placeholder="Telefone"><input id="ca" placeholder="Endereço"><select id="cp"><option>Pix</option><option>Dinheiro</option><option>Cartão</option></select><button class="buy" onclick="send(${p.id})">Enviar pedido pelo WhatsApp</button>`;document.getElementById('modal').style.display='flex'}
-function send(id){let p=products.find(x=>x.id==id),n=document.getElementById('cn').value,t=document.getElementById('ct').value,a=document.getElementById('ca').value,pay=document.getElementById('cp').value;if(!n||!t||!a){alert('Preencha seus dados.');return}let msg=`🛍️ NOVO PEDIDO - SELK CELL\n\nProduto: ${p.name}\nValor: R$ ${p.price}\n\nCliente: ${n}\nTelefone: ${t}\nEndereço: ${a}\nPagamento: ${pay}`;location.href='https://wa.me/'+phone+'?text='+encodeURIComponent(msg)}
-function closeModal(){document.getElementById('modal').style.display='none'}
-load();
-</script></body></html>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Padaria Gourmet - Artisanal & Café</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome 6.4 Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        purple: {
+                            950: '#0f051d',
+                            900: '#1a0b2e',
+                            800: '#240046',
+                            700: '#3c096c',
+                            600: '#5a189a',
+                            500: '#7b2cbf',
+                            400: '#9d4edd',
+                            300: '#c77dff',
+                            200: '#e0aaff',
+                            100: '#f3e8ff'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Custom CSS Styles -->
+    <style>
+        body {
+            background-color: #0f051d;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(123, 44, 191, 0.35) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(157, 78, 221, 0.25) 0px, transparent 50%),
+                radial-gradient(at 50% 50%, rgba(26, 11, 46, 0.8) 0px, transparent 80%);
+            background-attachment: fixed;
+            color: #f3e8ff;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            min-height: 100vh;
+        }
+
+        .glass-panel {
+            background: rgba(26, 11, 46, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(199, 125, 255, 0.2);
+        }
+
+        .glass-card {
+            background: rgba(36, 0, 70, 0.5);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(157, 78, 221, 0.25);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-card:hover {
+            border-color: rgba(199, 125, 255, 0.6);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px -8px rgba(157, 78, 221, 0.5);
+        }
+
+        .neon-btn {
+            background: linear-gradient(135deg, #7b2cbf 0%, #9d4edd 100%);
+            box-shadow: 0 0 18px rgba(157, 78, 221, 0.45);
+            transition: all 0.25s ease;
+        }
+
+        .neon-btn:hover {
+            box-shadow: 0 0 28px rgba(199, 125, 255, 0.75);
+            transform: translateY(-1px);
+        }
+
+        .neon-text {
+            text-shadow: 0 0 12px rgba(199, 125, 255, 0.6);
+        }
+
+        /* Custom Scrollbars */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f051d;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3c096c;
+            border-radius: 9999px;
+            border: 2px solid #0f051d;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #7b2cbf;
+        }
+
+        /* Utility scrollbar hide */
+        .scrollbar-none::-webkit-scrollbar {
+            display: none;
+        }
+        .scrollbar-none {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-purple-500 selection:text-white">
+
+    <!-- Header -->
+    <header class="sticky top-0 z-30 glass-panel border-b border-purple-500/20 shadow-xl">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+            
+            <!-- Brand Logo -->
+            <div class="flex items-center gap-3 cursor-pointer group" onclick="selectCategory('Todos')">
+                <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-purple-700 to-purple-400 flex items-center justify-center shadow-[0_0_20px_rgba(157,78,221,0.5)] group-hover:scale-105 transition-transform">
+                    <i class="fa-solid fa-wheat-awn text-2xl text-white"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl sm:text-2xl font-black tracking-tight text-white neon-text flex items-center gap-2">
+                        PADARIA <span class="text-purple-300 font-light text-xs sm:text-sm uppercase tracking-widest bg-purple-900/70 px-2.5 py-0.5 rounded-md border border-purple-500/30">Gourmet</span>
+                    </h1>
+                    <p class="text-[11px] text-purple-300/70 hidden sm:block">Artisanal & Café Especial</p>
+                </div>
+            </div>
+
+            <!-- Search Input (Desktop) -->
+            <div class="hidden md:flex flex-1 max-w-md mx-4 relative">
+                <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-purple-300/50"></i>
+                <input type="text" id="searchInput" oninput="handleSearch(this.value)" placeholder="Buscar croissants, pães, cafés, doces..." 
+                    class="w-full bg-purple-950/80 border border-purple-500/30 rounded-xl pl-11 pr-4 py-2.5 text-sm text-white placeholder-purple-300/40 focus:outline-none focus:border-purple-400 focus:ring-1 focus:ring-purple-400 transition-all">
+            </div>
+
+            <!-- Actions Right -->
+            <div class="flex items-center gap-3 relative">
+                <!-- Cart Button -->
+                <button onclick="openCartDrawer()" class="glass-card hover:bg-purple-800/50 px-4 py-2.5 rounded-xl flex items-center gap-3 border border-purple-500/30 text-white transition-all active:scale-95">
+                    <div class="relative">
+                        <i class="fa-solid fa-cart-shopping text-lg text-purple-300"></i>
+                        <span id="cartBadge" class="hidden absolute -top-2.5 -right-2.5 bg-gradient-to-r from-pink-500 to-purple-500 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center shadow-md">0</span>
+                    </div>
+                    <span class="hidden sm:inline font-bold text-sm text-purple-100" id="cartTotalHeader">R$ 0,00</span>
+                </button>
+
+                <!-- 3 Dots Dev Menu Trigger -->
+                <button onclick="toggleDevDropdown()" title="Opções de Desenvolvedor" class="glass-card hover:bg-purple-800/60 w-11 h-11 rounded-xl border border-purple-500/30 text-purple-300 hover:text-white flex items-center justify-center transition-all active:scale-95">
+                    <i class="fa-solid fa-ellipsis-vertical text-xl"></i>
+                </button>
+
+                <!-- Dev Dropdown Menu (Strictly hidden when inactive) -->
+                <div id="devDropdownMenu" class="hidden absolute right-0 top-14 w-64 glass-panel border border-purple-500/40 rounded-2xl shadow-2xl p-2 z-40 space-y-1">
+                    <div class="px-3 py-2 border-b border-purple-500/20 text-xs flex justify-between items-center">
+                        <span class="font-bold text-purple-200">Painel do Desenvolvedor</span>
+                        <span id="devLockStatus" class="text-[10px] px-2 py-0.5 rounded bg-rose-950 text-rose-300 font-bold border border-rose-500/30">Protegido</span>
+                    </div>
+                    <button onclick="handleDevAction('toggleOverlay')" class="w-full text-left px-3 py-2 rounded-xl text-xs text-purple-200 hover:bg-purple-800/50 hover:text-white flex items-center gap-2 transition-colors">
+                        <i class="fa-solid fa-pen-to-square text-purple-400"></i> <span id="lblToggleDevOverlay">Ativar Modo Desenvolvedor</span>
+                    </button>
+                    <button onclick="handleDevAction('openDashboard')" class="w-full text-left px-3 py-2 rounded-xl text-xs text-purple-200 hover:bg-purple-800/50 hover:text-white flex items-center gap-2 transition-colors">
+                        <i class="fa-solid fa-table-cells text-purple-400"></i> Gerenciar Catálogo (Tabela)
+                    </button>
+                    <button onclick="handleDevAction('addProduct')" class="w-full text-left px-3 py-2 rounded-xl text-xs text-purple-200 hover:bg-purple-800/50 hover:text-white flex items-center gap-2 transition-colors">
+                        <i class="fa-solid fa-plus text-emerald-400"></i> Adicionar Novo Produto
+                    </button>
+                    <button onclick="handleDevAction('resetCatalog')" class="w-full text-left px-3 py-2 rounded-xl text-xs text-purple-200 hover:bg-purple-800/50 hover:text-white flex items-center gap-2 transition-colors">
+                        <i class="fa-solid fa-rotate-left text-amber-400"></i> Restaurar Catálogo (40)
+                    </button>
+                    <button onclick="handleDevAction('exportData')" class="w-full text-left px-3 py-2 rounded-xl text-xs text-purple-200 hover:bg-purple-800/50 hover:text-white flex items-center gap-2 transition-colors">
+                        <i class="fa-solid fa-download text-blue-400"></i> Exportar Dados (JSON)
+                    </button>
+                    <button onclick="triggerImportJson()" class="w-full text-left px-3 py-2 rounded-xl text-xs text-purple-200 hover:bg-purple-800/50 hover:text-white flex items-center gap-2 transition-colors">
+                        <i class="fa-solid fa-upload text-cyan-400"></i> Importar Dados (JSON)
+                    </button>
+                    <input type="file" id="importFileInput" accept=".json" class="hidden" onchange="importCatalogData(event)">
+                    <div id="devLockOption" class="hidden border-t border-purple-500/20 pt-1">
+                        <button onclick="lockDevMode()" class="w-full text-left px-3 py-2 rounded-xl text-xs text-rose-300 hover:bg-rose-950/50 flex items-center gap-2 transition-colors">
+                            <i class="fa-solid fa-lock"></i> Sair / Bloquear Modo Dev
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Search -->
+        <div class="px-4 pb-3 md:hidden">
+            <div class="relative">
+                <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-purple-300/50"></i>
+                <input type="text" oninput="handleSearch(this.value)" placeholder="Buscar no cardápio..." 
+                    class="w-full bg-purple-950/80 border border-purple-500/30 rounded-xl pl-11 pr-4 py-2 text-sm text-white placeholder-purple-300/40 focus:outline-none focus:border-purple-400">
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Banner -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
+        <div class="relative rounded-3xl overflow-hidden glass-panel border border-purple-500/30 p-6 sm:p-10 shadow-[0_0_35px_rgba(123,44,191,0.25)]">
+            <div class="absolute inset-0 bg-gradient-to-r from-purple-950/95 via-purple-900/80 to-transparent z-10"></div>
+            <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=1400&q=80" alt="Padaria Hero" class="absolute inset-0 w-full h-full object-cover object-center opacity-30">
+            <div class="relative z-20 max-w-xl space-y-3">
+                <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-purple-500/20 text-purple-300 border border-purple-400/30">
+                    <i class="fa-solid fa-fire text-amber-400"></i> Fermentação Natural 24h
+                </span>
+                <h2 class="text-2xl sm:text-4xl font-black text-white leading-tight tracking-tight">
+                    Sabor Artisanal & <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-300 to-pink-300 neon-text">Ingredientes Selecionados</span>
+                </h2>
+                <p class="text-xs sm:text-sm text-purple-200/80">
+                    Faça seu pedido diretamente pelo site. Entregamos quentinho até a sua porta via WhatsApp!
+                </p>
+                <div class="pt-2">
+                    <a href="#catalogo" class="inline-flex neon-btn text-white px-5 py-2.5 rounded-xl text-xs font-bold items-center gap-2">
+                        Explorar Cardápio <i class="fa-solid fa-arrow-down"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main id="catalogo" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full space-y-6">
+        
+        <!-- Controls Bar -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-purple-500/20 pb-4">
+            <!-- Category Filter Tabs -->
+            <div class="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0 scrollbar-none" id="categoryTabsBar">
+                <!-- Injected via JS -->
+            </div>
+
+            <!-- Sort Option -->
+            <div class="flex items-center gap-2 self-end md:self-auto">
+                <span class="text-xs text-purple-300/70 font-semibold whitespace-nowrap"><i class="fa-solid fa-sort mr-1"></i> Ordenar:</span>
+                <select id="sortSelect" onchange="handleSortChange(this.value)" class="bg-purple-950/80 border border-purple-500/30 text-xs text-purple-200 rounded-xl px-3 py-2 focus:outline-none focus:border-purple-400">
+                    <option value="relevance">Padrão / Destaques</option>
+                    <option value="price-asc">Menor Preço</option>
+                    <option value="price-desc">Maior Preço</option>
+                    <option value="name">Nome (A-Z)</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Catalog Title & Count -->
+        <div class="flex items-center justify-between">
+            <h3 class="text-lg font-bold text-white flex items-center gap-2" id="catalogTitle">
+                <i class="fa-solid fa-store text-purple-400"></i> Todos os Produtos
+            </h3>
+            <span class="text-xs text-purple-300/70 font-semibold" id="catalogCount">40 itens disponíveis</span>
+        </div>
+
+        <!-- Product Grid -->
+        <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <!-- Injected via JS -->
+        </div>
+    </main>
+
+    <!-- Cart Drawer -->
+    <div id="cartDrawer" class="hidden fixed inset-0 z-50">
+        <!-- Backdrop -->
+        <div onclick="closeCartDrawer()" class="absolute inset-0 bg-black/75 backdrop-blur-sm cursor-pointer"></div>
+        
+        <!-- Drawer Panel -->
+        <div class="absolute top-0 right-0 h-full w-full max-w-md glass-panel border-l border-purple-500/30 flex flex-col shadow-2xl z-10">
+            <!-- Header -->
+            <div class="p-5 border-b border-purple-500/20 flex items-center justify-between bg-purple-950/90">
+                <div class="flex items-center gap-3">
+                    <i class="fa-solid fa-basket-shopping text-purple-400 text-xl"></i>
+                    <h3 class="text-lg font-bold text-white">Seu Carrinho</h3>
+                </div>
+                <button onclick="closeCartDrawer()" class="p-2 text-purple-300 hover:text-white rounded-lg hover:bg-purple-900/50 transition-colors">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+
+            <!-- Scrollable List -->
+            <div id="cartItemsList" class="flex-1 overflow-y-auto p-5 space-y-3">
+                <!-- Dynamic Items -->
+            </div>
+
+            <!-- Footer Summary -->
+            <div class="p-5 border-t border-purple-500/20 bg-purple-950/95 space-y-4">
+                <div class="space-y-2 text-sm">
+                    <div class="flex justify-between text-purple-200/70">
+                        <span>Subtotal Itens</span>
+                        <span id="drawerSubtotal">R$ 0,00</span>
+                    </div>
+                    <div class="flex justify-between text-purple-200/70">
+                        <span>Taxa de Entrega</span>
+                        <span id="drawerDelivery">R$ 5,00</span>
+                    </div>
+                    <div class="flex justify-between text-lg font-bold text-white pt-2 border-t border-purple-500/20">
+                        <span>Total Final</span>
+                        <span id="drawerTotal" class="text-purple-300 neon-text">R$ 5,00</span>
+                    </div>
+                </div>
+
+                <button onclick="openCheckoutModal()" class="w-full neon-btn py-3.5 rounded-xl font-bold text-white text-center flex items-center justify-center gap-2 shadow-lg active:scale-95 transition-all">
+                    Avançar para Entrega <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Checkout Modal -->
+    <div id="checkoutModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-black/80 backdrop-blur-md p-4 sm:p-6 flex justify-center items-start pt-12 pb-12">
+        <div class="relative w-full max-w-2xl bg-[#1a0b2e] border border-purple-500/40 rounded-3xl p-6 sm:p-8 shadow-[0_0_50px_rgba(123,44,191,0.4)] text-white my-auto">
+            <!-- Header -->
+            <div class="flex items-center justify-between pb-4 border-b border-purple-500/20 mb-6">
+                <div>
+                    <h3 class="text-xl sm:text-2xl font-extrabold text-white flex items-center gap-2 neon-text">
+                        <i class="fa-solid fa-truck-fast text-purple-400"></i> Dados para Entrega & Pagamento
+                    </h3>
+                    <p class="text-xs text-purple-300/70">Preencha abaixo para gerar e enviar seu pedido diretamente via WhatsApp</p>
+                </div>
+                <button onclick="closeCheckoutModal()" class="p-2 text-purple-300 hover:text-white rounded-lg hover:bg-purple-900/50">
+                    <i class="fa-solid fa-xmark text-2xl"></i>
+                </button>
+            </div>
+
+            <!-- Form -->
+            <form onsubmit="submitWhatsAppOrder(event)" class="space-y-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-purple-200 uppercase tracking-wider mb-1.5">Nome Completo *</label>
+                        <input type="text" id="custName" required placeholder="Ex: Maria Santos" 
+                            class="w-full bg-purple-950/80 border border-purple-500/30 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-purple-400">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-purple-200 uppercase tracking-wider mb-1.5">Telefone / WhatsApp *</label>
+                        <input type="tel" id="custPhone" required placeholder="(64) 99999-9999" 
+                            class="w-full bg-purple-950/80 border border-purple-500/30 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-purple-400">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-purple-200 uppercase tracking-wider mb-1.5">Endereço de Entrega (Rua, Número) *</label>
+                    <input type="text" id="custAddress" required placeholder="Ex: Av. Principal, nº 450" 
+                        class="w-full bg-purple-950/80 border border-purple-500/30 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-purple-400">
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-purple-200 uppercase tracking-wider mb-1.5">Bairro *</label>
+                        <input type="text" id="custNeighborhood" required placeholder="Ex: Centro" 
+                            class="w-full bg-purple-950/80 border border-purple-500/30 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-purple-400">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-purple-200 uppercase tracking-wider mb-1.5">Complemento / Ponto de Ref.</label>
+                        <input type="text" id="custComplement" placeholder="Ex: Apto 302 / Próximo ao banco" 
+                            class="w-full bg-purple-950/80 border border-purple-500/30 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-purple-400">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-purple-200 uppercase tracking-wider mb-1.5">Forma de Pagamento *</label>
+                    <select id="custPayment" onchange="toggleChangeField(this.value)" required class="w-full bg-purple-950/80 border border-purple-500/30 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-purple-400">
+                        <option value="Pix">Pix (Chave enviada na confirmação)</option>
+                        <option value="Cartão de Crédito">Cartão de Crédito (Maquininha na entrega)</option>
+                        <option value="Cartão de Débito">Cartão de Débito (Maquininha na entrega)</option>
+                        <option value="Dinheiro">Dinheiro em Espécie</option>
+                    </select>
+                </div>
+
+                <!-- Cash Change Field -->
+                <div id="cashChangeBlock" class="hidden bg-purple-900/30 p-3.5 rounded-xl border border-purple-500/20">
+                    <label class="block text-xs font-semibold text-purple-200 uppercase tracking-wider mb-1.5">Troco para quanto?</label>
+                    <input type="text" id="custChange" placeholder="Ex: Troco para R$ 50,00 ou Não precisa de troco" 
+                        class="w-full bg-purple-950/80 border border-purple-500/30 rounded-xl px-4 py-2 text-sm text-white focus:outline-none focus:border-purple-400">
+                </div>
+
+                <!-- Total Summary -->
+                <div class="bg-purple-950/80 p-4 rounded-xl border border-purple-500/20 flex justify-between items-center mt-4">
+                    <span class="text-xs text-purple-300">Total com Entrega:</span>
+                    <span id="checkoutModalTotal" class="text-xl font-bold text-white neon-text">R$ 0,00</span>
+                </div>
+
+                <!-- Actions -->
+                <div class="flex items-center gap-3 pt-4 border-t border-purple-500/20">
+                    <button type="button" onclick="closeCheckoutModal()" class="w-1/3 py-3 rounded-xl font-bold bg-purple-950 border border-purple-500/30 text-purple-300 hover:bg-purple-900 transition-all text-sm">
+                        Voltar
+                    </button>
+                    <button type="submit" class="w-2/3 neon-btn py-3 rounded-xl font-bold text-white flex items-center justify-center gap-2 text-sm">
+                        <i class="fa-brands fa-whatsapp text-xl"></i> Enviar Pedido no WhatsApp
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- WhatsApp Direct Confirmation Modal (Fixes popup blocker issues) -->
+    <div id="whatsappConfirmModal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md p-4 flex items-center justify-center">
+        <div class="w-full max-w-md glass-panel border border-emerald-500/40 rounded-3xl p-6 text-center space-y-5 shadow-[0_0_50px_rgba(16,185,129,0.3)]">
+            <div class="w-16 h-16 bg-emerald-500/20 rounded-full flex items-center justify-center mx-auto border border-emerald-400/40 text-emerald-300 shadow-lg">
+                <i class="fa-brands fa-whatsapp text-3xl"></i>
+            </div>
+            
+            <div>
+                <h3 class="text-2xl font-black text-white">Pedido Gerado!</h3>
+                <p class="text-xs text-purple-200/80 mt-1">
+                    Seu pedido foi formatado e está pronto para envio para o WhatsApp da padaria (<strong class="text-emerald-300">64 99660-9321</strong>).
+                </p>
+            </div>
+
+            <!-- Direct Click Link -->
+            <div class="space-y-3">
+                <a id="directWhatsappLink" href="#" target="_blank" rel="noopener noreferrer" 
+                    class="w-full py-4 px-6 bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-extrabold rounded-2xl flex items-center justify-center gap-3 shadow-[0_0_20px_rgba(16,185,129,0.5)] transition-all text-sm active:scale-95">
+                    <i class="fa-brands fa-whatsapp text-2xl"></i>
+                    <span>ABRIR WHATSAPP AGORA</span>
+                </a>
+
+                <button onclick="copyOrderTextToClipboard()" class="w-full py-2.5 px-4 bg-purple-950 border border-purple-500/30 hover:bg-purple-900/60 text-purple-200 rounded-xl text-xs font-semibold flex items-center justify-center gap-2 transition-all">
+                    <i class="fa-solid fa-copy"></i> Copiar Texto do Pedido
+                </button>
+            </div>
+
+            <p class="text-[11px] text-purple-300/50">
+                Se a janela do aplicativo não abriu automaticamente, clique no botão acima.
+            </p>
+
+            <button onclick="closeWhatsAppConfirmModal()" class="text-xs text-purple-400 underline hover:text-purple-200">
+                Fechar Janela
+            </button>
+        </div>
+    </div>
+
+    <!-- Dev PIN Protection Modal -->
+    <div id="devPinModal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="w-full max-w-sm glass-panel border border-purple-500/40 rounded-2xl p-6 text-center space-y-4 shadow-2xl">
+            <div class="w-12 h-12 bg-purple-800/50 rounded-full flex items-center justify-center mx-auto border border-purple-400/40 text-purple-300">
+                <i class="fa-solid fa-shield-halved text-xl"></i>
+            </div>
+            <h3 class="text-xl font-bold text-white">Acesso do Desenvolvedor</h3>
+            <p class="text-xs text-purple-300/70">Digite a senha de acesso (PIN 1943) para editar o catálogo de produtos.</p>
+            
+            <input type="password" id="devPinInput" maxlength="4" placeholder="****" 
+                class="w-full bg-purple-950 border border-purple-500/40 rounded-xl py-3 text-center text-2xl font-mono tracking-widest text-white focus:outline-none focus:border-purple-400">
+            
+            <div class="flex gap-2">
+                <button onclick="closeDevPinModal()" class="w-1/2 py-2.5 rounded-xl bg-purple-950 border border-purple-500/30 text-purple-300 text-sm font-semibold">Cancelar</button>
+                <button onclick="verifyDevPin()" class="w-1/2 neon-btn py-2.5 rounded-xl text-white text-sm font-bold">Entrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dev Dashboard Table Modal -->
+    <div id="devDashboardModal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md overflow-y-auto p-4 sm:p-6 flex items-start justify-center pt-10 pb-10">
+        <div class="w-full max-w-5xl glass-panel border border-purple-500/40 rounded-3xl p-6 sm:p-8 space-y-6 shadow-2xl my-auto">
+            <div class="flex items-center justify-between pb-4 border-b border-purple-500/20">
+                <div class="flex items-center gap-3">
+                    <span class="px-3 py-1 bg-purple-500/20 text-purple-300 border border-purple-400/30 rounded-lg text-xs font-bold uppercase">Painel Dev</span>
+                    <h3 class="text-xl font-bold text-white">Gerenciar Produtos do Catálogo (40 Itens)</h3>
+                </div>
+                <button onclick="closeDevDashboard()" class="p-2 text-purple-300 hover:text-white">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+
+            <div class="flex flex-wrap items-center justify-between gap-3">
+                <button onclick="openAddProductModal()" class="neon-btn px-4 py-2 rounded-xl text-xs font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-plus"></i> Adicionar Novo Produto
+                </button>
+                <button onclick="resetCatalogToDefault()" class="bg-amber-950/80 border border-amber-500/30 text-amber-300 px-4 py-2 rounded-xl text-xs font-bold hover:bg-amber-900 transition-colors">
+                    <i class="fa-solid fa-rotate-left mr-1"></i> Restaurar 40 Produtos Originais
+                </button>
+            </div>
+
+            <div class="overflow-x-auto rounded-xl border border-purple-500/20 max-h-96">
+                <table class="w-full text-left text-xs text-purple-200">
+                    <thead class="bg-purple-950/90 text-purple-300 uppercase tracking-wider sticky top-0 border-b border-purple-500/20">
+                        <tr>
+                            <th class="p-3">ID</th>
+                            <th class="p-3">Foto</th>
+                            <th class="p-3">Nome</th>
+                            <th class="p-3">Categoria</th>
+                            <th class="p-3">Preço</th>
+                            <th class="p-3 text-right">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="devTableBody" class="divide-y divide-purple-500/10 bg-purple-900/20">
+                        <!-- Filled by JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit/Add Product Modal -->
+    <div id="productEditModal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="w-full max-w-md glass-panel border border-purple-500/40 rounded-2xl p-6 space-y-4 shadow-2xl">
+            <h3 id="editModalTitle" class="text-lg font-bold text-white">Editar Produto</h3>
+            <input type="hidden" id="editProductId">
+            <div>
+                <label class="block text-xs font-semibold text-purple-200 mb-1">Nome do Produto</label>
+                <input type="text" id="editProductName" class="w-full bg-purple-950 border border-purple-500/30 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-purple-400">
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="block text-xs font-semibold text-purple-200 mb-1">Preço (R$)</label>
+                    <input type="number" step="0.10" id="editProductPrice" class="w-full bg-purple-950 border border-purple-500/30 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-purple-400">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-purple-200 mb-1">Categoria</label>
+                    <select id="editProductCategory" class="w-full bg-purple-950 border border-purple-500/30 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-purple-400">
+                        <option value="Pães Artesanais">Pães Artesanais</option>
+                        <option value="Confeitaria & Doces">Confeitaria & Doces</option>
+                        <option value="Salgados & Lanches">Salgados & Lanches</option>
+                        <option value="Bebidas & Cafés">Bebidas & Cafés</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <label class="block text-xs font-semibold text-purple-200 mb-1">URL da Imagem</label>
+                <input type="text" id="editProductImage" class="w-full bg-purple-950 border border-purple-500/30 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-purple-400">
+            </div>
+            <div>
+                <label class="block text-xs font-semibold text-purple-200 mb-1">Descrição</label>
+                <textarea id="editProductDesc" rows="3" class="w-full bg-purple-950 border border-purple-500/30 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-purple-400"></textarea>
+            </div>
+            <div class="flex gap-2 pt-2">
+                <button onclick="closeProductEditModal()" class="w-1/2 py-2.5 rounded-xl bg-purple-950 border border-purple-500/30 text-purple-300 text-xs font-bold">Cancelar</button>
+                <button onclick="saveProductModal()" class="w-1/2 neon-btn py-2.5 rounded-xl text-white text-xs font-bold">Salvar Alterações</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Detail Modal -->
+    <div id="productDetailModal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
+        <div id="productDetailContent" class="w-full max-w-lg glass-panel border border-purple-500/40 rounded-3xl p-6 relative shadow-2xl space-y-4">
+            <!-- Dynamic Content -->
+        </div>
+    </div>
+
+    <!-- Toast Notifications Container -->
+    <div id="toastContainer" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <script>
+        // 40 Artisanal Bakery Products Catalog
+        const DEFAULT_CATALOG = [
+            // Pães Artesanais (10)
+            { id: 1, name: "Pão Francês Tradicional", price: 1.20, category: "Pães Artesanais", description: "Crocante por fora, miolo macio e quentinho assado de hora em hora.", image: "https://images.unsplash.com/photo-1586444248902-2f64eddc13df?auto=format&fit=crop&w=600&q=80" },
+            { id: 2, name: "Sourdough Azeitona", price: 28.00, category: "Pães Artesanais", description: "Pão de fermentação natural de 36h com azeitonas pretas e alecrim.", image: "https://images.unsplash.com/photo-1589367920969-ab8e050bbb04?auto=format&fit=crop&w=600&q=80" },
+            { id: 3, name: "Baguete Crocante", price: 12.00, category: "Pães Artesanais", description: "Baguete de receita francesa com casca dourada estaladiça.", image: "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=600&q=80" },
+            { id: 4, name: "Ciabatta Rústica", price: 9.50, category: "Pães Artesanais", description: "Massa aerada e leve com azeite extra virgem de oliva.", image: "https://images.unsplash.com/photo-1549931319-a545dcf3bc73?auto=format&fit=crop&w=600&q=80" },
+            { id: 5, name: "Pão de Queijo Mineiro", price: 3.50, category: "Pães Artesanais", description: "Feito com polvilho artesanal e queijo meia cura especial.", image: "https://images.unsplash.com/photo-1598103442097-8b74394b95c6?auto=format&fit=crop&w=600&q=80" },
+            { id: 6, name: "Croissant Manteiga", price: 12.50, category: "Pães Artesanais", description: "Massa folhada artesanal laminada com puríssima manteiga.", image: "https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&w=600&q=80" },
+            { id: 7, name: "Pão de Brioche Fofinho", price: 22.00, category: "Pães Artesanais", description: "Brioche adocicado, ultra macio e dourado com gema de ovo.", image: "https://images.unsplash.com/photo-1608198093002-ad4e005484ec?auto=format&fit=crop&w=600&q=80" },
+            { id: 8, name: "Pão de Forma Integral", price: 18.50, category: "Pães Artesanais", description: "100% integral rico em grãos, linhaça, girassol e gergelim.", image: "https://images.unsplash.com/photo-1534620808146-d33bb39128b2?auto=format&fit=crop&w=600&q=80" },
+            { id: 9, name: "Pão Australiano", price: 14.00, category: "Pães Artesanais", description: "Pão escuro macio enriquecido com cacau e mel silvestre.", image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=600&q=80" },
+            { id: 10, name: "Focaccia Alecrim & Tomate", price: 24.00, category: "Pães Artesanais", description: "Focaccia italiana com azeite extravirgem, tomates cereja e flor de sal.", image: "https://images.unsplash.com/photo-1579697096981-435426e60201?auto=format&fit=crop&w=600&q=80" },
+
+            // Confeitaria & Doces (10)
+            { id: 11, name: "Bolo de Cenoura com Brigaderia", price: 15.00, category: "Confeitaria & Doces", description: "Fatia fofinha coberta com calda de brigadeiro belga cremosa.", image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=600&q=80" },
+            { id: 12, name: "Torta Holandesa", price: 18.00, category: "Confeitaria & Doces", description: "Creme aveludado de baunilha, biscoitos calipso e ganache puro.", image: "https://images.unsplash.com/photo-1535141192574-5d4897c13136?auto=format&fit=crop&w=600&q=80" },
+            { id: 13, name: "Mousse de Maracujá Cremoso", price: 10.00, category: "Confeitaria & Doces", description: "Mousse leve aerado com sementinhas e calda de fruta natural.", image: "https://images.unsplash.com/photo-1528975604071-b4dc52a2d18c?auto=format&fit=crop&w=600&q=80" },
+            { id: 14, name: "Cheesecake de Frutas Vermelhas", price: 21.00, category: "Confeitaria & Doces", description: "Base de biscoito, cream cheese suave e geleia de amoras e morango.", image: "https://images.unsplash.com/photo-1533134242443-d4fd215305ad?auto=format&fit=crop&w=600&q=80" },
+            { id: 15, name: "Sonho com Creme de Baunilha", price: 7.50, category: "Confeitaria & Doces", description: "Massa fofinha polvilhada com açúcar de confeiteiro e recheio de baunilha.", image: "https://images.unsplash.com/photo-1527515637462-cff94eecc1ac?auto=format&fit=crop&w=600&q=80" },
+            { id: 16, name: "Donut Glacê Rosa", price: 8.50, category: "Confeitaria & Doces", description: "Donut macio estilo americano com glacê rosa de morango e granulado.", image: "https://images.unsplash.com/photo-1527515545081-5db817172677?auto=format&fit=crop&w=600&q=80" },
+            { id: 17, name: "Mil Folhas de Baunilha", price: 16.50, category: "Confeitaria & Doces", description: "Folhado crocante intercalado com creme pâtissière de baunilha.", image: "https://images.unsplash.com/photo-1509365465985-25d11c17e812?auto=format&fit=crop&w=600&q=80" },
+            { id: 18, name: "Pudim de Leite Condensado", price: 12.00, category: "Confeitaria & Doces", description: "Pudim ultra cremoso sem furinhos com calda de caramelo dourado.", image: "https://images.unsplash.com/photo-1528975604071-b4dc52a2d18c?auto=format&fit=crop&w=600&q=80" },
+            { id: 19, name: "Macarons Sortidos (6un)", price: 32.00, category: "Confeitaria & Doces", description: "Caixa com 6 macarons franceses saborosos e coloridos.", image: "https://images.unsplash.com/photo-1569864358642-9d1684040f43?auto=format&fit=crop&w=600&q=80" },
+            { id: 20, name: "Eclair de Chocolate Nobre", price: 14.00, category: "Confeitaria & Doces", description: "Bomba recheada com creme de chocolate nobre e cobertura brilhante.", image: "https://images.unsplash.com/photo-1612203985729-70726954388c?auto=format&fit=crop&w=600&q=80" },
+
+            // Salgados & Lanches (10)
+            { id: 21, name: "Panqueca de Frango Especial", price: 12.00, category: "Salgados & Lanches", description: "Panqueca recheada com frango desfiado, molho de tomate e queijo.", image: "https://images.unsplash.com/photo-1561651823-34feb02250e4?auto=format&fit=crop&w=600&q=80" },
+            { id: 22, name: "Empada de Palmito", price: 8.50, category: "Salgados & Lanches", description: "Massa podre amanteigada que derrete na boca com palmito cremoso.", image: "https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?auto=format&fit=crop&w=600&q=80" },
+            { id: 23, name: "Coxinha de Frango com Catupiry", price: 9.50, category: "Salgados & Lanches", description: "Casquinha dourada crocante com frango temperado e requeijão.", image: "https://images.unsplash.com/photo-1561651823-34feb02250e4?auto=format&fit=crop&w=600&q=80" },
+            { id: 24, name: "Folhado de Presunto e Queijo", price: 9.00, category: "Salgados & Lanches", description: "Massa folhada leve recheada com presunto royale e mussarela.", image: "https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=600&q=80" },
+            { id: 25, name: "Quiche de Alho Poró", price: 14.50, category: "Salgados & Lanches", description: "Massa crocante com recheio de alho poró salteado e queijos.", image: "https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=600&q=80" },
+            { id: 26, name: "Enroladinho de Salsicha", price: 7.00, category: "Salgados & Lanches", description: "Massa assada macia envolvendo salsicha especial com orégano.", image: "https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?auto=format&fit=crop&w=600&q=80" },
+            { id: 27, name: "Esfiha Aberta de Carne", price: 6.50, category: "Salgados & Lanches", description: "Massa fina com tempero oriental de carne, tomate, cebola e limão.", image: "https://images.unsplash.com/photo-1565299585323-38d6b0865b47?auto=format&fit=crop&w=600&q=80" },
+            { id: 28, name: "Pastel de Forno de Frango", price: 7.50, category: "Salgados & Lanches", description: "Pastel assado leve recheado com frango cremoso e milho.", image: "https://images.unsplash.com/photo-1619860860774-1e2e17343432?auto=format&fit=crop&w=600&q=80" },
+            { id: 29, name: "Pão de Batata Recheado", price: 8.50, category: "Salgados & Lanches", description: "Massa ultra fofa de batata com recheio cremoso de requeijão.", image: "https://images.unsplash.com/photo-1579697096981-435426e60201?auto=format&fit=crop&w=600&q=80" },
+            { id: 30, name: "Torta Salgada de Frango", price: 16.00, category: "Salgados & Lanches", description: "Fatia generosa de torta de liquidificador de frango com legumes.", image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=600&q=80" },
+
+            // Bebidas & Cafés (10)
+            { id: 31, name: "Suco de Maracujá Natural", price: 10.00, category: "Bebidas & Cafés", description: "Suco natural concentrado da fruta, bem gelado e refrescante.", image: "https://images.unsplash.com/photo-1613478223719-2ab802602423?auto=format&fit=crop&w=600&q=80" },
+            { id: 32, name: "Espresso Duplo", price: 7.50, category: "Bebidas & Cafés", description: "Extraído de grãos 100% Arábica selecionados de torra média.", image: "https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?auto=format&fit=crop&w=600&q=80" },
+            { id: 33, name: "Cappuccino Cremoso", price: 11.50, category: "Bebidas & Cafés", description: "Espresso com leite vaporizado e toque de cacau e canela.", image: "https://images.unsplash.com/photo-1572442388796-11668a67e53d?auto=format&fit=crop&w=600&q=80" },
+            { id: 34, name: "Latte Macchiato", price: 13.00, category: "Bebidas & Cafés", description: "Camadas marcadas de leite cremoso, espuma e café espresso.", image: "https://images.unsplash.com/photo-1534778101976-62847782c213?auto=format&fit=crop&w=600&q=80" },
+            { id: 35, name: "Café Gelado Mocha", price: 15.50, category: "Bebidas & Cafés", description: "Espresso batido com leite gelado, calda de chocolate e chantilly.", image: "https://images.unsplash.com/photo-1572490122747-3968b75cc699?auto=format&fit=crop&w=600&q=80" },
+            { id: 36, name: "Chá Gelado de Limão", price: 8.50, category: "Bebidas & Cafés", description: "Chá preto infusionado com suco de limão siciliano e gelo.", image: "https://images.unsplash.com/photo-1556679343-c7306c1976bc?auto=format&fit=crop&w=600&q=80" },
+            { id: 37, name: "Suco de Laranja Espremido", price: 10.00, category: "Bebidas & Cafés", description: "100% fruta espremida na hora, sem açúcar e sem água adicionada.", image: "https://images.unsplash.com/photo-1613478223719-2ab802602423?auto=format&fit=crop&w=600&q=80" },
+            { id: 38, name: "Achocolatado Cremoso Quente", price: 14.00, category: "Bebidas & Cafés", description: "Chocolate estilo europeu denso e aveludado com chantilly.", image: "https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?auto=format&fit=crop&w=600&q=80" },
+            { id: 39, name: "Soda Italiana Maçã Verde", price: 11.00, category: "Bebidas & Cafés", description: "Água com gás aromatizada com xarope francês de maçã verde.", image: "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=600&q=80" },
+            { id: 40, name: "Água Mineral com Gás", price: 4.50, category: "Bebidas & Cafés", description: "Garrafa 500ml de água mineral levemente gaseificada.", image: "https://images.unsplash.com/photo-1560023907-5f339617ea30?auto=format&fit=crop&w=600&q=80" }
+        ];
+
+        // Global State Variables
+        let products = [];
+        let cart = [];
+        let currentCategory = 'Todos';
+        let searchQuery = '';
+        let sortOrder = 'relevance';
+        let devUnlocked = false;
+        let devOverlayActive = false;
+        let lastFormattedOrderMsg = "";
+
+        const DEV_PIN = "1943";
+        const WHATSAPP_PHONE = "5564996609321";
+
+        window.onload = function() {
+            loadCatalog();
+            loadCart();
+            renderCategoryTabs();
+            renderProducts();
+            updateCartUI();
+
+            // Outside click handler for Dev Dropdown
+            document.addEventListener('click', function(e) {
+                const devDropdown = document.getElementById('devDropdownMenu');
+                const devBtn = e.target.closest('button[onclick="toggleDevDropdown()"]');
+                if (!devBtn && devDropdown && !devDropdown.contains(e.target) && !devDropdown.classList.contains('hidden')) {
+                    devDropdown.classList.add('hidden');
+                }
+            });
+        };
+
+        function loadCatalog() {
+            const saved = localStorage.getItem('padaria_catalog_v3');
+            if (saved) {
+                try { products = JSON.parse(saved); } catch (e) { products = [...DEFAULT_CATALOG]; }
+            } else {
+                products = [...DEFAULT_CATALOG];
+                saveCatalog();
+            }
+        }
+
+        function saveCatalog() {
+            localStorage.setItem('padaria_catalog_v3', JSON.stringify(products));
+        }
+
+        function loadCart() {
+            const saved = localStorage.getItem('padaria_cart_v3');
+            if (saved) {
+                try { cart = JSON.parse(saved); } catch (e) { cart = []; }
+            }
+        }
+
+        function saveCart() {
+            localStorage.setItem('padaria_cart_v3', JSON.stringify(cart));
+        }
+
+        function renderCategoryTabs() {
+            const categories = ['Todos', 'Pães Artesanais', 'Confeitaria & Doces', 'Salgados & Lanches', 'Bebidas & Cafés'];
+            const container = document.getElementById('categoryTabsBar');
+            
+            container.innerHTML = categories.map(cat => `
+                <button onclick="selectCategory('${cat}')" 
+                    class="px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all border ${
+                        currentCategory === cat 
+                        ? 'neon-btn text-white border-purple-400' 
+                        : 'glass-card text-purple-200/70 border-purple-500/20 hover:text-white hover:border-purple-400/50'
+                    }">
+                    ${cat}
+                </button>
+            `).join('');
+        }
+
+        function selectCategory(cat) {
+            currentCategory = cat;
+            renderCategoryTabs();
+            renderProducts();
+        }
+
+        function handleSearch(val) {
+            searchQuery = val.toLowerCase().trim();
+            renderProducts();
+        }
+
+        function handleSortChange(val) {
+            sortOrder = val;
+            renderProducts();
+        }
+
+        function renderProducts() {
+            const grid = document.getElementById('productGrid');
+            
+            let filtered = products.filter(p => {
+                const matchCat = currentCategory === 'Todos' || p.category === currentCategory;
+                const matchSearch = p.name.toLowerCase().includes(searchQuery) || p.description.toLowerCase().includes(searchQuery);
+                return matchCat && matchSearch;
+            });
+
+            // Apply sorting
+            if (sortOrder === 'price-asc') {
+                filtered.sort((a, b) => a.price - b.price);
+            } else if (sortOrder === 'price-desc') {
+                filtered.sort((a, b) => b.price - a.price);
+            } else if (sortOrder === 'name') {
+                filtered.sort((a, b) => a.name.localeCompare(b.name));
+            }
+
+            document.getElementById('catalogCount').innerText = `${filtered.length} itens encontrados`;
+            document.getElementById('catalogTitle').innerText = `${currentCategory === 'Todos' ? 'Todos os Produtos' : currentCategory}`;
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full py-16 text-center space-y-3">
+                        <i class="fa-solid fa-cookie-bite text-5xl text-purple-500/30"></i>
+                        <p class="text-purple-300/60 font-semibold text-sm">Nenhum produto encontrado nesta busca.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = filtered.map(p => `
+                <div class="glass-card rounded-2xl overflow-hidden flex flex-col justify-between group relative">
+                    ${devOverlayActive ? `
+                        <div class="absolute top-3 left-3 z-20 flex gap-1">
+                            <button onclick="openEditProductModal(${p.id})" class="bg-amber-500 hover:bg-amber-400 text-black px-2 py-1 rounded-md text-[10px] font-extrabold shadow-md">
+                                <i class="fa-solid fa-pen"></i> Editar
+                            </button>
+                            <button onclick="deleteProduct(${p.id})" class="bg-rose-600 hover:bg-rose-500 text-white px-2 py-1 rounded-md text-[10px] font-extrabold shadow-md">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </div>
+                    ` : ''}
+
+                    <div onclick="openProductDetailModal(${p.id})" class="cursor-pointer">
+                        <div class="relative h-44 overflow-hidden bg-purple-950">
+                            <img src="${p.image}" alt="${p.name}" 
+                                onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=600&q=80';"
+                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-t from-purple-950/80 via-transparent to-transparent"></div>
+                            <span class="absolute bottom-2 left-2 bg-purple-950/80 backdrop-blur-md border border-purple-500/30 text-purple-200 text-[10px] font-bold px-2 py-0.5 rounded-md">
+                                ${p.category}
+                            </span>
+                        </div>
+                        <div class="p-4 space-y-1.5">
+                            <h4 class="font-bold text-sm text-white group-hover:text-purple-300 transition-colors line-clamp-1">${p.name}</h4>
+                            <p class="text-xs text-purple-200/60 line-clamp-2">${p.description}</p>
+                        </div>
+                    </div>
+
+                    <div class="p-4 pt-0 flex items-center justify-between border-t border-purple-500/10 mt-2">
+                        <div>
+                            <span class="text-[10px] text-purple-300/60 block uppercase font-bold">Preço</span>
+                            <span class="text-base font-black text-white neon-text">R$ ${p.price.toFixed(2).replace('.', ',')}</span>
+                        </div>
+                        <button onclick="addToCart(${p.id})" class="neon-btn px-3 py-2 rounded-xl text-white text-xs font-bold flex items-center gap-1.5 active:scale-95 transition-all">
+                            <i class="fa-solid fa-plus"></i> Adicionar
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function addToCart(id) {
+            const p = products.find(item => item.id === id);
+            if (!p) return;
+
+            const existing = cart.find(item => item.id === id);
+            if (existing) {
+                existing.quantity += 1;
+            } else {
+                cart.push({ ...p, quantity: 1 });
+            }
+
+            saveCart();
+            updateCartUI();
+            showToast(`"${p.name}" foi adicionado ao carrinho!`);
+        }
+
+        function updateCartQty(id, delta) {
+            const item = cart.find(i => i.id === id);
+            if (!item) return;
+
+            item.quantity += delta;
+            if (item.quantity <= 0) {
+                cart = cart.filter(i => i.id !== id);
+            }
+
+            saveCart();
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const totalCount = cart.reduce((acc, i) => acc + i.quantity, 0);
+            const subtotal = cart.reduce((acc, i) => acc + (i.price * i.quantity), 0);
+            const delivery = totalCount > 0 ? 5.00 : 0.00;
+            const total = subtotal + delivery;
+
+            // Header elements
+            const badge = document.getElementById('cartBadge');
+            if (totalCount > 0) {
+                badge.innerText = totalCount;
+                badge.classList.remove('hidden');
+            } else {
+                badge.classList.add('hidden');
+            }
+
+            document.getElementById('cartTotalHeader').innerText = `R$ ${subtotal.toFixed(2).replace('.', ',')}`;
+            document.getElementById('drawerSubtotal').innerText = `R$ ${subtotal.toFixed(2).replace('.', ',')}`;
+            document.getElementById('drawerDelivery').innerText = `R$ ${delivery.toFixed(2).replace('.', ',')}`;
+            document.getElementById('drawerTotal').innerText = `R$ ${total.toFixed(2).replace('.', ',')}`;
+            document.getElementById('checkoutModalTotal').innerText = `R$ ${total.toFixed(2).replace('.', ',')}`;
+
+            // Drawer Items List
+            const list = document.getElementById('cartItemsList');
+            if (cart.length === 0) {
+                list.innerHTML = `
+                    <div class="h-full flex flex-col items-center justify-center text-center p-6 space-y-2">
+                        <i class="fa-solid fa-basket-shopping text-4xl text-purple-500/30"></i>
+                        <p class="text-purple-300/70 text-xs font-semibold">Seu carrinho está vazio.</p>
+                    </div>
+                `;
+            } else {
+                list.innerHTML = cart.map(item => `
+                    <div class="glass-card p-3 rounded-xl flex items-center gap-3 border border-purple-500/20">
+                        <img src="${item.image}" alt="${item.name}" class="w-12 h-12 object-cover rounded-lg bg-purple-950">
+                        <div class="flex-1 min-w-0">
+                            <h5 class="text-xs font-bold text-white truncate">${item.name}</h5>
+                            <span class="text-xs text-purple-300 font-semibold">R$ ${item.price.toFixed(2).replace('.', ',')}</span>
+                        </div>
+                        <div class="flex items-center gap-1.5 bg-purple-950/80 border border-purple-500/30 rounded-lg p-1">
+                            <button onclick="updateCartQty(${item.id}, -1)" class="w-5 h-5 rounded text-purple-300 hover:bg-purple-800 flex items-center justify-center font-bold text-xs">-</button>
+                            <span class="text-xs font-bold text-white w-4 text-center">${item.quantity}</span>
+                            <button onclick="updateCartQty(${item.id}, 1)" class="w-5 h-5 rounded text-purple-300 hover:bg-purple-800 flex items-center justify-center font-bold text-xs">+</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function openCartDrawer() {
+            document.getElementById('cartDrawer').classList.remove('hidden');
+        }
+
+        function closeCartDrawer() {
+            document.getElementById('cartDrawer').classList.add('hidden');
+        }
+
+        function openCheckoutModal() {
+            if (cart.length === 0) {
+                showToast("Adicione produtos ao carrinho antes de finalizar!");
+                return;
+            }
+            closeCartDrawer();
+            const modal = document.getElementById('checkoutModal');
+            modal.classList.remove('hidden');
+            modal.scrollTop = 0;
+        }
+
+        function closeCheckoutModal() {
+            document.getElementById('checkoutModal').classList.add('hidden');
+        }
+
+        function toggleChangeField(val) {
+            const block = document.getElementById('cashChangeBlock');
+            if (val === 'Dinheiro') {
+                block.classList.remove('hidden');
+            } else {
+                block.classList.add('hidden');
+            }
+        }
+
+        function submitWhatsAppOrder(event) {
+            event.preventDefault();
+
+            const name = document.getElementById('custName').value.trim();
+            const phone = document.getElementById('custPhone').value.trim();
+            const address = document.getElementById('custAddress').value.trim();
+            const neighborhood = document.getElementById('custNeighborhood').value.trim();
+            const complement = document.getElementById('custComplement').value.trim();
+            const payment = document.getElementById('custPayment').value;
+            const change = document.getElementById('custChange').value.trim();
+
+            const subtotal = cart.reduce((acc, i) => acc + (i.price * i.quantity), 0);
+            const delivery = 5.00;
+            const total = subtotal + delivery;
+
+            let itemsTxt = cart.map(i => `• ${i.quantity}x ${i.name} - R$ ${(i.price * i.quantity).toFixed(2).replace('.', ',')}`).join('\n');
+
+            let msg = `🥖 *NOVO PEDIDO - PADARIA GOURMET* 🥖\n\n`;
+            msg += `*CLIENTE:* ${name}\n`;
+            msg += `*TELEFONE:* ${phone}\n`;
+            msg += `*ENDEREÇO:* ${address}\n`;
+            msg += `*BAIRRO:* ${neighborhood}\n`;
+            if (complement) msg += `*COMPLEMENTO:* ${complement}\n`;
+            msg += `*PAGAMENTO:* ${payment}\n`;
+            if (payment === 'Dinheiro' && change) msg += `*TROCO:* ${change}\n`;
+            msg += `\n*ITENS DO PEDIDO:*\n${itemsTxt}\n\n`;
+            msg += `*Subtotal:* R$ ${subtotal.toFixed(2).replace('.', ',')}\n`;
+            msg += `*Taxa de Entrega:* R$ ${delivery.toFixed(2).replace('.', ',')}\n`;
+            msg += `*TOTAL FINAL:* R$ ${total.toFixed(2).replace('.', ',')}\n\n`;
+            msg += `Aguardando confirmação do pedido!`;
+
+            lastFormattedOrderMsg = msg;
+
+            // Generate WhatsApp link using wa.me format
+            const whatsappUrl = `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(msg)}`;
+
+            // Clear current cart
+            cart = [];
+            saveCart();
+            updateCartUI();
+            closeCheckoutModal();
+
+            // Set up confirmation modal direct button
+            const directBtn = document.getElementById('directWhatsappLink');
+            directBtn.href = whatsappUrl;
+
+            // Open confirmation modal
+            document.getElementById('whatsappConfirmModal').classList.remove('hidden');
+
+            // Attempt automatic redirection with popup fallback
+            try {
+                const win = window.open(whatsappUrl, '_blank');
+                if (!win || win.closed || typeof win.closed === 'undefined') {
+                    // Window failed or blocked, try location redirect or rely on modal button
+                    console.log('Popup blocked, showing direct modal link');
+                }
+            } catch (e) {
+                console.error('WhatsApp redirect error:', e);
+            }
+        }
+
+        function closeWhatsAppConfirmModal() {
+            document.getElementById('whatsappConfirmModal').classList.add('hidden');
+        }
+
+        function copyOrderTextToClipboard() {
+            if (!lastFormattedOrderMsg) return;
+
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(lastFormattedOrderMsg).then(() => {
+                    showToast("Texto do pedido copiado para a área de transferência!");
+                }).catch(() => fallbackCopyText());
+            } else {
+                fallbackCopyText();
+            }
+        }
+
+        function fallbackCopyText() {
+            const textArea = document.createElement("textarea");
+            textArea.value = lastFormattedOrderMsg;
+            textArea.style.position = "fixed";
+            textArea.style.left = "-9999px";
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                showToast("Texto do pedido copiado com sucesso!");
+            } catch (err) {
+                showToast("Não foi possível copiar o texto automaticamente.");
+            }
+            document.body.removeChild(textArea);
+        }
+
+        function toggleDevDropdown() {
+            const menu = document.getElementById('devDropdownMenu');
+            menu.classList.toggle('hidden');
+        }
+
+        function handleDevAction(action) {
+            document.getElementById('devDropdownMenu').classList.add('hidden');
+
+            if (!devUnlocked) {
+                document.getElementById('devPinInput').value = '';
+                document.getElementById('devPinModal').classList.remove('hidden');
+                document.getElementById('devPinInput').focus();
+                window.pendingDevAction = action;
+                return;
+            }
+
+            executeDevAction(action);
+        }
+
+        function verifyDevPin() {
+            const pin = document.getElementById('devPinInput').value;
+            if (pin === DEV_PIN) {
+                devUnlocked = true;
+                closeDevPinModal();
+                updateDevLockStatus();
+                showToast("Modo Desenvolvedor Autenticado!");
+                if (window.pendingDevAction) {
+                    executeDevAction(window.pendingDevAction);
+                    window.pendingDevAction = null;
+                }
+            } else {
+                showToast("Senha Incorreta!");
+                document.getElementById('devPinInput').value = '';
+            }
+        }
+
+        function closeDevPinModal() {
+            document.getElementById('devPinModal').classList.add('hidden');
+        }
+
+        function updateDevLockStatus() {
+            const statusBadge = document.getElementById('devLockStatus');
+            const lockOption = document.getElementById('devLockOption');
+            if (devUnlocked) {
+                statusBadge.innerText = 'Desbloqueado';
+                statusBadge.className = 'text-[10px] px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 font-bold border border-emerald-500/30';
+                lockOption.classList.remove('hidden');
+            } else {
+                statusBadge.innerText = 'Protegido';
+                statusBadge.className = 'text-[10px] px-2 py-0.5 rounded bg-rose-950 text-rose-300 font-bold border border-rose-500/30';
+                lockOption.classList.add('hidden');
+            }
+        }
+
+        function lockDevMode() {
+            devUnlocked = false;
+            devOverlayActive = false;
+            document.getElementById('lblToggleDevOverlay').innerText = 'Ativar Modo Desenvolvedor';
+            updateDevLockStatus();
+            renderProducts();
+            showToast("Modo Desenvolvedor Bloqueado.");
+        }
+
+        function executeDevAction(action) {
+            if (action === 'toggleOverlay') {
+                devOverlayActive = !devOverlayActive;
+                document.getElementById('lblToggleDevOverlay').innerText = devOverlayActive ? 'Desativar Modo Dev' : 'Ativar Modo Desenvolvedor';
+                renderProducts();
+                showToast(`Modo dev nos cards ${devOverlayActive ? 'ativado' : 'desativado'}`);
+            } else if (action === 'openDashboard') {
+                openDevDashboard();
+            } else if (action === 'addProduct') {
+                openAddProductModal();
+            } else if (action === 'resetCatalog') {
+                resetCatalogToDefault();
+            } else if (action === 'exportData') {
+                exportCatalogData();
+            }
+        }
+
+        function openDevDashboard() {
+            document.getElementById('devDashboardModal').classList.remove('hidden');
+            renderDevTable();
+        }
+
+        function closeDevDashboard() {
+            document.getElementById('devDashboardModal').classList.add('hidden');
+        }
+
+        function renderDevTable() {
+            const tbody = document.getElementById('devTableBody');
+            tbody.innerHTML = products.map(p => `
+                <tr class="hover:bg-purple-900/30">
+                    <td class="p-3 font-mono text-purple-300">#${p.id}</td>
+                    <td class="p-3"><img src="${p.image}" class="w-8 h-8 rounded object-cover bg-purple-950"></td>
+                    <td class="p-3 font-semibold text-white">${p.name}</td>
+                    <td class="p-3 text-purple-300/80">${p.category}</td>
+                    <td class="p-3 font-bold text-purple-200">R$ ${p.price.toFixed(2).replace('.', ',')}</td>
+                    <td class="p-3 text-right space-x-2">
+                        <button onclick="openEditProductModal(${p.id})" class="px-2 py-1 bg-amber-500/80 hover:bg-amber-500 text-black font-bold rounded">
+                            <i class="fa-solid fa-pen"></i>
+                        </button>
+                        <button onclick="deleteProduct(${p.id})" class="px-2 py-1 bg-rose-600/80 hover:bg-rose-600 text-white font-bold rounded">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function openAddProductModal() {
+            document.getElementById('editModalTitle').innerText = "Adicionar Novo Produto";
+            document.getElementById('editProductId').value = "";
+            document.getElementById('editProductName').value = "";
+            document.getElementById('editProductPrice').value = "";
+            document.getElementById('editProductCategory').value = "Pães Artesanais";
+            document.getElementById('editProductImage').value = "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=600&q=80";
+            document.getElementById('editProductDesc').value = "";
+            
+            document.getElementById('productEditModal').classList.remove('hidden');
+        }
+
+        function openEditProductModal(id) {
+            const p = products.find(item => item.id === id);
+            if (!p) return;
+
+            document.getElementById('editModalTitle').innerText = "Editar Produto";
+            document.getElementById('editProductId').value = p.id;
+            document.getElementById('editProductName').value = p.name;
+            document.getElementById('editProductPrice').value = p.price;
+            document.getElementById('editProductCategory').value = p.category;
+            document.getElementById('editProductImage').value = p.image;
+            document.getElementById('editProductDesc').value = p.description;
+
+            document.getElementById('productEditModal').classList.remove('hidden');
+        }
+
+        function closeProductEditModal() {
+            document.getElementById('productEditModal').classList.add('hidden');
+        }
+
+        function saveProductModal() {
+            const idVal = document.getElementById('editProductId').value;
+            const name = document.getElementById('editProductName').value.trim();
+            const price = parseFloat(document.getElementById('editProductPrice').value);
+            const category = document.getElementById('editProductCategory').value;
+            const image = document.getElementById('editProductImage').value.trim() || 'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=600&q=80';
+            const description = document.getElementById('editProductDesc').value.trim() || 'Delicioso item artesanal da Padaria Gourmet.';
+
+            if (!name || isNaN(price)) {
+                showToast("Preencha o nome e preço corretamente.");
+                return;
+            }
+
+            if (idVal) {
+                const p = products.find(item => item.id === parseInt(idVal));
+                if (p) {
+                    p.name = name;
+                    p.price = price;
+                    p.category = category;
+                    p.image = image;
+                    p.description = description;
+                }
+            } else {
+                const newId = products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1;
+                products.unshift({ id: newId, name, price, category, image, description });
+            }
+
+            saveCatalog();
+            renderCategoryTabs();
+            renderProducts();
+            renderDevTable();
+            closeProductEditModal();
+            showToast("Produto salvo no catálogo!");
+        }
+
+        function deleteProduct(id) {
+            if (products.length <= 1) {
+                showToast("Não é possível remover todos os produtos.");
+                return;
+            }
+            products = products.filter(p => p.id !== id);
+            saveCatalog();
+            renderCategoryTabs();
+            renderProducts();
+            renderDevTable();
+            showToast("Produto removido.");
+        }
+
+        function resetCatalogToDefault() {
+            products = [...DEFAULT_CATALOG];
+            saveCatalog();
+            renderCategoryTabs();
+            renderProducts();
+            renderDevTable();
+            showToast("Catálogo original de 40 produtos restaurado!");
+        }
+
+        function exportCatalogData() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(products, null, 2));
+            const anchor = document.createElement('a');
+            anchor.setAttribute("href", dataStr);
+            anchor.setAttribute("download", "padaria_catalogo.json");
+            document.body.appendChild(anchor);
+            anchor.click();
+            anchor.remove();
+            showToast("Catálogo exportado em arquivo JSON!");
+        }
+
+        function triggerImportJson() {
+            handleDevAction('importPrompt');
+            document.getElementById('importFileInput').click();
+        }
+
+        function importCatalogData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const imported = JSON.parse(e.target.result);
+                    if (Array.isArray(imported) && imported.length > 0) {
+                        products = imported;
+                        saveCatalog();
+                        renderCategoryTabs();
+                        renderProducts();
+                        showToast(`${imported.length} produtos importados com sucesso!`);
+                    } else {
+                        showToast("Formato JSON inválido.");
+                    }
+                } catch (err) {
+                    showToast("Erro ao ler arquivo JSON.");
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function openProductDetailModal(id) {
+            const p = products.find(item => item.id === id);
+            if (!p) return;
+
+            const content = document.getElementById('productDetailContent');
+            content.innerHTML = `
+                <button onclick="closeProductDetailModal()" class="absolute top-4 right-4 text-purple-300 hover:text-white text-xl p-2 z-10">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                <div class="h-56 rounded-2xl overflow-hidden bg-purple-950 relative">
+                    <img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-purple-950/80 via-transparent to-transparent"></div>
+                </div>
+                <div class="space-y-2">
+                    <span class="text-xs font-bold text-purple-300 uppercase">${p.category}</span>
+                    <h3 class="text-xl font-bold text-white">${p.name}</h3>
+                    <p class="text-xs text-purple-200/70">${p.description}</p>
+                    <div class="text-2xl font-black text-white neon-text pt-2">R$ ${p.price.toFixed(2).replace('.', ',')}</div>
+                </div>
+                <div class="flex gap-2 pt-2">
+                    <button onclick="addToCart(${p.id}); closeProductDetailModal();" class="w-full neon-btn py-3 rounded-xl font-bold text-white flex items-center justify-center gap-2 text-xs">
+                        <i class="fa-solid fa-cart-plus"></i> Adicionar ao Carrinho
+                    </button>
+                </div>
+            `;
+            document.getElementById('productDetailModal').classList.remove('hidden');
+        }
+
+        function closeProductDetailModal() {
+            document.getElementById('productDetailModal').classList.add('hidden');
+        }
+
+        function showToast(msg) {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = 'pointer-events-auto glass-panel border border-purple-400/40 text-purple-100 text-xs px-4 py-3 rounded-xl shadow-2xl flex items-center gap-2 transform transition-all duration-300 translate-y-4 opacity-0';
+            toast.innerHTML = `<i class="fa-solid fa-circle-check text-purple-400"></i> <span>${msg}</span>`;
+
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-4', 'opacity-0');
+            }, 10);
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-2');
+                setTimeout(() => toast.remove(), 300);
+            }, 2800);
+        }
+    </script>
+</body>
+</html>
