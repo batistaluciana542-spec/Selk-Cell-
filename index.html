@@ -1,396 +1,379 @@
 <!DOCTYPE html>
-<html lang="pt-BR" class="dark">
+<html lang="pt-BR" class="scroll-smooth dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Padaria Gourmet - Artisanal & Café</title>
-
-    <!-- Tailwind CSS CDN -->
+    <title>Padaria Artisan & Express - Neon Glass</title>
+    
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- FontAwesome 6.4 Icons -->
+    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Google Fonts: Plus Jakarta Sans -->
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
-    <!-- Tailwind Configuration -->
+    <!-- Google Fonts Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
     <script>
         tailwind.config = {
             darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
-                        purple: {
-                            950: '#0f051d',
-                            900: '#1a0b2e',
-                            800: '#240046',
-                            700: '#3c096c',
-                            600: '#5a189a',
-                            500: '#7b2cbf',
-                            400: '#9d4edd',
-                            300: '#c77dff',
-                            200: '#e0aaff',
-                            100: '#f3e8ff'
+                        neon: {
+                            purple: '#a855f7',
+                            violet: '#8b5cf6',
+                            pink: '#ec4899',
+                            glow: '#d8b4fe'
                         }
                     },
                     fontFamily: {
-                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        sans: ['Inter', 'sans-serif'],
                     }
                 }
             }
         }
     </script>
-
-    <!-- Custom CSS Styles -->
     <style>
         body {
-            background-color: #0f051d;
+            font-family: 'Inter', sans-serif;
+            background-color: #090514;
+            color: #f1f5f9;
             background-image: 
-                radial-gradient(at 0% 0%, rgba(123, 44, 191, 0.35) 0px, transparent 50%),
-                radial-gradient(at 100% 100%, rgba(157, 78, 221, 0.25) 0px, transparent 50%),
-                radial-gradient(at 50% 50%, rgba(26, 11, 46, 0.8) 0px, transparent 80%);
+                radial-gradient(circle at 15% 15%, rgba(168, 85, 247, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 85% 85%, rgba(236, 72, 153, 0.12) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.08) 0%, transparent 60%);
             background-attachment: fixed;
-            color: #f3e8ff;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            min-height: 100vh;
         }
 
+        /* Glassmorphism Styles */
         .glass-panel {
-            background: rgba(26, 11, 46, 0.85);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(199, 125, 255, 0.2);
+            background: rgba(20, 12, 38, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(168, 85, 247, 0.2);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
         }
 
         .glass-card {
-            background: rgba(36, 0, 70, 0.5);
+            background: rgba(28, 18, 52, 0.55);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(157, 78, 221, 0.25);
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(168, 85, 247, 0.18);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .glass-card:hover {
-            border-color: rgba(199, 125, 255, 0.6);
+            border-color: rgba(216, 180, 254, 0.5);
+            box-shadow: 0 0 25px rgba(168, 85, 247, 0.35);
             transform: translateY(-4px);
-            box-shadow: 0 12px 30px -8px rgba(157, 78, 221, 0.5);
+        }
+
+        .neon-text-glow {
+            text-shadow: 0 0 10px rgba(168, 85, 247, 0.6), 0 0 20px rgba(236, 72, 153, 0.4);
+        }
+
+        .neon-border-glow {
+            box-shadow: 0 0 15px rgba(168, 85, 247, 0.4);
         }
 
         .neon-btn {
-            background: linear-gradient(135deg, #7b2cbf 0%, #9d4edd 100%);
-            box-shadow: 0 0 18px rgba(157, 78, 221, 0.45);
-            transition: all 0.25s ease;
+            background: linear-gradient(135deg, #a855f7 0%, #ec4899 100%);
+            box-shadow: 0 0 15px rgba(168, 85, 247, 0.4);
+            transition: all 0.3s ease;
         }
 
         .neon-btn:hover {
-            box-shadow: 0 0 28px rgba(199, 125, 255, 0.75);
-            transform: translateY(-1px);
+            box-shadow: 0 0 25px rgba(236, 72, 153, 0.7);
+            transform: scale(1.02);
         }
 
-        .neon-text {
-            text-shadow: 0 0 12px rgba(199, 125, 255, 0.6);
-        }
-
-        /* Custom Scrollbars */
+        /* Scrollbar custom styling */
         ::-webkit-scrollbar {
             width: 8px;
             height: 8px;
         }
         ::-webkit-scrollbar-track {
-            background: #0f051d;
+            background: #090514;
         }
         ::-webkit-scrollbar-thumb {
-            background: #3c096c;
+            background: rgba(168, 85, 247, 0.3);
             border-radius: 9999px;
-            border: 2px solid #0f051d;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: #7b2cbf;
-        }
-
-        /* Utility scrollbar hide */
-        .scrollbar-none::-webkit-scrollbar {
-            display: none;
-        }
-        .scrollbar-none {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
+            background: rgba(168, 85, 247, 0.6);
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col antialiased selection:bg-purple-500 selection:text-white">
+<body class="min-h-screen flex flex-col justify-between antialiased selection:bg-purple-500 selection:text-white pb-20 md:pb-0">
 
-    <!-- Header -->
-    <header class="sticky top-0 z-30 glass-panel border-b border-purple-500/20 shadow-xl">
+    <!-- Navbar Topo -->
+    <header class="sticky top-0 z-40 glass-panel border-b border-purple-500/20 backdrop-blur-md">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
             
-            <!-- Brand Logo -->
-            <div class="flex items-center gap-3 cursor-pointer group" onclick="selectCategory('Todos')">
-                <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-purple-700 to-purple-400 flex items-center justify-center shadow-[0_0_20px_rgba(157,78,221,0.5)] group-hover:scale-105 transition-transform">
+            <!-- Logo -->
+            <div class="flex items-center gap-3 cursor-pointer" onclick="filterByCategory('all')">
+                <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-purple-600 to-pink-500 flex items-center justify-center shadow-lg shadow-purple-500/30">
                     <i class="fa-solid fa-wheat-awn text-2xl text-white"></i>
                 </div>
                 <div>
-                    <h1 class="text-xl sm:text-2xl font-black tracking-tight text-white neon-text flex items-center gap-2">
-                        PADARIA <span class="text-purple-300 font-light text-xs sm:text-sm uppercase tracking-widest bg-purple-900/70 px-2.5 py-0.5 rounded-md border border-purple-500/30">Gourmet</span>
+                    <h1 class="text-xl sm:text-2xl font-black tracking-wider bg-gradient-to-r from-purple-300 via-purple-100 to-pink-300 bg-clip-text text-transparent neon-text-glow">
+                        PADARIA ARTISAN
                     </h1>
-                    <p class="text-[11px] text-purple-300/70 hidden sm:block">Artisanal & Café Especial</p>
+                    <p class="text-xs text-purple-300/70 font-medium flex items-center gap-1">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                        Forno Aberto & Entregas Rápidas
+                    </p>
                 </div>
             </div>
 
-            <!-- Search Input (Desktop) -->
-            <div class="hidden md:flex flex-1 max-w-md mx-4 relative">
-                <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-purple-300/50"></i>
-                <input type="text" id="searchInput" oninput="handleSearch(this.value)" placeholder="Buscar croissants, pães, cafés, doces..." 
-                    class="w-full bg-purple-950/80 border border-purple-500/30 rounded-xl pl-11 pr-4 py-2.5 text-sm text-white placeholder-purple-300/40 focus:outline-none focus:border-purple-400 focus:ring-1 focus:ring-purple-400 transition-all">
+            <!-- Dev Status Badge (Se Ativo) -->
+            <div id="dev-badge" class="hidden items-center gap-2 px-3 py-1.5 rounded-full bg-purple-950/80 border border-purple-400/50 text-xs text-purple-200 shadow-md">
+                <i class="fa-solid fa-code text-purple-400"></i>
+                <span class="font-semibold">Modo Dev Ativo</span>
+                <button onclick="toggleDevMode()" class="text-xs bg-purple-800/60 hover:bg-purple-700 text-purple-200 px-2 py-0.5 rounded-md ml-1">Sair</button>
             </div>
 
-            <!-- Actions Right -->
-            <div class="flex items-center gap-3 relative">
-                <!-- Cart Button -->
-                <button onclick="openCartDrawer()" class="glass-card hover:bg-purple-800/50 px-4 py-2.5 rounded-xl flex items-center gap-3 border border-purple-500/30 text-white transition-all active:scale-95">
-                    <div class="relative">
-                        <i class="fa-solid fa-cart-shopping text-lg text-purple-300"></i>
-                        <span id="cartBadge" class="hidden absolute -top-2.5 -right-2.5 bg-gradient-to-r from-pink-500 to-purple-500 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center shadow-md">0</span>
-                    </div>
-                    <span class="hidden sm:inline font-bold text-sm text-purple-100" id="cartTotalHeader">R$ 0,00</span>
+            <!-- Right Controls: Search, Cart, 3-Dots Menu -->
+            <div class="flex items-center gap-3">
+                <!-- Shopping Cart Trigger Button -->
+                <button onclick="openCart()" class="relative p-3 rounded-xl glass-card hover:border-purple-400 transition-all text-purple-200 group">
+                    <i class="fa-solid fa-basket-shopping text-xl group-hover:scale-110 transition-transform"></i>
+                    <span id="cart-count-badge" class="absolute -top-1.5 -right-1.5 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center border-2 border-slate-950 shadow-md transform scale-0 transition-transform duration-200">
+                        0
+                    </span>
                 </button>
 
-                <!-- 3 Dots Dev Menu Trigger -->
-                <button onclick="toggleDevDropdown()" title="Opções de Desenvolvedor" class="glass-card hover:bg-purple-800/60 w-11 h-11 rounded-xl border border-purple-500/30 text-purple-300 hover:text-white flex items-center justify-center transition-all active:scale-95">
-                    <i class="fa-solid fa-ellipsis-vertical text-xl"></i>
-                </button>
+                <!-- 3-Dots Dropdown Menu -->
+                <div class="relative">
+                    <button onclick="toggleDropdownMenu()" id="menu-dots-btn" class="p-3 rounded-xl glass-card hover:border-purple-400 text-purple-200 transition-all">
+                        <i class="fa-solid fa-ellipsis-vertical text-xl"></i>
+                    </button>
 
-                <!-- Dev Dropdown Menu (Strictly hidden when inactive) -->
-                <div id="devDropdownMenu" class="hidden absolute right-0 top-14 w-64 glass-panel border border-purple-500/40 rounded-2xl shadow-2xl p-2 z-40 space-y-1">
-                    <div class="px-3 py-2 border-b border-purple-500/20 text-xs flex justify-between items-center">
-                        <span class="font-bold text-purple-200">Painel do Desenvolvedor</span>
-                        <span id="devLockStatus" class="text-[10px] px-2 py-0.5 rounded bg-rose-950 text-rose-300 font-bold border border-rose-500/30">Protegido</span>
-                    </div>
-                    <button onclick="handleDevAction('toggleOverlay')" class="w-full text-left px-3 py-2 rounded-xl text-xs text-purple-200 hover:bg-purple-800/50 hover:text-white flex items-center gap-2 transition-colors">
-                        <i class="fa-solid fa-pen-to-square text-purple-400"></i> <span id="lblToggleDevOverlay">Ativar Modo Desenvolvedor</span>
-                    </button>
-                    <button onclick="handleDevAction('openDashboard')" class="w-full text-left px-3 py-2 rounded-xl text-xs text-purple-200 hover:bg-purple-800/50 hover:text-white flex items-center gap-2 transition-colors">
-                        <i class="fa-solid fa-table-cells text-purple-400"></i> Gerenciar Catálogo (Tabela)
-                    </button>
-                    <button onclick="handleDevAction('addProduct')" class="w-full text-left px-3 py-2 rounded-xl text-xs text-purple-200 hover:bg-purple-800/50 hover:text-white flex items-center gap-2 transition-colors">
-                        <i class="fa-solid fa-plus text-emerald-400"></i> Adicionar Novo Produto
-                    </button>
-                    <button onclick="handleDevAction('resetCatalog')" class="w-full text-left px-3 py-2 rounded-xl text-xs text-purple-200 hover:bg-purple-800/50 hover:text-white flex items-center gap-2 transition-colors">
-                        <i class="fa-solid fa-rotate-left text-amber-400"></i> Restaurar Catálogo (40)
-                    </button>
-                    <button onclick="handleDevAction('exportData')" class="w-full text-left px-3 py-2 rounded-xl text-xs text-purple-200 hover:bg-purple-800/50 hover:text-white flex items-center gap-2 transition-colors">
-                        <i class="fa-solid fa-download text-blue-400"></i> Exportar Dados (JSON)
-                    </button>
-                    <button onclick="triggerImportJson()" class="w-full text-left px-3 py-2 rounded-xl text-xs text-purple-200 hover:bg-purple-800/50 hover:text-white flex items-center gap-2 transition-colors">
-                        <i class="fa-solid fa-upload text-cyan-400"></i> Importar Dados (JSON)
-                    </button>
-                    <input type="file" id="importFileInput" accept=".json" class="hidden" onchange="importCatalogData(event)">
-                    <div id="devLockOption" class="hidden border-t border-purple-500/20 pt-1">
-                        <button onclick="lockDevMode()" class="w-full text-left px-3 py-2 rounded-xl text-xs text-rose-300 hover:bg-rose-950/50 flex items-center gap-2 transition-colors">
-                            <i class="fa-solid fa-lock"></i> Sair / Bloquear Modo Dev
+                    <!-- Dropdown Content -->
+                    <div id="dropdown-menu" class="hidden absolute right-0 mt-3 w-56 rounded-2xl glass-panel shadow-2xl py-2 z-50 border border-purple-500/30 backdrop-blur-xl">
+                        <div class="px-4 py-2 border-b border-purple-500/20 text-xs text-purple-300 font-semibold">
+                            OPÇÕES DA LOJA
+                        </div>
+                        <a href="https://wa.me/5564996609321" target="_blank" class="w-full text-left px-4 py-2.5 text-sm text-slate-200 hover:bg-purple-900/40 flex items-center gap-2 transition-colors">
+                            <i class="fa-brands fa-whatsapp text-emerald-400 text-base"></i> Falar com Atendente
+                        </a>
+                        <button onclick="openDevAuthModal()" class="w-full text-left px-4 py-2.5 text-sm text-purple-300 hover:bg-purple-900/40 flex items-center gap-2 transition-colors">
+                            <i class="fa-solid fa-user-shield text-purple-400 text-base"></i> Modo Desenvolvedor (PIN)
                         </button>
                     </div>
                 </div>
             </div>
         </div>
-
-        <!-- Mobile Search -->
-        <div class="px-4 pb-3 md:hidden">
-            <div class="relative">
-                <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-purple-300/50"></i>
-                <input type="text" oninput="handleSearch(this.value)" placeholder="Buscar no cardápio..." 
-                    class="w-full bg-purple-950/80 border border-purple-500/30 rounded-xl pl-11 pr-4 py-2 text-sm text-white placeholder-purple-300/40 focus:outline-none focus:border-purple-400">
-            </div>
-        </div>
     </header>
 
-    <!-- Hero Banner -->
-    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
-        <div class="relative rounded-3xl overflow-hidden glass-panel border border-purple-500/30 p-6 sm:p-10 shadow-[0_0_35px_rgba(123,44,191,0.25)]">
-            <div class="absolute inset-0 bg-gradient-to-r from-purple-950/95 via-purple-900/80 to-transparent z-10"></div>
-            <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=1400&q=80" alt="Padaria Hero" class="absolute inset-0 w-full h-full object-cover object-center opacity-30">
-            <div class="relative z-20 max-w-xl space-y-3">
-                <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-purple-500/20 text-purple-300 border border-purple-400/30">
-                    <i class="fa-solid fa-fire text-amber-400"></i> Fermentação Natural 24h
+    <!-- Hero / Promo Banner -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-4">
+        <div class="relative overflow-hidden rounded-3xl glass-panel p-6 sm:p-10 border border-purple-500/30 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="z-10 max-w-xl text-center md:text-left">
+                <span class="inline-block px-3.5 py-1.5 rounded-full text-xs font-semibold bg-purple-500/20 text-purple-300 border border-purple-400/30 mb-3">
+                    ✨ Produção Artesanal Diária
                 </span>
-                <h2 class="text-2xl sm:text-4xl font-black text-white leading-tight tracking-tight">
-                    Sabor Artisanal & <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-300 to-pink-300 neon-text">Ingredientes Selecionados</span>
+                <h2 class="text-2xl sm:text-4xl font-extrabold text-white leading-tight">
+                    Pães Quentinhos & Confeitaria Fina na Sua Porta
                 </h2>
-                <p class="text-xs sm:text-sm text-purple-200/80">
-                    Faça seu pedido diretamente pelo site. Entregamos quentinho até a sua porta via WhatsApp!
+                <p class="text-sm sm:text-base text-slate-300 mt-2">
+                    Faça seu pedido online, receba em minutos via delivery ou retire quentinho no balcão.
                 </p>
-                <div class="pt-2">
-                    <a href="#catalogo" class="inline-flex neon-btn text-white px-5 py-2.5 rounded-xl text-xs font-bold items-center gap-2">
-                        Explorar Cardápio <i class="fa-solid fa-arrow-down"></i>
-                    </a>
+                <div class="mt-4 flex flex-wrap gap-3 justify-center md:justify-start">
+                    <button onclick="scrollToProducts()" class="neon-btn text-white px-6 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2">
+                        <i class="fa-solid fa-utensils"></i> Ver Cardápio Completo
+                    </button>
+                </div>
+            </div>
+
+            <!-- Banner Visual Highlight -->
+            <div class="z-10 flex gap-4 items-center justify-center">
+                <div class="p-4 rounded-2xl glass-card text-center min-w-[110px] border-purple-500/30">
+                    <i class="fa-solid fa-truck-fast text-2xl text-purple-400 mb-1"></i>
+                    <p class="text-xs font-semibold text-slate-200">Entrega Rápida</p>
+                    <p class="text-[10px] text-purple-300">A partir de 20 min</p>
+                </div>
+                <div class="p-4 rounded-2xl glass-card text-center min-w-[110px] border-pink-500/30">
+                    <i class="fa-solid fa-fire text-2xl text-pink-400 mb-1"></i>
+                    <p class="text-xs font-semibold text-slate-200">Forno Vivo</p>
+                    <p class="text-[10px] text-pink-300">Fornadas às 06h e 16h</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Main Content -->
-    <main id="catalogo" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full space-y-6">
-        
-        <!-- Controls Bar -->
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-purple-500/20 pb-4">
-            <!-- Category Filter Tabs -->
-            <div class="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0 scrollbar-none" id="categoryTabsBar">
-                <!-- Injected via JS -->
-            </div>
-
-            <!-- Sort Option -->
-            <div class="flex items-center gap-2 self-end md:self-auto">
-                <span class="text-xs text-purple-300/70 font-semibold whitespace-nowrap"><i class="fa-solid fa-sort mr-1"></i> Ordenar:</span>
-                <select id="sortSelect" onchange="handleSortChange(this.value)" class="bg-purple-950/80 border border-purple-500/30 text-xs text-purple-200 rounded-xl px-3 py-2 focus:outline-none focus:border-purple-400">
-                    <option value="relevance">Padrão / Destaques</option>
-                    <option value="price-asc">Menor Preço</option>
-                    <option value="price-desc">Maior Preço</option>
-                    <option value="name">Nome (A-Z)</option>
-                </select>
-            </div>
+    <!-- Search & Filter Section -->
+    <section id="catalog-section" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+        <!-- Search Bar -->
+        <div class="relative max-w-xl mx-auto mb-6">
+            <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-purple-400"></i>
+            <input type="text" id="search-input" onkeyup="handleSearch()" placeholder="Buscar por pão, bolo, coxinha, cappuccino..." 
+                class="w-full pl-11 pr-4 py-3.5 rounded-2xl glass-panel text-white placeholder-purple-300/50 border border-purple-500/30 focus:border-purple-400 focus:outline-none focus:ring-2 focus:ring-purple-500/40 text-sm transition-all shadow-lg">
         </div>
 
-        <!-- Catalog Title & Count -->
-        <div class="flex items-center justify-between">
-            <h3 class="text-lg font-bold text-white flex items-center gap-2" id="catalogTitle">
-                <i class="fa-solid fa-store text-purple-400"></i> Todos os Produtos
-            </h3>
-            <span class="text-xs text-purple-300/70 font-semibold" id="catalogCount">40 itens disponíveis</span>
+        <!-- Categories horizontal bar -->
+        <div class="flex items-center gap-2 overflow-x-auto pb-3 scrollbar-none snap-x" id="category-pills">
+            <!-- Dynamic JS category filter buttons -->
+        </div>
+    </section>
+
+    <!-- Products Catalog Grid -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 mb-16 flex-grow">
+        <!-- Live Dev Mode Header Control -->
+        <div id="dev-toolbar" class="hidden mb-6 p-4 rounded-2xl glass-panel border border-purple-400/40 flex flex-wrap items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <span class="w-3 h-3 rounded-full bg-purple-400 animate-ping"></span>
+                <span class="font-bold text-sm text-purple-200">Painel do Desenvolvedor: Modo Firestore Ativo</span>
+            </div>
+            <button onclick="openAddProductModal()" class="neon-btn px-4 py-2 rounded-xl text-xs font-bold text-white flex items-center gap-2">
+                <i class="fa-solid fa-circle-plus text-base"></i> Adicionar Novo Produto no Catálogo
+            </button>
         </div>
 
-        <!-- Product Grid -->
-        <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            <!-- Injected via JS -->
+        <!-- Grid Container -->
+        <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <!-- Dynamic Product Cards will render here -->
+        </div>
+
+        <!-- Empty State -->
+        <div id="empty-state" class="hidden text-center py-16 glass-panel rounded-3xl mt-4 border border-purple-500/20">
+            <i class="fa-solid fa-store-slash text-5xl text-purple-400/40 mb-3"></i>
+            <h3 class="text-xl font-bold text-purple-200">Nenhum produto encontrado</h3>
+            <p class="text-xs text-slate-400 mt-1">Tente pesquisar outro termo ou selecionar outra categoria.</p>
         </div>
     </main>
 
-    <!-- Cart Drawer -->
-    <div id="cartDrawer" class="hidden fixed inset-0 z-50">
+    <!-- Shopping Cart Slide-over Drawer -->
+    <div id="cart-drawer" class="fixed inset-0 z-50 pointer-events-none transition-all duration-300 opacity-0">
         <!-- Backdrop -->
-        <div onclick="closeCartDrawer()" class="absolute inset-0 bg-black/75 backdrop-blur-sm cursor-pointer"></div>
-        
-        <!-- Drawer Panel -->
-        <div class="absolute top-0 right-0 h-full w-full max-w-md glass-panel border-l border-purple-500/30 flex flex-col shadow-2xl z-10">
+        <div onclick="closeCart()" class="absolute inset-0 bg-slate-950/80 backdrop-blur-sm"></div>
+
+        <!-- Panel -->
+        <div class="absolute right-0 top-0 bottom-0 w-full max-w-md glass-panel border-l border-purple-500/30 p-6 flex flex-col justify-between pointer-events-auto shadow-2xl transform translate-x-full transition-transform duration-300" id="cart-panel">
             <!-- Header -->
-            <div class="p-5 border-b border-purple-500/20 flex items-center justify-between bg-purple-950/90">
+            <div class="flex items-center justify-between border-b border-purple-500/20 pb-4">
                 <div class="flex items-center gap-3">
-                    <i class="fa-solid fa-basket-shopping text-purple-400 text-xl"></i>
-                    <h3 class="text-lg font-bold text-white">Seu Carrinho</h3>
+                    <div class="w-10 h-10 rounded-xl bg-purple-600/30 border border-purple-400/40 flex items-center justify-center text-purple-300">
+                        <i class="fa-solid fa-basket-shopping text-lg"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-white">Seu Carrinho</h3>
+                        <p class="text-xs text-purple-300/70" id="cart-items-subtitle">0 itens selecionados</p>
+                    </div>
                 </div>
-                <button onclick="closeCartDrawer()" class="p-2 text-purple-300 hover:text-white rounded-lg hover:bg-purple-900/50 transition-colors">
+                <button onclick="closeCart()" class="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-purple-900/40 transition-colors">
                     <i class="fa-solid fa-xmark text-xl"></i>
                 </button>
             </div>
 
-            <!-- Scrollable List -->
-            <div id="cartItemsList" class="flex-1 overflow-y-auto p-5 space-y-3">
-                <!-- Dynamic Items -->
+            <!-- Cart Items List -->
+            <div id="cart-items-container" class="flex-grow overflow-y-auto my-4 pr-1 space-y-3">
+                <!-- Dynamic Cart Items Rendered Here -->
             </div>
 
-            <!-- Footer Summary -->
-            <div class="p-5 border-t border-purple-500/20 bg-purple-950/95 space-y-4">
-                <div class="space-y-2 text-sm">
-                    <div class="flex justify-between text-purple-200/70">
-                        <span>Subtotal Itens</span>
-                        <span id="drawerSubtotal">R$ 0,00</span>
-                    </div>
-                    <div class="flex justify-between text-purple-200/70">
-                        <span>Taxa de Entrega</span>
-                        <span id="drawerDelivery">R$ 5,00</span>
-                    </div>
-                    <div class="flex justify-between text-lg font-bold text-white pt-2 border-t border-purple-500/20">
-                        <span>Total Final</span>
-                        <span id="drawerTotal" class="text-purple-300 neon-text">R$ 5,00</span>
-                    </div>
+            <!-- Cart Footer Summary -->
+            <div class="border-t border-purple-500/20 pt-4 space-y-3">
+                <div class="flex justify-between items-center text-sm text-slate-300">
+                    <span>Subtotal dos itens:</span>
+                    <span id="cart-subtotal" class="font-semibold text-white">R$ 0,00</span>
                 </div>
-
-                <button onclick="openCheckoutModal()" class="w-full neon-btn py-3.5 rounded-xl font-bold text-white text-center flex items-center justify-center gap-2 shadow-lg active:scale-95 transition-all">
-                    Avançar para Entrega <i class="fa-solid fa-arrow-right"></i>
+                <div class="flex justify-between items-center text-base font-bold text-white">
+                    <span>Total Estimado:</span>
+                    <span id="cart-total" class="text-xl bg-gradient-to-r from-purple-300 to-pink-300 bg-clip-text text-transparent">R$ 0,00</span>
+                </div>
+                <button onclick="openCheckoutModal()" id="btn-cart-checkout" disabled class="w-full py-3.5 rounded-xl neon-btn font-bold text-white text-sm flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
+                    <i class="fa-solid fa-truck-ramp-box"></i> Prosseguir para Finalizar
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- Checkout Modal -->
-    <div id="checkoutModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-black/80 backdrop-blur-md p-4 sm:p-6 flex justify-center items-start pt-12 pb-12">
-        <div class="relative w-full max-w-2xl bg-[#1a0b2e] border border-purple-500/40 rounded-3xl p-6 sm:p-8 shadow-[0_0_50px_rgba(123,44,191,0.4)] text-white my-auto">
-            <!-- Header -->
-            <div class="flex items-center justify-between pb-4 border-b border-purple-500/20 mb-6">
-                <div>
-                    <h3 class="text-xl sm:text-2xl font-extrabold text-white flex items-center gap-2 neon-text">
-                        <i class="fa-solid fa-truck-fast text-purple-400"></i> Dados para Entrega & Pagamento
-                    </h3>
-                    <p class="text-xs text-purple-300/70">Preencha abaixo para gerar e enviar seu pedido diretamente via WhatsApp</p>
+    <!-- Modal de Checkout & Pedido WhatsApp -->
+    <div id="checkout-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md overflow-y-auto">
+        <div class="glass-panel w-full max-w-lg rounded-3xl border border-purple-500/40 p-6 sm:p-8 relative shadow-2xl my-8">
+            <button onclick="closeCheckoutModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white p-2">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-purple-600 to-pink-500 flex items-center justify-center text-white shadow-lg shadow-purple-500/30">
+                    <i class="fa-solid fa-cash-register text-xl"></i>
                 </div>
-                <button onclick="closeCheckoutModal()" class="p-2 text-purple-300 hover:text-white rounded-lg hover:bg-purple-900/50">
-                    <i class="fa-solid fa-xmark text-2xl"></i>
-                </button>
+                <div>
+                    <h3 class="text-xl font-bold text-white">Finalizar Pedido</h3>
+                    <p class="text-xs text-purple-300/80">Preencha seus dados para entrega no WhatsApp</p>
+                </div>
             </div>
 
-            <!-- Form -->
-            <form onsubmit="submitWhatsAppOrder(event)" class="space-y-4">
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-xs font-semibold text-purple-200 uppercase tracking-wider mb-1.5">Nome Completo *</label>
-                        <input type="text" id="custName" required placeholder="Ex: Maria Santos" 
-                            class="w-full bg-purple-950/80 border border-purple-500/30 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-purple-400">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-purple-200 uppercase tracking-wider mb-1.5">Telefone / WhatsApp *</label>
-                        <input type="tel" id="custPhone" required placeholder="(64) 99999-9999" 
-                            class="w-full bg-purple-950/80 border border-purple-500/30 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-purple-400">
-                    </div>
-                </div>
-
+            <form id="checkout-form" onsubmit="submitWhatsAppOrder(event)" class="space-y-4">
                 <div>
-                    <label class="block text-xs font-semibold text-purple-200 uppercase tracking-wider mb-1.5">Endereço de Entrega (Rua, Número) *</label>
-                    <input type="text" id="custAddress" required placeholder="Ex: Av. Principal, nº 450" 
-                        class="w-full bg-purple-950/80 border border-purple-500/30 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-purple-400">
+                    <label class="block text-xs font-semibold text-purple-200 mb-1">Seu Nome Completo *</label>
+                    <input type="text" id="cust-name" required placeholder="Ex: Maria Silva" 
+                        class="w-full px-4 py-2.5 rounded-xl glass-card text-white text-sm border border-purple-500/30 focus:border-purple-400 focus:outline-none">
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                        <label class="block text-xs font-semibold text-purple-200 uppercase tracking-wider mb-1.5">Bairro *</label>
-                        <input type="text" id="custNeighborhood" required placeholder="Ex: Centro" 
-                            class="w-full bg-purple-950/80 border border-purple-500/30 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-purple-400">
+                        <label class="block text-xs font-semibold text-purple-200 mb-1">WhatsApp / Telefone *</label>
+                        <input type="tel" id="cust-phone" required placeholder="(64) 99660-9321" 
+                            class="w-full px-4 py-2.5 rounded-xl glass-card text-white text-sm border border-purple-500/30 focus:border-purple-400 focus:outline-none">
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-purple-200 uppercase tracking-wider mb-1.5">Complemento / Ponto de Ref.</label>
-                        <input type="text" id="custComplement" placeholder="Ex: Apto 302 / Próximo ao banco" 
-                            class="w-full bg-purple-950/80 border border-purple-500/30 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-purple-400">
+                        <label class="block text-xs font-semibold text-purple-200 mb-1">Tipo de Pedido</label>
+                        <select id="cust-order-type" onchange="toggleAddressFields()" class="w-full px-4 py-2.5 rounded-xl glass-card text-white text-sm border border-purple-500/30 focus:border-purple-400 focus:outline-none bg-slate-900">
+                            <option value="Delivery">Entrega em Domicílio</option>
+                            <option value="Retirada">Retirar no Balcão (Grátis)</option>
+                        </select>
                     </div>
                 </div>
 
+                <!-- Campos de Endereço -->
+                <div id="address-container" class="space-y-3 pt-1">
+                    <div>
+                        <label class="block text-xs font-semibold text-purple-200 mb-1">Rua e Número *</label>
+                        <input type="text" id="cust-street" placeholder="Ex: Av. Central, nº 150" 
+                            class="w-full px-4 py-2.5 rounded-xl glass-card text-white text-sm border border-purple-500/30 focus:border-purple-400 focus:outline-none">
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-semibold text-purple-200 mb-1">Bairro *</label>
+                            <input type="text" id="cust-neighborhood" placeholder="Ex: Centro" 
+                                class="w-full px-4 py-2.5 rounded-xl glass-card text-white text-sm border border-purple-500/30 focus:border-purple-400 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-purple-200 mb-1">Complemento / Ponto Ref.</label>
+                            <input type="text" id="cust-complement" placeholder="Ex: Ap 202, próx. à praça" 
+                                class="w-full px-4 py-2.5 rounded-xl glass-card text-white text-sm border border-purple-500/30 focus:border-purple-400 focus:outline-none">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Forma de Pagamento -->
                 <div>
-                    <label class="block text-xs font-semibold text-purple-200 uppercase tracking-wider mb-1.5">Forma de Pagamento *</label>
-                    <select id="custPayment" onchange="toggleChangeField(this.value)" required class="w-full bg-purple-950/80 border border-purple-500/30 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-purple-400">
-                        <option value="Pix">Pix (Chave enviada na confirmação)</option>
-                        <option value="Cartão de Crédito">Cartão de Crédito (Maquininha na entrega)</option>
-                        <option value="Cartão de Débito">Cartão de Débito (Maquininha na entrega)</option>
-                        <option value="Dinheiro">Dinheiro em Espécie</option>
+                    <label class="block text-xs font-semibold text-purple-200 mb-1">Forma de Pagamento *</label>
+                    <select id="cust-payment" onchange="toggleTrocoField()" class="w-full px-4 py-2.5 rounded-xl glass-card text-white text-sm border border-purple-500/30 focus:border-purple-400 focus:outline-none bg-slate-900">
+                        <option value="PIX">PIX (Chave enviada pelo atendente)</option>
+                        <option value="Cartão de Crédito/Débito">Cartão de Crédito / Débito (Maquininha)</option>
+                        <option value="Dinheiro">Dinheiro na Entrega</option>
                     </select>
                 </div>
 
-                <!-- Cash Change Field -->
-                <div id="cashChangeBlock" class="hidden bg-purple-900/30 p-3.5 rounded-xl border border-purple-500/20">
-                    <label class="block text-xs font-semibold text-purple-200 uppercase tracking-wider mb-1.5">Troco para quanto?</label>
-                    <input type="text" id="custChange" placeholder="Ex: Troco para R$ 50,00 ou Não precisa de troco" 
-                        class="w-full bg-purple-950/80 border border-purple-500/30 rounded-xl px-4 py-2 text-sm text-white focus:outline-none focus:border-purple-400">
+                <div id="troco-container" class="hidden">
+                    <label class="block text-xs font-semibold text-purple-200 mb-1">Precisa de troco para quanto?</label>
+                    <input type="text" id="cust-troco" placeholder="Ex: Troco para R$ 50,00" 
+                        class="w-full px-4 py-2.5 rounded-xl glass-card text-white text-sm border border-purple-500/30 focus:border-purple-400 focus:outline-none">
                 </div>
 
-                <!-- Total Summary -->
-                <div class="bg-purple-950/80 p-4 rounded-xl border border-purple-500/20 flex justify-between items-center mt-4">
-                    <span class="text-xs text-purple-300">Total com Entrega:</span>
-                    <span id="checkoutModalTotal" class="text-xl font-bold text-white neon-text">R$ 0,00</span>
-                </div>
+                <div class="border-t border-purple-500/20 pt-4 mt-2">
+                    <div class="flex justify-between items-center text-sm font-bold text-white mb-4">
+                        <span>Total a Pagar:</span>
+                        <span id="checkout-total-val" class="text-xl font-black text-purple-300">R$ 0,00</span>
+                    </div>
 
-                <!-- Actions -->
-                <div class="flex items-center gap-3 pt-4 border-t border-purple-500/20">
-                    <button type="button" onclick="closeCheckoutModal()" class="w-1/3 py-3 rounded-xl font-bold bg-purple-950 border border-purple-500/30 text-purple-300 hover:bg-purple-900 transition-all text-sm">
-                        Voltar
-                    </button>
-                    <button type="submit" class="w-2/3 neon-btn py-3 rounded-xl font-bold text-white flex items-center justify-center gap-2 text-sm">
+                    <button type="submit" class="w-full py-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-base shadow-lg shadow-emerald-600/30 transition-all flex items-center justify-center gap-2">
                         <i class="fa-brands fa-whatsapp text-xl"></i> Enviar Pedido no WhatsApp
                     </button>
                 </div>
@@ -398,855 +381,728 @@
         </div>
     </div>
 
-    <!-- WhatsApp Direct Confirmation Modal (Fixes popup blocker issues) -->
-    <div id="whatsappConfirmModal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md p-4 flex items-center justify-center">
-        <div class="w-full max-w-md glass-panel border border-emerald-500/40 rounded-3xl p-6 text-center space-y-5 shadow-[0_0_50px_rgba(16,185,129,0.3)]">
-            <div class="w-16 h-16 bg-emerald-500/20 rounded-full flex items-center justify-center mx-auto border border-emerald-400/40 text-emerald-300 shadow-lg">
-                <i class="fa-brands fa-whatsapp text-3xl"></i>
-            </div>
-            
-            <div>
-                <h3 class="text-2xl font-black text-white">Pedido Gerado!</h3>
-                <p class="text-xs text-purple-200/80 mt-1">
-                    Seu pedido foi formatado e está pronto para envio para o WhatsApp da padaria (<strong class="text-emerald-300">64 99660-9321</strong>).
-                </p>
-            </div>
-
-            <!-- Direct Click Link -->
-            <div class="space-y-3">
-                <a id="directWhatsappLink" href="#" target="_blank" rel="noopener noreferrer" 
-                    class="w-full py-4 px-6 bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-extrabold rounded-2xl flex items-center justify-center gap-3 shadow-[0_0_20px_rgba(16,185,129,0.5)] transition-all text-sm active:scale-95">
-                    <i class="fa-brands fa-whatsapp text-2xl"></i>
-                    <span>ABRIR WHATSAPP AGORA</span>
-                </a>
-
-                <button onclick="copyOrderTextToClipboard()" class="w-full py-2.5 px-4 bg-purple-950 border border-purple-500/30 hover:bg-purple-900/60 text-purple-200 rounded-xl text-xs font-semibold flex items-center justify-center gap-2 transition-all">
-                    <i class="fa-solid fa-copy"></i> Copiar Texto do Pedido
-                </button>
-            </div>
-
-            <p class="text-[11px] text-purple-300/50">
-                Se a janela do aplicativo não abriu automaticamente, clique no botão acima.
-            </p>
-
-            <button onclick="closeWhatsAppConfirmModal()" class="text-xs text-purple-400 underline hover:text-purple-200">
-                Fechar Janela
+    <!-- Modal de Autenticação Dev (PIN 1943) -->
+    <div id="dev-auth-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
+        <div class="glass-panel w-full max-w-sm rounded-3xl border border-purple-500/40 p-6 relative shadow-2xl text-center">
+            <button onclick="closeDevAuthModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white">
+                <i class="fa-solid fa-xmark text-lg"></i>
             </button>
-        </div>
-    </div>
 
-    <!-- Dev PIN Protection Modal -->
-    <div id="devPinModal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
-        <div class="w-full max-w-sm glass-panel border border-purple-500/40 rounded-2xl p-6 text-center space-y-4 shadow-2xl">
-            <div class="w-12 h-12 bg-purple-800/50 rounded-full flex items-center justify-center mx-auto border border-purple-400/40 text-purple-300">
-                <i class="fa-solid fa-shield-halved text-xl"></i>
-            </div>
-            <h3 class="text-xl font-bold text-white">Acesso do Desenvolvedor</h3>
-            <p class="text-xs text-purple-300/70">Digite a senha de acesso (PIN 1943) para editar o catálogo de produtos.</p>
-            
-            <input type="password" id="devPinInput" maxlength="4" placeholder="****" 
-                class="w-full bg-purple-950 border border-purple-500/40 rounded-xl py-3 text-center text-2xl font-mono tracking-widest text-white focus:outline-none focus:border-purple-400">
-            
-            <div class="flex gap-2">
-                <button onclick="closeDevPinModal()" class="w-1/2 py-2.5 rounded-xl bg-purple-950 border border-purple-500/30 text-purple-300 text-sm font-semibold">Cancelar</button>
-                <button onclick="verifyDevPin()" class="w-1/2 neon-btn py-2.5 rounded-xl text-white text-sm font-bold">Entrar</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Dev Dashboard Table Modal -->
-    <div id="devDashboardModal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md overflow-y-auto p-4 sm:p-6 flex items-start justify-center pt-10 pb-10">
-        <div class="w-full max-w-5xl glass-panel border border-purple-500/40 rounded-3xl p-6 sm:p-8 space-y-6 shadow-2xl my-auto">
-            <div class="flex items-center justify-between pb-4 border-b border-purple-500/20">
-                <div class="flex items-center gap-3">
-                    <span class="px-3 py-1 bg-purple-500/20 text-purple-300 border border-purple-400/30 rounded-lg text-xs font-bold uppercase">Painel Dev</span>
-                    <h3 class="text-xl font-bold text-white">Gerenciar Produtos do Catálogo (40 Itens)</h3>
-                </div>
-                <button onclick="closeDevDashboard()" class="p-2 text-purple-300 hover:text-white">
-                    <i class="fa-solid fa-xmark text-xl"></i>
-                </button>
+            <div class="w-14 h-14 rounded-2xl bg-purple-600/30 border border-purple-400/40 flex items-center justify-center text-purple-300 mx-auto mb-4 text-2xl">
+                <i class="fa-solid fa-lock"></i>
             </div>
 
-            <div class="flex flex-wrap items-center justify-between gap-3">
-                <button onclick="openAddProductModal()" class="neon-btn px-4 py-2 rounded-xl text-xs font-bold text-white flex items-center gap-2">
-                    <i class="fa-solid fa-plus"></i> Adicionar Novo Produto
-                </button>
-                <button onclick="resetCatalogToDefault()" class="bg-amber-950/80 border border-amber-500/30 text-amber-300 px-4 py-2 rounded-xl text-xs font-bold hover:bg-amber-900 transition-colors">
-                    <i class="fa-solid fa-rotate-left mr-1"></i> Restaurar 40 Produtos Originais
-                </button>
-            </div>
+            <h3 class="text-xl font-bold text-white">Modo Desenvolvedor</h3>
+            <p class="text-xs text-purple-300/80 mt-1 mb-6">Digite o PIN de acesso para gerenciar o catálogo em tempo real</p>
 
-            <div class="overflow-x-auto rounded-xl border border-purple-500/20 max-h-96">
-                <table class="w-full text-left text-xs text-purple-200">
-                    <thead class="bg-purple-950/90 text-purple-300 uppercase tracking-wider sticky top-0 border-b border-purple-500/20">
-                        <tr>
-                            <th class="p-3">ID</th>
-                            <th class="p-3">Foto</th>
-                            <th class="p-3">Nome</th>
-                            <th class="p-3">Categoria</th>
-                            <th class="p-3">Preço</th>
-                            <th class="p-3 text-right">Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody id="devTableBody" class="divide-y divide-purple-500/10 bg-purple-900/20">
-                        <!-- Filled by JS -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-
-    <!-- Edit/Add Product Modal -->
-    <div id="productEditModal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
-        <div class="w-full max-w-md glass-panel border border-purple-500/40 rounded-2xl p-6 space-y-4 shadow-2xl">
-            <h3 id="editModalTitle" class="text-lg font-bold text-white">Editar Produto</h3>
-            <input type="hidden" id="editProductId">
-            <div>
-                <label class="block text-xs font-semibold text-purple-200 mb-1">Nome do Produto</label>
-                <input type="text" id="editProductName" class="w-full bg-purple-950 border border-purple-500/30 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-purple-400">
-            </div>
-            <div class="grid grid-cols-2 gap-3">
+            <form onsubmit="verifyDevPin(event)" class="space-y-4">
                 <div>
-                    <label class="block text-xs font-semibold text-purple-200 mb-1">Preço (R$)</label>
-                    <input type="number" step="0.10" id="editProductPrice" class="w-full bg-purple-950 border border-purple-500/30 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-purple-400">
+                    <input type="password" id="dev-pin-input" maxlength="6" placeholder="Digite o PIN (1943)" required
+                        class="w-full text-center tracking-widest text-xl py-3 rounded-xl glass-card text-white border border-purple-500/40 focus:border-purple-400 focus:outline-none">
                 </div>
+                <button type="submit" class="w-full py-3 rounded-xl neon-btn font-bold text-white text-sm">
+                    Acessar Painel Dev
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal de Adicionar/Editar Produto (Dev CRUD) -->
+    <div id="product-form-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md overflow-y-auto">
+        <div class="glass-panel w-full max-w-lg rounded-3xl border border-purple-500/40 p-6 sm:p-8 relative shadow-2xl my-8">
+            <button onclick="closeProductFormModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white p-2">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+
+            <h3 id="product-form-title" class="text-xl font-bold text-white mb-4">Adicionar Produto</h3>
+
+            <form id="product-crud-form" onsubmit="saveProductFirestore(event)" class="space-y-4">
+                <input type="hidden" id="prod-form-id">
+
                 <div>
-                    <label class="block text-xs font-semibold text-purple-200 mb-1">Categoria</label>
-                    <select id="editProductCategory" class="w-full bg-purple-950 border border-purple-500/30 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-purple-400">
-                        <option value="Pães Artesanais">Pães Artesanais</option>
-                        <option value="Confeitaria & Doces">Confeitaria & Doces</option>
-                        <option value="Salgados & Lanches">Salgados & Lanches</option>
-                        <option value="Bebidas & Cafés">Bebidas & Cafés</option>
-                    </select>
+                    <label class="block text-xs font-semibold text-purple-200 mb-1">Nome do Produto *</label>
+                    <input type="text" id="prod-form-name" required placeholder="Ex: Pão Francês Quentinho" 
+                        class="w-full px-4 py-2.5 rounded-xl glass-card text-white text-sm border border-purple-500/30 focus:border-purple-400 focus:outline-none">
                 </div>
-            </div>
-            <div>
-                <label class="block text-xs font-semibold text-purple-200 mb-1">URL da Imagem</label>
-                <input type="text" id="editProductImage" class="w-full bg-purple-950 border border-purple-500/30 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-purple-400">
-            </div>
-            <div>
-                <label class="block text-xs font-semibold text-purple-200 mb-1">Descrição</label>
-                <textarea id="editProductDesc" rows="3" class="w-full bg-purple-950 border border-purple-500/30 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-purple-400"></textarea>
-            </div>
-            <div class="flex gap-2 pt-2">
-                <button onclick="closeProductEditModal()" class="w-1/2 py-2.5 rounded-xl bg-purple-950 border border-purple-500/30 text-purple-300 text-xs font-bold">Cancelar</button>
-                <button onclick="saveProductModal()" class="w-1/2 neon-btn py-2.5 rounded-xl text-white text-xs font-bold">Salvar Alterações</button>
-            </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-purple-200 mb-1">Categoria *</label>
+                        <select id="prod-form-category" required class="w-full px-4 py-2.5 rounded-xl glass-card text-white text-sm border border-purple-500/30 focus:border-purple-400 focus:outline-none bg-slate-900">
+                            <option value="paes">Pães</option>
+                            <option value="bolos">Bolos</option>
+                            <option value="doces">Doces & Tortas</option>
+                            <option value="salgados">Salgados</option>
+                            <option value="cafes">Cafés & Bebidas</option>
+                            <option value="combos">Matinais & Combos</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-purple-200 mb-1">Preço (R$) *</label>
+                        <input type="number" step="0.01" id="prod-form-price" required placeholder="12.50" 
+                            class="w-full px-4 py-2.5 rounded-xl glass-card text-white text-sm border border-purple-500/30 focus:border-purple-400 focus:outline-none">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-purple-200 mb-1">Descrição Curta *</label>
+                    <textarea id="prod-form-desc" rows="2" required placeholder="Ex: Pão fresquinho saindo do forno com casca crocante." 
+                        class="w-full px-4 py-2.5 rounded-xl glass-card text-white text-sm border border-purple-500/30 focus:border-purple-400 focus:outline-none"></textarea>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-purple-200 mb-1">URL da Imagem *</label>
+                    <input type="url" id="prod-form-image" required placeholder="https://images.unsplash.com/photo-..." 
+                        class="w-full px-4 py-2.5 rounded-xl glass-card text-white text-sm border border-purple-500/30 focus:border-purple-400 focus:outline-none">
+                </div>
+
+                <div class="flex items-center gap-2 pt-2">
+                    <input type="checkbox" id="prod-form-available" class="w-4 h-4 rounded accent-purple-600 cursor-pointer" checked>
+                    <label for="prod-form-available" class="text-xs text-purple-200 font-medium cursor-pointer">Disponível em Estoque</label>
+                </div>
+
+                <div class="border-t border-purple-500/20 pt-4 flex gap-3">
+                    <button type="button" onclick="closeProductFormModal()" class="w-1/2 py-3 rounded-xl glass-card text-slate-300 font-bold text-sm">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="w-1/2 py-3 rounded-xl neon-btn text-white font-bold text-sm">
+                        Salvar no Firestore
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 
-    <!-- Product Detail Modal -->
-    <div id="productDetailModal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
-        <div id="productDetailContent" class="w-full max-w-lg glass-panel border border-purple-500/40 rounded-3xl p-6 relative shadow-2xl space-y-4">
-            <!-- Dynamic Content -->
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <!-- Footer -->
+    <footer class="glass-panel border-t border-purple-500/20 py-8 mt-12 text-center text-xs text-purple-300/70">
+        <div class="max-w-7xl mx-auto px-4">
+            <p class="font-bold text-purple-200 text-sm">Padaria Artisan & Express © 2026</p>
+            <p class="mt-1">Pedidos e Entregas via WhatsApp: <span class="text-emerald-400 font-semibold">(64) 99660-9321</span></p>
+            <p class="mt-2 text-[10px] text-purple-400/50">Sincronizado via Firebase Firestore em Tempo Real</p>
         </div>
-    </div>
+    </footer>
 
-    <!-- Toast Notifications Container -->
-    <div id="toastContainer" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+    <!-- Firebase App & Firestore ES Module -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, doc, setDoc, deleteDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-    <script>
-        // 40 Artisanal Bakery Products Catalog
-        const DEFAULT_CATALOG = [
-            // Pães Artesanais (10)
-            { id: 1, name: "Pão Francês Tradicional", price: 1.20, category: "Pães Artesanais", description: "Crocante por fora, miolo macio e quentinho assado de hora em hora.", image: "https://images.unsplash.com/photo-1586444248902-2f64eddc13df?auto=format&fit=crop&w=600&q=80" },
-            { id: 2, name: "Sourdough Azeitona", price: 28.00, category: "Pães Artesanais", description: "Pão de fermentação natural de 36h com azeitonas pretas e alecrim.", image: "https://images.unsplash.com/photo-1589367920969-ab8e050bbb04?auto=format&fit=crop&w=600&q=80" },
-            { id: 3, name: "Baguete Crocante", price: 12.00, category: "Pães Artesanais", description: "Baguete de receita francesa com casca dourada estaladiça.", image: "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=600&q=80" },
-            { id: 4, name: "Ciabatta Rústica", price: 9.50, category: "Pães Artesanais", description: "Massa aerada e leve com azeite extra virgem de oliva.", image: "https://images.unsplash.com/photo-1549931319-a545dcf3bc73?auto=format&fit=crop&w=600&q=80" },
-            { id: 5, name: "Pão de Queijo Mineiro", price: 3.50, category: "Pães Artesanais", description: "Feito com polvilho artesanal e queijo meia cura especial.", image: "https://images.unsplash.com/photo-1598103442097-8b74394b95c6?auto=format&fit=crop&w=600&q=80" },
-            { id: 6, name: "Croissant Manteiga", price: 12.50, category: "Pães Artesanais", description: "Massa folhada artesanal laminada com puríssima manteiga.", image: "https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&w=600&q=80" },
-            { id: 7, name: "Pão de Brioche Fofinho", price: 22.00, category: "Pães Artesanais", description: "Brioche adocicado, ultra macio e dourado com gema de ovo.", image: "https://images.unsplash.com/photo-1608198093002-ad4e005484ec?auto=format&fit=crop&w=600&q=80" },
-            { id: 8, name: "Pão de Forma Integral", price: 18.50, category: "Pães Artesanais", description: "100% integral rico em grãos, linhaça, girassol e gergelim.", image: "https://images.unsplash.com/photo-1534620808146-d33bb39128b2?auto=format&fit=crop&w=600&q=80" },
-            { id: 9, name: "Pão Australiano", price: 14.00, category: "Pães Artesanais", description: "Pão escuro macio enriquecido com cacau e mel silvestre.", image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=600&q=80" },
-            { id: 10, name: "Focaccia Alecrim & Tomate", price: 24.00, category: "Pães Artesanais", description: "Focaccia italiana com azeite extravirgem, tomates cereja e flor de sal.", image: "https://images.unsplash.com/photo-1579697096981-435426e60201?auto=format&fit=crop&w=600&q=80" },
+        // Global Variables Environment
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'padaria-artisan-prod-v1';
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
+            apiKey: "AIzaSyDummyKeyForPreviewTestingOnly123456",
+            authDomain: "padaria-app.firebaseapp.com",
+            projectId: "padaria-app",
+            storageBucket: "padaria-app.appspot.com",
+            messagingSenderId: "123456789012",
+            appId: "1:123456789012:web:abcdef123456"
+        };
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
 
-            // Confeitaria & Doces (10)
-            { id: 11, name: "Bolo de Cenoura com Brigaderia", price: 15.00, category: "Confeitaria & Doces", description: "Fatia fofinha coberta com calda de brigadeiro belga cremosa.", image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=600&q=80" },
-            { id: 12, name: "Torta Holandesa", price: 18.00, category: "Confeitaria & Doces", description: "Creme aveludado de baunilha, biscoitos calipso e ganache puro.", image: "https://images.unsplash.com/photo-1535141192574-5d4897c13136?auto=format&fit=crop&w=600&q=80" },
-            { id: 13, name: "Mousse de Maracujá Cremoso", price: 10.00, category: "Confeitaria & Doces", description: "Mousse leve aerado com sementinhas e calda de fruta natural.", image: "https://images.unsplash.com/photo-1528975604071-b4dc52a2d18c?auto=format&fit=crop&w=600&q=80" },
-            { id: 14, name: "Cheesecake de Frutas Vermelhas", price: 21.00, category: "Confeitaria & Doces", description: "Base de biscoito, cream cheese suave e geleia de amoras e morango.", image: "https://images.unsplash.com/photo-1533134242443-d4fd215305ad?auto=format&fit=crop&w=600&q=80" },
-            { id: 15, name: "Sonho com Creme de Baunilha", price: 7.50, category: "Confeitaria & Doces", description: "Massa fofinha polvilhada com açúcar de confeiteiro e recheio de baunilha.", image: "https://images.unsplash.com/photo-1527515637462-cff94eecc1ac?auto=format&fit=crop&w=600&q=80" },
-            { id: 16, name: "Donut Glacê Rosa", price: 8.50, category: "Confeitaria & Doces", description: "Donut macio estilo americano com glacê rosa de morango e granulado.", image: "https://images.unsplash.com/photo-1527515545081-5db817172677?auto=format&fit=crop&w=600&q=80" },
-            { id: 17, name: "Mil Folhas de Baunilha", price: 16.50, category: "Confeitaria & Doces", description: "Folhado crocante intercalado com creme pâtissière de baunilha.", image: "https://images.unsplash.com/photo-1509365465985-25d11c17e812?auto=format&fit=crop&w=600&q=80" },
-            { id: 18, name: "Pudim de Leite Condensado", price: 12.00, category: "Confeitaria & Doces", description: "Pudim ultra cremoso sem furinhos com calda de caramelo dourado.", image: "https://images.unsplash.com/photo-1528975604071-b4dc52a2d18c?auto=format&fit=crop&w=600&q=80" },
-            { id: 19, name: "Macarons Sortidos (6un)", price: 32.00, category: "Confeitaria & Doces", description: "Caixa com 6 macarons franceses saborosos e coloridos.", image: "https://images.unsplash.com/photo-1569864358642-9d1684040f43?auto=format&fit=crop&w=600&q=80" },
-            { id: 20, name: "Eclair de Chocolate Nobre", price: 14.00, category: "Confeitaria & Doces", description: "Bomba recheada com creme de chocolate nobre e cobertura brilhante.", image: "https://images.unsplash.com/photo-1612203985729-70726954388c?auto=format&fit=crop&w=600&q=80" },
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
 
-            // Salgados & Lanches (10)
-            { id: 21, name: "Panqueca de Frango Especial", price: 12.00, category: "Salgados & Lanches", description: "Panqueca recheada com frango desfiado, molho de tomate e queijo.", image: "https://images.unsplash.com/photo-1561651823-34feb02250e4?auto=format&fit=crop&w=600&q=80" },
-            { id: 22, name: "Empada de Palmito", price: 8.50, category: "Salgados & Lanches", description: "Massa podre amanteigada que derrete na boca com palmito cremoso.", image: "https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?auto=format&fit=crop&w=600&q=80" },
-            { id: 23, name: "Coxinha de Frango com Catupiry", price: 9.50, category: "Salgados & Lanches", description: "Casquinha dourada crocante com frango temperado e requeijão.", image: "https://images.unsplash.com/photo-1561651823-34feb02250e4?auto=format&fit=crop&w=600&q=80" },
-            { id: 24, name: "Folhado de Presunto e Queijo", price: 9.00, category: "Salgados & Lanches", description: "Massa folhada leve recheada com presunto royale e mussarela.", image: "https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=600&q=80" },
-            { id: 25, name: "Quiche de Alho Poró", price: 14.50, category: "Salgados & Lanches", description: "Massa crocante com recheio de alho poró salteado e queijos.", image: "https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=600&q=80" },
-            { id: 26, name: "Enroladinho de Salsicha", price: 7.00, category: "Salgados & Lanches", description: "Massa assada macia envolvendo salsicha especial com orégano.", image: "https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?auto=format&fit=crop&w=600&q=80" },
-            { id: 27, name: "Esfiha Aberta de Carne", price: 6.50, category: "Salgados & Lanches", description: "Massa fina com tempero oriental de carne, tomate, cebola e limão.", image: "https://images.unsplash.com/photo-1565299585323-38d6b0865b47?auto=format&fit=crop&w=600&q=80" },
-            { id: 28, name: "Pastel de Forno de Frango", price: 7.50, category: "Salgados & Lanches", description: "Pastel assado leve recheado com frango cremoso e milho.", image: "https://images.unsplash.com/photo-1619860860774-1e2e17343432?auto=format&fit=crop&w=600&q=80" },
-            { id: 29, name: "Pão de Batata Recheado", price: 8.50, category: "Salgados & Lanches", description: "Massa ultra fofa de batata com recheio cremoso de requeijão.", image: "https://images.unsplash.com/photo-1579697096981-435426e60201?auto=format&fit=crop&w=600&q=80" },
-            { id: 30, name: "Torta Salgada de Frango", price: 16.00, category: "Salgados & Lanches", description: "Fatia generosa de torta de liquidificador de frango com legumes.", image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=600&q=80" },
+        // App State
+        window.db = db;
+        window.appId = appId;
+        window.doc = doc;
+        window.setDoc = setDoc;
+        window.deleteDoc = deleteDoc;
 
-            // Bebidas & Cafés (10)
-            { id: 31, name: "Suco de Maracujá Natural", price: 10.00, category: "Bebidas & Cafés", description: "Suco natural concentrado da fruta, bem gelado e refrescante.", image: "https://images.unsplash.com/photo-1613478223719-2ab802602423?auto=format&fit=crop&w=600&q=80" },
-            { id: 32, name: "Espresso Duplo", price: 7.50, category: "Bebidas & Cafés", description: "Extraído de grãos 100% Arábica selecionados de torra média.", image: "https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?auto=format&fit=crop&w=600&q=80" },
-            { id: 33, name: "Cappuccino Cremoso", price: 11.50, category: "Bebidas & Cafés", description: "Espresso com leite vaporizado e toque de cacau e canela.", image: "https://images.unsplash.com/photo-1572442388796-11668a67e53d?auto=format&fit=crop&w=600&q=80" },
-            { id: 34, name: "Latte Macchiato", price: 13.00, category: "Bebidas & Cafés", description: "Camadas marcadas de leite cremoso, espuma e café espresso.", image: "https://images.unsplash.com/photo-1534778101976-62847782c213?auto=format&fit=crop&w=600&q=80" },
-            { id: 35, name: "Café Gelado Mocha", price: 15.50, category: "Bebidas & Cafés", description: "Espresso batido com leite gelado, calda de chocolate e chantilly.", image: "https://images.unsplash.com/photo-1572490122747-3968b75cc699?auto=format&fit=crop&w=600&q=80" },
-            { id: 36, name: "Chá Gelado de Limão", price: 8.50, category: "Bebidas & Cafés", description: "Chá preto infusionado com suco de limão siciliano e gelo.", image: "https://images.unsplash.com/photo-1556679343-c7306c1976bc?auto=format&fit=crop&w=600&q=80" },
-            { id: 37, name: "Suco de Laranja Espremido", price: 10.00, category: "Bebidas & Cafés", description: "100% fruta espremida na hora, sem açúcar e sem água adicionada.", image: "https://images.unsplash.com/photo-1613478223719-2ab802602423?auto=format&fit=crop&w=600&q=80" },
-            { id: 38, name: "Achocolatado Cremoso Quente", price: 14.00, category: "Bebidas & Cafés", description: "Chocolate estilo europeu denso e aveludado com chantilly.", image: "https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?auto=format&fit=crop&w=600&q=80" },
-            { id: 39, name: "Soda Italiana Maçã Verde", price: 11.00, category: "Bebidas & Cafés", description: "Água com gás aromatizada com xarope francês de maçã verde.", image: "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=600&q=80" },
-            { id: 40, name: "Água Mineral com Gás", price: 4.50, category: "Bebidas & Cafés", description: "Garrafa 500ml de água mineral levemente gaseificada.", image: "https://images.unsplash.com/photo-1560023907-5f339617ea30?auto=format&fit=crop&w=600&q=80" }
-        ];
-
-        // Global State Variables
-        let products = [];
-        let cart = [];
-        let currentCategory = 'Todos';
-        let searchQuery = '';
-        let sortOrder = 'relevance';
-        let devUnlocked = false;
-        let devOverlayActive = false;
-        let lastFormattedOrderMsg = "";
-
-        const DEV_PIN = "1943";
-        const WHATSAPP_PHONE = "5564996609321";
-
-        window.onload = function() {
-            loadCatalog();
-            loadCart();
-            renderCategoryTabs();
-            renderProducts();
-            updateCartUI();
-
-            // Outside click handler for Dev Dropdown
-            document.addEventListener('click', function(e) {
-                const devDropdown = document.getElementById('devDropdownMenu');
-                const devBtn = e.target.closest('button[onclick="toggleDevDropdown()"]');
-                if (!devBtn && devDropdown && !devDropdown.contains(e.target) && !devDropdown.classList.contains('hidden')) {
-                    devDropdown.classList.add('hidden');
-                }
-            });
+        window.appState = {
+            products: [],
+            cart: [],
+            currentCategory: 'all',
+            searchTerm: '',
+            isDevMode: false,
+            currentUser: null
         };
 
-        function loadCatalog() {
-            const saved = localStorage.getItem('padaria_catalog_v3');
-            if (saved) {
-                try { products = JSON.parse(saved); } catch (e) { products = [...DEFAULT_CATALOG]; }
-            } else {
-                products = [...DEFAULT_CATALOG];
-                saveCatalog();
+        const DEFAULT_40_PRODUCTS = [
+            // Pães (1-8)
+            { id: 'p1', name: 'Pão Francês Crocante (500g)', category: 'paes', price: 8.50, description: 'Tradição do dia, estalando de crocante com miolo macio e quentinho.', image: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=600&auto=format&fit=crop&q=80', available: true },
+            { id: 'p2', name: 'Pão de Queijo Mineiro (dz)', category: 'paes', price: 16.00, description: 'Feito com queijo canastra meia cura, quentinho saindo do forno.', image: 'https://images.unsplash.com/photo-1598142982901-df62109e5c36?w=600&auto=format&fit=crop&q=80', available: true },
+            { id: 'p3', name: 'Pão Sourdough Artesanal', category: 'paes', price: 24.90, description: 'Fermentação natural de 36 horas, casca rústica e acidez equilibrada.', image: 'https://images.unsplash.com/photo-1589367920969-ab8e050bbb04?w=600&auto=format&fit=crop&q=80', available: true },
+            { id: 'p4', name: 'Croissant Francês de Manteiga', category: 'paes', price: 12.00, description: 'Folhado leve e amanteigado tradicional da alta confeitaria.', image: 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=600&auto=format&fit=crop&q=80', available: true },
+            { id: 'p5', name: 'Pão de Batata com Catupiry', category: 'paes', price: 9.50, description: 'Massa leve e fofinha recheada com requeijão cremoso.', image: 'https://images.unsplash.com/photo-1549931319-a545dcf3bc73?w=600&auto=format&fit=crop&q=80', available: true },
+            { id: 'p6', name: 'Brioche de Canela e Açúcar', category: 'paes', price: 14.00, description: 'Pão doce trançado com toque suave de canela e manteiga.', image: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=600&auto=format&fit=crop&q=80', available: true },
+            { id: 'p7', name: 'Baguete Parisiense', category: 'paes', price: 10.50, description: 'Ideal para sanduíches, crosta dourada e miolo aerado.', image: 'https://images.unsplash.com/photo-1586444248902-2f64eddc13df?w=600&auto=format&fit=crop&q=80', available: true },
+            { id: 'p8', name: 'Ciabatta com Azeitonas Pretas', category: 'paes', price: 18.00, description: 'Azeitonas selecionadas e azeite de oliva extra virgem.', image: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=600&auto=format&fit=crop&q=80', available: true },
+
+            // Bolos (9-15)
+            { id: 'p9', name: 'Bolo de Cenoura com Vulcão de Brigadeiro', category: 'bolos', price: 38.00, description: 'Bolo fofinho de cenoura coberto com calda cremosa de brigadeiro gourmet.', image: 'https://images.unsplash.com/photo-1606890737304-57a1ca8a5b62?w=600&auto=format&fit=crop&q=80', available: true },
+            { id: 'p10', name: 'Bolo Red Velvet Supreme', category: 'bolos', price: 52.00, description: 'Massa aveludada vermelha com recheio denso de cream cheese baunilhado.', image: 'https://images.unsplash.com/photo-1586985289688-ca3cf47d3e6e?w=600&auto=format&fit=crop&q=80', available: true },
+            { id: 'p11', name: 'Bolo Nega Maluca de Chocolate', category: 'bolos', price: 35.00, description: 'Massa escura super úmida com granulado belga e cobertura fosca.', image: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=600&auto=format&fit=crop&q=80', available: true },
+            { id: 'p12', name: 'Bolo de Fubá Cremoso da Vovó', category: 'bolos', price: 28.00, description: 'Receita tradicional com erva-doce e queijo ralado na massa.', image: 'https://images.unsplash.com/photo-1519869325930-281384150729?w=600&auto=format&fit=crop&q=80', available: true },
+            { id: 'p13', name: 'Bolo Cuca de Goiabada e Farofa', category: 'bolos', price: 32.00, description: 'Farofinha crocante no topo com generosos pedaços de goiabada.', image: 'https://images.unsplash.com/photo-1535141192574-5d4897c13136?w=600&auto=format&fit=crop&q=80', available: true },
+            { id: 'p14', name: 'Bolo de Laranja Festivo', category: 'bolos', price: 26.00, description: 'Feito com suco natural de laranja e calda cristalizada.', image: 'https://images.unsplash.com/photo-1519869325930-281384150729?w=600&auto=format&fit=crop&q=80', available: true },
+            { id: 'p15', name: 'Caçarola Italiana Caseira', category: 'bolos', price: 30.00, description: 'Textura pudinada de queijo e coco ralado.', image: 'https://images.unsplash.com/photo-1606890737304-57a1ca8a5b62?w=600&auto=format&fit=crop&q=80', available: true },
+
+            // Doces & Tortas (16-24)
+            { id: 'p16', name: 'Torta Holandesa de Baunilha', category: 'doces', price: 48.00, description: 'Creme aveludado, biscoitos cobertos e ganache de chocolate meio amargo.', image: 'https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=600&auto=format&fit=crop&q=80', available: true },
+            { id: 'p17', name: 'Sonho de Doce de Leite Viçosa', category: 'doces', price: 9.00, description: 'Massa fofinha polvilhada com açúcar impalpável e recheio farto.', image: 'https://images.unsplash.com/photo-1583338917451-ace279000f55?w=600&auto=format&fit=crop&q=80', available: true },
+            { id: 'p18', name: 'Mil Folhas de Baunilha Bourbon', category: 'doces', price: 15.00, description: 'Camadas crocantes de massa folhada com creme diplomata de baunilha.', image: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=600&auto=format&fit=crop&q=80', available: true },
+            { id: 'p19', name: 'Churros Gourmet Ninho e Nutella', category: 'doces', price: 13.50, description: 'Crocanteria perfeita recheada de Nutella pura e crosta de leite Ninho.', image: 'https://images.unsplash.com/photo-1624371414361-e670edf4898d?w=600&auto=format&fit=crop&q=80', available: true },
+            { id: 'p20', name: 'Éclair / Bomba de Pistache', category: 'doces', price: 16.00, description: 'Recheada com creme denso de pistache italiano e cobertura verde.', image: 'https://images.unsplash.com/photo-1603532648955-039310d9ed75?w=600&auto=format&fit=crop&q=80', available: true },
+            { id: 'p21', name: 'Quindim de Yayá Tradicional', category: 'doces', price: 8.50, description: 'Brilho espelhado com coco fresco e gemas caipiras.', image: 'https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=600&auto=format&fit=crop&q=80', available: true },
+            { id: 'p22', name: 'Tartalete de Morango com Creme', category: 'doces', price: 14.50, description: 'Massa sablée crocante, creme patissière e morangos frescos.', image: 'https://images.unsplash.com/photo-1519869325930-281384150729?w=600&auto=format&fit=crop&q=80', available: true },
+            { id: 'p23', name: 'Brownie Triplo Chocolate com Nozes', category: 'doces', price: 11.00, description: 'Casquinha craquelada e interior bem úmido com nozes chilenas.', image: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=600&auto=format&fit=crop&q=80', available: true },
+            { id: 'p24', name: 'Caixa de Macarons Sortidos (6un)', category: 'doces', price: 36.00, description: 'Pistache, Frutas Vermelhas, Limão Siciliano, Chocolate e Baunilha.', image: 'https://images.unsplash.com/photo-1569864358642-9d1684040f43?w=600&auto=format&fit=crop&q=80', available: true },
+
+            // Salgados (25-32)
+            { id: 'p25', name: 'Coxinha de Frango com Catupiry', category: 'salgados', price: 9.50, description: 'Massa de batata leve, frango desfiado temperado e requeijão cremoso.', image: 'https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?w=600&auto=format&fit=crop&q=80', available: true },
+            { id: 'p26', name: 'Empada Folhada de Camarão', category: 'salgados', price: 12.00, description: 'Massa podre derretendo na boca recheada com moqueca de camarão.', image: 'https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?w=600&auto=format&fit=crop&q=80', available: true },
+            { id: 'p27', name: 'Folhado de Presunto e Queijo', category: 'salgados', price: 10.00, description: 'Massa folhada bem leve recheada com presunto royale e mussarela.', image: 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=600&auto=format&fit=crop&q=80', available: true },
+            { id: 'p28', name: 'Enroladinho de Salsicha e Mussarela', category: 'salgados', price: 8.00, description: 'Assado douradinho com queijo derretido.', image: 'https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?w=600&auto=format&fit=crop&q=80', available: true },
+            { id: 'p29', name: 'Esfiha Aberta da Casa (Carne/Queijo)', category: 'salgados', price: 7.50, description: 'Temperada com especiarias árabes e limão tahiti.', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=600&auto=format&fit=crop&q=80', available: true },
+            { id: 'p30', name: 'Quiche de Alho Poró e Brie', category: 'salgados', price: 15.00, description: 'Fatia generosa de quiche com queijo brie derretido.', image: 'https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?w=600&auto=format&fit=crop&q=80', available: true },
+            { id: 'p31', name: 'Pão de Alho Especial Recheado', category: 'salgados', price: 11.00, description: 'Pasta de alho caseira, cheiro verde e muito queijo mussarela.', image: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=600&auto=format&fit=crop&q=80', available: true },
+            { id: 'p32', name: 'Pastel de Forno de Carne Seca e Cream Cheese', category: 'salgados', price: 11.50, description: 'Massa assada leve com recheio bem temperado de carne seca.', image: 'https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?w=600&auto=format&fit=crop&q=80', available: true },
+
+            // Cafés & Bebidas (33-37)
+            { id: 'p33', name: 'Cappuccino Especial com Chocolate Belga', category: 'cafes', price: 14.00, description: 'Espresso intenso, leite vaporizado, canela e raspas de chocolate.', image: 'https://images.unsplash.com/photo-1534778101976-62847782c213?w=600&auto=format&fit=crop&q=80', available: true },
+            { id: 'p34', name: 'Espresso Duplo 100% Arábica', category: 'cafes', price: 7.00, description: 'Grãos selecionados das montanhas de Minas com crema densa.', image: 'https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?w=600&auto=format&fit=crop&q=80', available: true },
+            { id: 'p35', name: 'Latte Macchiato Avelã (400ml)', category: 'cafes', price: 16.00, description: 'Xarope artesanal de avelã, espresso e leite cremoso.', image: 'https://images.unsplash.com/photo-1570968915860-54d5c301fa9f?w=600&auto=format&fit=crop&q=80', available: true },
+            { id: 'p36', name: 'Chá Gelado de Pêssego e Hortelã', category: 'cafes', price: 10.00, description: 'Refrescante, feito na hora com hortelã fresca e gelo.', image: 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=600&auto=format&fit=crop&q=80', available: true },
+            { id: 'p37', name: 'Suco de Laranja Natural (500ml)', category: 'cafes', price: 11.00, description: 'Espremido na hora, sem adição de água ou açúcar.', image: 'https://images.unsplash.com/photo-1613478223719-2ab802602423?w=600&auto=format&fit=crop&q=80', available: true },
+
+            // Combos (38-40)
+            { id: 'p38', name: 'Combo Café do Padeiro Completo', category: 'combos', price: 29.90, description: '1 Cappuccino + 2 Pães de Queijo + 1 Croissant de Manteiga.', image: 'https://images.unsplash.com/photo-1534778101976-62847782c213?w=600&auto=format&fit=crop&q=80', available: true },
+            { id: 'p39', name: 'Cesta Matinal da Família', category: 'combos', price: 89.00, description: 'Pães artesanais, queijo, presunto, bolo de cenoura e suco natural.', image: 'https://images.unsplash.com/photo-1589367920969-ab8e050bbb04?w=600&auto=format&fit=crop&q=80', available: true },
+            { id: 'p40', name: 'Panini Caprese no Pão Ciabatta', category: 'combos', price: 22.00, description: 'Mussarela de búfala, tomate confit, pesto de manjericão e ciabatta.', image: 'https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=600&auto=format&fit=crop&q=80', available: true }
+        ];
+
+        async function initAppAndFirestore() {
+            try {
+                // Rule 3: Auth First
+                if (initialAuthToken) {
+                    const userCred = await signInWithCustomToken(auth, initialAuthToken);
+                    window.appState.currentUser = userCred.user;
+                } else {
+                    const userCred = await signInAnonymously(auth);
+                    window.appState.currentUser = userCred.user;
+                }
+
+                // Listen to Firestore Products Collection (Rule 1 & Rule 2)
+                const productsColRef = collection(db, 'artifacts', appId, 'public', 'data', 'products');
+
+                onSnapshot(productsColRef, async (snapshot) => {
+                    if (snapshot.empty) {
+                        // Seed Firestore with 40 default products if empty
+                        console.log("Seeding Firestore with default 40 products...");
+                        for (const prod of DEFAULT_40_PRODUCTS) {
+                            const prodDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'products', prod.id);
+                            await setDoc(prodDocRef, prod);
+                        }
+                    } else {
+                        const loadedProducts = [];
+                        snapshot.forEach((doc) => {
+                            loadedProducts.push({ id: doc.id, ...doc.data() });
+                        });
+                        window.appState.products = loadedProducts;
+                        renderProducts();
+                    }
+                }, (error) => {
+                    console.error("Firestore onSnapshot error:", error);
+                    // Fallback to local default array if error occurs
+                    if (window.appState.products.length === 0) {
+                        window.appState.products = DEFAULT_40_PRODUCTS;
+                        renderProducts();
+                    }
+                });
+
+            } catch (err) {
+                console.error("Auth / Init error:", err);
+                window.appState.products = DEFAULT_40_PRODUCTS;
+                renderProducts();
             }
         }
 
-        function saveCatalog() {
-            localStorage.setItem('padaria_catalog_v3', JSON.stringify(products));
-        }
+        // Initialize UI Categories
+        renderCategories();
+        
+        // Start Firebase
+        initAppAndFirestore();
 
-        function loadCart() {
-            const saved = localStorage.getItem('padaria_cart_v3');
-            if (saved) {
-                try { cart = JSON.parse(saved); } catch (e) { cart = []; }
-            }
-        }
+        window.renderCategories = function() {
+            const categories = [
+                { id: 'all', label: 'Todos', icon: 'fa-border-all' },
+                { id: 'paes', label: 'Pães', icon: 'fa-wheat-awn' },
+                { id: 'bolos', label: 'Bolos', icon: 'fa-cake-candles' },
+                { id: 'doces', label: 'Doces & Tortas', icon: 'fa-cookie' },
+                { id: 'salgados', label: 'Salgados', icon: 'fa-hotdog' },
+                { id: 'cafes', label: 'Cafés & Bebidas', icon: 'fa-mug-hot' },
+                { id: 'combos', label: 'Matinais & Combos', icon: 'fa-utensils' },
+            ];
 
-        function saveCart() {
-            localStorage.setItem('padaria_cart_v3', JSON.stringify(cart));
-        }
+            const pillsContainer = document.getElementById('category-pills');
+            pillsContainer.innerHTML = categories.map(cat => {
+                const isActive = window.appState.currentCategory === cat.id;
+                return `
+                    <button onclick="filterByCategory('${cat.id}')" 
+                        class="px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-semibold flex items-center gap-2 transition-all snap-start whitespace-nowrap ${
+                            isActive 
+                            ? 'neon-btn text-white shadow-lg shadow-purple-500/30 border border-purple-300/40' 
+                            : 'glass-card text-purple-200/80 hover:text-white hover:border-purple-400/50'
+                        }">
+                        <i class="fa-solid ${cat.icon}"></i> ${cat.label}
+                    </button>
+                `;
+            }).join('');
+        };
 
-        function renderCategoryTabs() {
-            const categories = ['Todos', 'Pães Artesanais', 'Confeitaria & Doces', 'Salgados & Lanches', 'Bebidas & Cafés'];
-            const container = document.getElementById('categoryTabsBar');
+        window.renderProducts = function() {
+            const grid = document.getElementById('products-grid');
+            const emptyState = document.getElementById('empty-state');
             
-            container.innerHTML = categories.map(cat => `
-                <button onclick="selectCategory('${cat}')" 
-                    class="px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all border ${
-                        currentCategory === cat 
-                        ? 'neon-btn text-white border-purple-400' 
-                        : 'glass-card text-purple-200/70 border-purple-500/20 hover:text-white hover:border-purple-400/50'
-                    }">
-                    ${cat}
-                </button>
-            `).join('');
-        }
+            let filtered = window.appState.products;
 
-        function selectCategory(cat) {
-            currentCategory = cat;
-            renderCategoryTabs();
-            renderProducts();
-        }
-
-        function handleSearch(val) {
-            searchQuery = val.toLowerCase().trim();
-            renderProducts();
-        }
-
-        function handleSortChange(val) {
-            sortOrder = val;
-            renderProducts();
-        }
-
-        function renderProducts() {
-            const grid = document.getElementById('productGrid');
-            
-            let filtered = products.filter(p => {
-                const matchCat = currentCategory === 'Todos' || p.category === currentCategory;
-                const matchSearch = p.name.toLowerCase().includes(searchQuery) || p.description.toLowerCase().includes(searchQuery);
-                return matchCat && matchSearch;
-            });
-
-            // Apply sorting
-            if (sortOrder === 'price-asc') {
-                filtered.sort((a, b) => a.price - b.price);
-            } else if (sortOrder === 'price-desc') {
-                filtered.sort((a, b) => b.price - a.price);
-            } else if (sortOrder === 'name') {
-                filtered.sort((a, b) => a.name.localeCompare(b.name));
+            // Category Filter
+            if (window.appState.currentCategory !== 'all') {
+                filtered = filtered.filter(p => p.category === window.appState.currentCategory);
             }
 
-            document.getElementById('catalogCount').innerText = `${filtered.length} itens encontrados`;
-            document.getElementById('catalogTitle').innerText = `${currentCategory === 'Todos' ? 'Todos os Produtos' : currentCategory}`;
+            // Search Term Filter
+            if (window.appState.searchTerm.trim() !== '') {
+                const term = window.appState.searchTerm.toLowerCase();
+                filtered = filtered.filter(p => 
+                    p.name.toLowerCase().includes(term) || 
+                    p.description.toLowerCase().includes(term)
+                );
+            }
 
             if (filtered.length === 0) {
-                grid.innerHTML = `
-                    <div class="col-span-full py-16 text-center space-y-3">
-                        <i class="fa-solid fa-cookie-bite text-5xl text-purple-500/30"></i>
-                        <p class="text-purple-300/60 font-semibold text-sm">Nenhum produto encontrado nesta busca.</p>
-                    </div>
-                `;
+                grid.innerHTML = '';
+                emptyState.classList.remove('hidden');
                 return;
+            } else {
+                emptyState.classList.add('hidden');
             }
 
-            grid.innerHTML = filtered.map(p => `
-                <div class="glass-card rounded-2xl overflow-hidden flex flex-col justify-between group relative">
-                    ${devOverlayActive ? `
-                        <div class="absolute top-3 left-3 z-20 flex gap-1">
-                            <button onclick="openEditProductModal(${p.id})" class="bg-amber-500 hover:bg-amber-400 text-black px-2 py-1 rounded-md text-[10px] font-extrabold shadow-md">
-                                <i class="fa-solid fa-pen"></i> Editar
-                            </button>
-                            <button onclick="deleteProduct(${p.id})" class="bg-rose-600 hover:bg-rose-500 text-white px-2 py-1 rounded-md text-[10px] font-extrabold shadow-md">
-                                <i class="fa-solid fa-trash"></i>
-                            </button>
-                        </div>
-                    ` : ''}
+            const isDev = window.appState.isDevMode;
 
-                    <div onclick="openProductDetailModal(${p.id})" class="cursor-pointer">
-                        <div class="relative h-44 overflow-hidden bg-purple-950">
-                            <img src="${p.image}" alt="${p.name}" 
-                                onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=600&q=80';"
-                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                            <div class="absolute inset-0 bg-gradient-to-t from-purple-950/80 via-transparent to-transparent"></div>
-                            <span class="absolute bottom-2 left-2 bg-purple-950/80 backdrop-blur-md border border-purple-500/30 text-purple-200 text-[10px] font-bold px-2 py-0.5 rounded-md">
-                                ${p.category}
-                            </span>
-                        </div>
-                        <div class="p-4 space-y-1.5">
-                            <h4 class="font-bold text-sm text-white group-hover:text-purple-300 transition-colors line-clamp-1">${p.name}</h4>
-                            <p class="text-xs text-purple-200/60 line-clamp-2">${p.description}</p>
-                        </div>
-                    </div>
+            grid.innerHTML = filtered.map(prod => {
+                const priceFormatted = Number(prod.price).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+                
+                return `
+                    <div class="glass-card rounded-3xl overflow-hidden flex flex-col justify-between group relative border border-purple-500/20">
+                        ${isDev ? `
+                            <div class="absolute top-3 left-3 z-20 flex gap-1.5">
+                                <button onclick="openEditProductModal('${prod.id}')" class="bg-purple-600/90 hover:bg-purple-500 text-white text-xs p-2 rounded-xl backdrop-blur-md shadow-lg border border-purple-300/30">
+                                    <i class="fa-solid fa-pen-to-square"></i> Editar
+                                </button>
+                                <button onclick="deleteProductFirestore('${prod.id}')" class="bg-rose-600/90 hover:bg-rose-500 text-white text-xs p-2 rounded-xl backdrop-blur-md shadow-lg border border-rose-300/30">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </div>
+                        ` : ''}
 
-                    <div class="p-4 pt-0 flex items-center justify-between border-t border-purple-500/10 mt-2">
                         <div>
-                            <span class="text-[10px] text-purple-300/60 block uppercase font-bold">Preço</span>
-                            <span class="text-base font-black text-white neon-text">R$ ${p.price.toFixed(2).replace('.', ',')}</span>
+                            <!-- Image Container -->
+                            <div class="relative h-48 w-full overflow-hidden bg-slate-900">
+                                <img src="${prod.image}" alt="${prod.name}" 
+                                    onerror="this.src='https://images.unsplash.com/photo-1509440159596-0249088772ff?w=600&auto=format&fit=crop&q=80'"
+                                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                                <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent opacity-80"></div>
+                                <span class="absolute bottom-3 left-3 px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wider bg-purple-950/80 text-purple-200 border border-purple-500/30 backdrop-blur-md">
+                                    ${prod.category}
+                                </span>
+                            </div>
+
+                            <!-- Content -->
+                            <div class="p-5">
+                                <h3 class="font-bold text-base text-white group-hover:text-purple-300 transition-colors line-clamp-1">${prod.name}</h3>
+                                <p class="text-xs text-slate-300/80 mt-1 line-clamp-2 leading-relaxed">${prod.description}</p>
+                            </div>
                         </div>
-                        <button onclick="addToCart(${p.id})" class="neon-btn px-3 py-2 rounded-xl text-white text-xs font-bold flex items-center gap-1.5 active:scale-95 transition-all">
-                            <i class="fa-solid fa-plus"></i> Adicionar
-                        </button>
-                    </div>
-                </div>
-            `).join('');
-        }
 
-        function addToCart(id) {
-            const p = products.find(item => item.id === id);
-            if (!p) return;
+                        <!-- Footer Price & Buy -->
+                        <div class="px-5 pb-5 pt-2 flex items-center justify-between border-t border-purple-500/10">
+                            <div>
+                                <span class="text-[10px] text-purple-300/70 block font-medium">Preço</span>
+                                <span class="text-lg font-black text-white">${priceFormatted}</span>
+                            </div>
 
-            const existing = cart.find(item => item.id === id);
-            if (existing) {
-                existing.quantity += 1;
-            } else {
-                cart.push({ ...p, quantity: 1 });
-            }
-
-            saveCart();
-            updateCartUI();
-            showToast(`"${p.name}" foi adicionado ao carrinho!`);
-        }
-
-        function updateCartQty(id, delta) {
-            const item = cart.find(i => i.id === id);
-            if (!item) return;
-
-            item.quantity += delta;
-            if (item.quantity <= 0) {
-                cart = cart.filter(i => i.id !== id);
-            }
-
-            saveCart();
-            updateCartUI();
-        }
-
-        function updateCartUI() {
-            const totalCount = cart.reduce((acc, i) => acc + i.quantity, 0);
-            const subtotal = cart.reduce((acc, i) => acc + (i.price * i.quantity), 0);
-            const delivery = totalCount > 0 ? 5.00 : 0.00;
-            const total = subtotal + delivery;
-
-            // Header elements
-            const badge = document.getElementById('cartBadge');
-            if (totalCount > 0) {
-                badge.innerText = totalCount;
-                badge.classList.remove('hidden');
-            } else {
-                badge.classList.add('hidden');
-            }
-
-            document.getElementById('cartTotalHeader').innerText = `R$ ${subtotal.toFixed(2).replace('.', ',')}`;
-            document.getElementById('drawerSubtotal').innerText = `R$ ${subtotal.toFixed(2).replace('.', ',')}`;
-            document.getElementById('drawerDelivery').innerText = `R$ ${delivery.toFixed(2).replace('.', ',')}`;
-            document.getElementById('drawerTotal').innerText = `R$ ${total.toFixed(2).replace('.', ',')}`;
-            document.getElementById('checkoutModalTotal').innerText = `R$ ${total.toFixed(2).replace('.', ',')}`;
-
-            // Drawer Items List
-            const list = document.getElementById('cartItemsList');
-            if (cart.length === 0) {
-                list.innerHTML = `
-                    <div class="h-full flex flex-col items-center justify-center text-center p-6 space-y-2">
-                        <i class="fa-solid fa-basket-shopping text-4xl text-purple-500/30"></i>
-                        <p class="text-purple-300/70 text-xs font-semibold">Seu carrinho está vazio.</p>
+                            <button onclick="addToCart('${prod.id}')" class="neon-btn px-4 py-2.5 rounded-xl text-xs font-bold text-white flex items-center gap-1.5 shadow-md">
+                                <i class="fa-solid fa-plus"></i> Adicionar
+                            </button>
+                        </div>
                     </div>
                 `;
+            }).join('');
+        };
+
+        window.addToCart = function(productId) {
+            const product = window.appState.products.find(p => p.id === productId);
+            if (!product) return;
+
+            const existingIndex = window.appState.cart.findIndex(item => item.id === productId);
+            if (existingIndex > -1) {
+                window.appState.cart[existingIndex].quantity += 1;
             } else {
-                list.innerHTML = cart.map(item => `
-                    <div class="glass-card p-3 rounded-xl flex items-center gap-3 border border-purple-500/20">
-                        <img src="${item.image}" alt="${item.name}" class="w-12 h-12 object-cover rounded-lg bg-purple-950">
-                        <div class="flex-1 min-w-0">
-                            <h5 class="text-xs font-bold text-white truncate">${item.name}</h5>
-                            <span class="text-xs text-purple-300 font-semibold">R$ ${item.price.toFixed(2).replace('.', ',')}</span>
-                        </div>
-                        <div class="flex items-center gap-1.5 bg-purple-950/80 border border-purple-500/30 rounded-lg p-1">
-                            <button onclick="updateCartQty(${item.id}, -1)" class="w-5 h-5 rounded text-purple-300 hover:bg-purple-800 flex items-center justify-center font-bold text-xs">-</button>
-                            <span class="text-xs font-bold text-white w-4 text-center">${item.quantity}</span>
-                            <button onclick="updateCartQty(${item.id}, 1)" class="w-5 h-5 rounded text-purple-300 hover:bg-purple-800 flex items-center justify-center font-bold text-xs">+</button>
-                        </div>
-                    </div>
-                `).join('');
+                window.appState.cart.push({ ...product, quantity: 1 });
             }
-        }
 
-        function openCartDrawer() {
-            document.getElementById('cartDrawer').classList.remove('hidden');
-        }
+            updateCartUI();
+            showToast(`"${product.name}" adicionado ao carrinho!`, 'success');
+        };
 
-        function closeCartDrawer() {
-            document.getElementById('cartDrawer').classList.add('hidden');
-        }
+        window.updateQuantity = function(productId, delta) {
+            const index = window.appState.cart.findIndex(item => item.id === productId);
+            if (index > -1) {
+                window.appState.cart[index].quantity += delta;
+                if (window.appState.cart[index].quantity <= 0) {
+                    window.appState.cart.splice(index, 1);
+                }
+            }
+            updateCartUI();
+        };
 
-        function openCheckoutModal() {
+        window.updateCartUI = function() {
+            const cart = window.appState.cart;
+            const countBadge = document.getElementById('cart-count-badge');
+            const itemsContainer = document.getElementById('cart-items-container');
+            const subtotalEl = document.getElementById('cart-subtotal');
+            const totalEl = document.getElementById('cart-total');
+            const checkoutBtn = document.getElementById('btn-cart-checkout');
+            const itemsSubtitle = document.getElementById('cart-items-subtitle');
+
+            const totalItemsCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const totalVal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+            // Badge count
+            countBadge.innerText = totalItemsCount;
+            if (totalItemsCount > 0) {
+                countBadge.classList.remove('scale-0');
+                countBadge.classList.add('scale-100');
+            } else {
+                countBadge.classList.remove('scale-100');
+                countBadge.classList.add('scale-0');
+            }
+
+            itemsSubtitle.innerText = `${totalItemsCount} ${totalItemsCount === 1 ? 'item selecionado' : 'itens selecionados'}`;
+
+            const formattedTotal = totalVal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+            subtotalEl.innerText = formattedTotal;
+            totalEl.innerText = formattedTotal;
+
             if (cart.length === 0) {
-                showToast("Adicione produtos ao carrinho antes de finalizar!");
-                return;
-            }
-            closeCartDrawer();
-            const modal = document.getElementById('checkoutModal');
-            modal.classList.remove('hidden');
-            modal.scrollTop = 0;
-        }
-
-        function closeCheckoutModal() {
-            document.getElementById('checkoutModal').classList.add('hidden');
-        }
-
-        function toggleChangeField(val) {
-            const block = document.getElementById('cashChangeBlock');
-            if (val === 'Dinheiro') {
-                block.classList.remove('hidden');
+                itemsContainer.innerHTML = `
+                    <div class="text-center py-12 text-slate-400">
+                        <i class="fa-solid fa-basket-shopping text-4xl text-purple-400/30 mb-2"></i>
+                        <p class="text-xs">Seu carrinho está vazio.</p>
+                    </div>
+                `;
+                checkoutBtn.disabled = true;
             } else {
-                block.classList.add('hidden');
+                checkoutBtn.disabled = false;
+                itemsContainer.innerHTML = cart.map(item => {
+                    const itemTotalFormatted = (item.price * item.quantity).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+                    return `
+                        <div class="glass-card p-3 rounded-2xl flex items-center justify-between gap-3 border border-purple-500/20">
+                            <img src="${item.image}" alt="${item.name}" class="w-14 h-14 rounded-xl object-cover">
+                            <div class="flex-grow min-w-0">
+                                <h4 class="text-xs font-bold text-white truncate">${item.name}</h4>
+                                <p class="text-xs text-purple-300 font-semibold mt-0.5">${itemTotalFormatted}</p>
+                            </div>
+                            <div class="flex items-center gap-1.5 bg-slate-900/80 p-1 rounded-xl border border-purple-500/30">
+                                <button onclick="updateQuantity('${item.id}', -1)" class="w-6 h-6 rounded-lg bg-purple-900/50 hover:bg-purple-800 text-white flex items-center justify-center text-xs">
+                                    <i class="fa-solid fa-minus"></i>
+                                </button>
+                                <span class="text-xs font-bold text-white w-5 text-center">${item.quantity}</span>
+                                <button onclick="updateQuantity('${item.id}', 1)" class="w-6 h-6 rounded-lg bg-purple-900/50 hover:bg-purple-800 text-white flex items-center justify-center text-xs">
+                                    <i class="fa-solid fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
             }
-        }
+        };
 
-        function submitWhatsAppOrder(event) {
-            event.preventDefault();
+        window.openCart = function() {
+            const drawer = document.getElementById('cart-drawer');
+            const panel = document.getElementById('cart-panel');
+            drawer.classList.remove('pointer-events-none', 'opacity-0');
+            drawer.classList.add('opacity-100');
+            panel.classList.remove('translate-x-full');
+            panel.classList.add('translate-x-0');
+        };
 
-            const name = document.getElementById('custName').value.trim();
-            const phone = document.getElementById('custPhone').value.trim();
-            const address = document.getElementById('custAddress').value.trim();
-            const neighborhood = document.getElementById('custNeighborhood').value.trim();
-            const complement = document.getElementById('custComplement').value.trim();
-            const payment = document.getElementById('custPayment').value;
-            const change = document.getElementById('custChange').value.trim();
+        window.closeCart = function() {
+            const drawer = document.getElementById('cart-drawer');
+            const panel = document.getElementById('cart-panel');
+            panel.classList.remove('translate-x-0');
+            panel.classList.add('translate-x-full');
+            setTimeout(() => {
+                drawer.classList.remove('opacity-100');
+                drawer.classList.add('opacity-0', 'pointer-events-none');
+            }, 250);
+        };
 
-            const subtotal = cart.reduce((acc, i) => acc + (i.price * i.quantity), 0);
-            const delivery = 5.00;
-            const total = subtotal + delivery;
+        window.openCheckoutModal = function() {
+            closeCart();
+            const modal = document.getElementById('checkout-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
 
-            let itemsTxt = cart.map(i => `• ${i.quantity}x ${i.name} - R$ ${(i.price * i.quantity).toFixed(2).replace('.', ',')}`).join('\n');
+            const totalVal = window.appState.cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            document.getElementById('checkout-total-val').innerText = totalVal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        };
 
-            let msg = `🥖 *NOVO PEDIDO - PADARIA GOURMET* 🥖\n\n`;
-            msg += `*CLIENTE:* ${name}\n`;
-            msg += `*TELEFONE:* ${phone}\n`;
-            msg += `*ENDEREÇO:* ${address}\n`;
-            msg += `*BAIRRO:* ${neighborhood}\n`;
-            if (complement) msg += `*COMPLEMENTO:* ${complement}\n`;
-            msg += `*PAGAMENTO:* ${payment}\n`;
-            if (payment === 'Dinheiro' && change) msg += `*TROCO:* ${change}\n`;
-            msg += `\n*ITENS DO PEDIDO:*\n${itemsTxt}\n\n`;
-            msg += `*Subtotal:* R$ ${subtotal.toFixed(2).replace('.', ',')}\n`;
-            msg += `*Taxa de Entrega:* R$ ${delivery.toFixed(2).replace('.', ',')}\n`;
-            msg += `*TOTAL FINAL:* R$ ${total.toFixed(2).replace('.', ',')}\n\n`;
-            msg += `Aguardando confirmação do pedido!`;
+        window.closeCheckoutModal = function() {
+            const modal = document.getElementById('checkout-modal');
+            modal.classList.remove('flex');
+            modal.classList.add('hidden');
+        };
 
-            lastFormattedOrderMsg = msg;
+        window.toggleAddressFields = function() {
+            const type = document.getElementById('cust-order-type').value;
+            const addrBox = document.getElementById('address-container');
+            if (type === 'Retirada') {
+                addrBox.classList.add('hidden');
+            } else {
+                addrBox.classList.remove('hidden');
+            }
+        };
 
-            // Generate WhatsApp link using wa.me format
-            const whatsappUrl = `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(msg)}`;
+        window.toggleTrocoField = function() {
+            const pay = document.getElementById('cust-payment').value;
+            const trocoBox = document.getElementById('troco-container');
+            if (pay === 'Dinheiro') {
+                trocoBox.classList.remove('hidden');
+            } else {
+                trocoBox.classList.add('hidden');
+            }
+        };
 
-            // Clear current cart
-            cart = [];
-            saveCart();
+        window.submitWhatsAppOrder = function(e) {
+            e.preventDefault();
+            const name = document.getElementById('cust-name').value.trim();
+            const phone = document.getElementById('cust-phone').value.trim();
+            const orderType = document.getElementById('cust-order-type').value;
+            const street = document.getElementById('cust-street').value.trim();
+            const neighborhood = document.getElementById('cust-neighborhood').value.trim();
+            const complement = document.getElementById('cust-complement').value.trim();
+            const payment = document.getElementById('cust-payment').value;
+            const troco = document.getElementById('cust-troco').value.trim();
+
+            const cart = window.appState.cart;
+            const totalVal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const totalFormatted = totalVal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+            // Build formatted WhatsApp message
+            let msg = `🥖 *NOVO PEDIDO - PADARIA ARTISAN* 🥖\n\n`;
+            msg += `👤 *Cliente:* ${name}\n`;
+            msg += `📞 *Telefone:* ${phone}\n`;
+            msg += `📦 *Modalidade:* ${orderType}\n\n`;
+
+            if (orderType === 'Delivery') {
+                msg += `📍 *ENDEREÇO DE ENTREGA:*\n`;
+                msg += `• Rua/Nº: ${street}\n`;
+                msg += `• Bairro: ${neighborhood}\n`;
+                if (complement) msg += `• Ref/Comp: ${complement}\n`;
+                msg += `\n`;
+            }
+
+            msg += `🛒 *ITENS DO PEDIDO:*\n`;
+            cart.forEach(item => {
+                const sub = (item.price * item.quantity).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+                msg += `▪ ${item.quantity}x ${item.name} (${sub})\n`;
+            });
+
+            msg += `\n💳 *Pagamento:* ${payment}\n`;
+            if (payment === 'Dinheiro' && troco) {
+                msg += `💵 *Troco:* ${troco}\n`;
+            }
+
+            msg += `\n💰 *VALOR TOTAL: ${totalFormatted}*\n`;
+            msg += `\n_Aguardando confirmação do pedido!_`;
+
+            const encodedMsg = encodeURIComponent(msg);
+            const targetNumber = '5564996609321'; // WhatsApp 64996609321
+            const waUrl = `https://wa.me/${targetNumber}?text=${encodedMsg}`;
+
+            // Reset cart & Close Modal
+            window.appState.cart = [];
             updateCartUI();
             closeCheckoutModal();
 
-            // Set up confirmation modal direct button
-            const directBtn = document.getElementById('directWhatsappLink');
-            directBtn.href = whatsappUrl;
+            showToast('Redirecionando para o WhatsApp...', 'info');
+            window.open(waUrl, '_blank');
+        };
 
-            // Open confirmation modal
-            document.getElementById('whatsappConfirmModal').classList.remove('hidden');
-
-            // Attempt automatic redirection with popup fallback
-            try {
-                const win = window.open(whatsappUrl, '_blank');
-                if (!win || win.closed || typeof win.closed === 'undefined') {
-                    // Window failed or blocked, try location redirect or rely on modal button
-                    console.log('Popup blocked, showing direct modal link');
-                }
-            } catch (e) {
-                console.error('WhatsApp redirect error:', e);
-            }
-        }
-
-        function closeWhatsAppConfirmModal() {
-            document.getElementById('whatsappConfirmModal').classList.add('hidden');
-        }
-
-        function copyOrderTextToClipboard() {
-            if (!lastFormattedOrderMsg) return;
-
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(lastFormattedOrderMsg).then(() => {
-                    showToast("Texto do pedido copiado para a área de transferência!");
-                }).catch(() => fallbackCopyText());
-            } else {
-                fallbackCopyText();
-            }
-        }
-
-        function fallbackCopyText() {
-            const textArea = document.createElement("textarea");
-            textArea.value = lastFormattedOrderMsg;
-            textArea.style.position = "fixed";
-            textArea.style.left = "-9999px";
-            document.body.appendChild(textArea);
-            textArea.focus();
-            textArea.select();
-            try {
-                document.execCommand('copy');
-                showToast("Texto do pedido copiado com sucesso!");
-            } catch (err) {
-                showToast("Não foi possível copiar o texto automaticamente.");
-            }
-            document.body.removeChild(textArea);
-        }
-
-        function toggleDevDropdown() {
-            const menu = document.getElementById('devDropdownMenu');
+        window.toggleDropdownMenu = function() {
+            const menu = document.getElementById('dropdown-menu');
             menu.classList.toggle('hidden');
-        }
+        };
 
-        function handleDevAction(action) {
-            document.getElementById('devDropdownMenu').classList.add('hidden');
-
-            if (!devUnlocked) {
-                document.getElementById('devPinInput').value = '';
-                document.getElementById('devPinModal').classList.remove('hidden');
-                document.getElementById('devPinInput').focus();
-                window.pendingDevAction = action;
-                return;
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            const btn = document.getElementById('menu-dots-btn');
+            const menu = document.getElementById('dropdown-menu');
+            if (btn && menu && !btn.contains(e.target) && !menu.contains(e.target)) {
+                menu.classList.add('hidden');
             }
+        });
 
-            executeDevAction(action);
-        }
+        window.openDevAuthModal = function() {
+            document.getElementById('dropdown-menu').classList.add('hidden');
+            document.getElementById('dev-auth-modal').classList.remove('hidden');
+            document.getElementById('dev-auth-modal').classList.add('flex');
+            document.getElementById('dev-pin-input').value = '';
+            document.getElementById('dev-pin-input').focus();
+        };
 
-        function verifyDevPin() {
-            const pin = document.getElementById('devPinInput').value;
-            if (pin === DEV_PIN) {
-                devUnlocked = true;
-                closeDevPinModal();
-                updateDevLockStatus();
-                showToast("Modo Desenvolvedor Autenticado!");
-                if (window.pendingDevAction) {
-                    executeDevAction(window.pendingDevAction);
-                    window.pendingDevAction = null;
-                }
-            } else {
-                showToast("Senha Incorreta!");
-                document.getElementById('devPinInput').value = '';
-            }
-        }
+        window.closeDevAuthModal = function() {
+            document.getElementById('dev-auth-modal').classList.remove('flex');
+            document.getElementById('dev-auth-modal').classList.add('hidden');
+        };
 
-        function closeDevPinModal() {
-            document.getElementById('devPinModal').classList.add('hidden');
-        }
-
-        function updateDevLockStatus() {
-            const statusBadge = document.getElementById('devLockStatus');
-            const lockOption = document.getElementById('devLockOption');
-            if (devUnlocked) {
-                statusBadge.innerText = 'Desbloqueado';
-                statusBadge.className = 'text-[10px] px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 font-bold border border-emerald-500/30';
-                lockOption.classList.remove('hidden');
-            } else {
-                statusBadge.innerText = 'Protegido';
-                statusBadge.className = 'text-[10px] px-2 py-0.5 rounded bg-rose-950 text-rose-300 font-bold border border-rose-500/30';
-                lockOption.classList.add('hidden');
-            }
-        }
-
-        function lockDevMode() {
-            devUnlocked = false;
-            devOverlayActive = false;
-            document.getElementById('lblToggleDevOverlay').innerText = 'Ativar Modo Desenvolvedor';
-            updateDevLockStatus();
-            renderProducts();
-            showToast("Modo Desenvolvedor Bloqueado.");
-        }
-
-        function executeDevAction(action) {
-            if (action === 'toggleOverlay') {
-                devOverlayActive = !devOverlayActive;
-                document.getElementById('lblToggleDevOverlay').innerText = devOverlayActive ? 'Desativar Modo Dev' : 'Ativar Modo Desenvolvedor';
+        window.verifyDevPin = function(e) {
+            e.preventDefault();
+            const pin = document.getElementById('dev-pin-input').value.trim();
+            if (pin === '1943') {
+                window.appState.isDevMode = true;
+                closeDevAuthModal();
+                document.getElementById('dev-badge').classList.remove('hidden');
+                document.getElementById('dev-badge').classList.add('flex');
+                document.getElementById('dev-toolbar').classList.remove('hidden');
                 renderProducts();
-                showToast(`Modo dev nos cards ${devOverlayActive ? 'ativado' : 'desativado'}`);
-            } else if (action === 'openDashboard') {
-                openDevDashboard();
-            } else if (action === 'addProduct') {
-                openAddProductModal();
-            } else if (action === 'resetCatalog') {
-                resetCatalogToDefault();
-            } else if (action === 'exportData') {
-                exportCatalogData();
-            }
-        }
-
-        function openDevDashboard() {
-            document.getElementById('devDashboardModal').classList.remove('hidden');
-            renderDevTable();
-        }
-
-        function closeDevDashboard() {
-            document.getElementById('devDashboardModal').classList.add('hidden');
-        }
-
-        function renderDevTable() {
-            const tbody = document.getElementById('devTableBody');
-            tbody.innerHTML = products.map(p => `
-                <tr class="hover:bg-purple-900/30">
-                    <td class="p-3 font-mono text-purple-300">#${p.id}</td>
-                    <td class="p-3"><img src="${p.image}" class="w-8 h-8 rounded object-cover bg-purple-950"></td>
-                    <td class="p-3 font-semibold text-white">${p.name}</td>
-                    <td class="p-3 text-purple-300/80">${p.category}</td>
-                    <td class="p-3 font-bold text-purple-200">R$ ${p.price.toFixed(2).replace('.', ',')}</td>
-                    <td class="p-3 text-right space-x-2">
-                        <button onclick="openEditProductModal(${p.id})" class="px-2 py-1 bg-amber-500/80 hover:bg-amber-500 text-black font-bold rounded">
-                            <i class="fa-solid fa-pen"></i>
-                        </button>
-                        <button onclick="deleteProduct(${p.id})" class="px-2 py-1 bg-rose-600/80 hover:bg-rose-600 text-white font-bold rounded">
-                            <i class="fa-solid fa-trash"></i>
-                        </button>
-                    </td>
-                </tr>
-            `).join('');
-        }
-
-        function openAddProductModal() {
-            document.getElementById('editModalTitle').innerText = "Adicionar Novo Produto";
-            document.getElementById('editProductId').value = "";
-            document.getElementById('editProductName').value = "";
-            document.getElementById('editProductPrice').value = "";
-            document.getElementById('editProductCategory').value = "Pães Artesanais";
-            document.getElementById('editProductImage').value = "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=600&q=80";
-            document.getElementById('editProductDesc').value = "";
-            
-            document.getElementById('productEditModal').classList.remove('hidden');
-        }
-
-        function openEditProductModal(id) {
-            const p = products.find(item => item.id === id);
-            if (!p) return;
-
-            document.getElementById('editModalTitle').innerText = "Editar Produto";
-            document.getElementById('editProductId').value = p.id;
-            document.getElementById('editProductName').value = p.name;
-            document.getElementById('editProductPrice').value = p.price;
-            document.getElementById('editProductCategory').value = p.category;
-            document.getElementById('editProductImage').value = p.image;
-            document.getElementById('editProductDesc').value = p.description;
-
-            document.getElementById('productEditModal').classList.remove('hidden');
-        }
-
-        function closeProductEditModal() {
-            document.getElementById('productEditModal').classList.add('hidden');
-        }
-
-        function saveProductModal() {
-            const idVal = document.getElementById('editProductId').value;
-            const name = document.getElementById('editProductName').value.trim();
-            const price = parseFloat(document.getElementById('editProductPrice').value);
-            const category = document.getElementById('editProductCategory').value;
-            const image = document.getElementById('editProductImage').value.trim() || 'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=600&q=80';
-            const description = document.getElementById('editProductDesc').value.trim() || 'Delicioso item artesanal da Padaria Gourmet.';
-
-            if (!name || isNaN(price)) {
-                showToast("Preencha o nome e preço corretamente.");
-                return;
-            }
-
-            if (idVal) {
-                const p = products.find(item => item.id === parseInt(idVal));
-                if (p) {
-                    p.name = name;
-                    p.price = price;
-                    p.category = category;
-                    p.image = image;
-                    p.description = description;
-                }
+                showToast('Modo Desenvolvedor Ativado com Sucesso!', 'success');
             } else {
-                const newId = products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1;
-                products.unshift({ id: newId, name, price, category, image, description });
+                showToast('PIN Incorreto! Tente novamente.', 'error');
             }
+        };
 
-            saveCatalog();
-            renderCategoryTabs();
+        window.toggleDevMode = function() {
+            window.appState.isDevMode = false;
+            document.getElementById('dev-badge').classList.add('hidden');
+            document.getElementById('dev-toolbar').classList.add('hidden');
             renderProducts();
-            renderDevTable();
-            closeProductEditModal();
-            showToast("Produto salvo no catálogo!");
-        }
+            showToast('Modo Desenvolvedor Desativado.', 'info');
+        };
 
-        function deleteProduct(id) {
-            if (products.length <= 1) {
-                showToast("Não é possível remover todos os produtos.");
-                return;
+        // CRUD Firestore Functions
+        window.openAddProductModal = function() {
+            document.getElementById('product-form-title').innerText = 'Adicionar Novo Produto';
+            document.getElementById('product-crud-form').reset();
+            document.getElementById('prod-form-id').value = '';
+            document.getElementById('product-form-modal').classList.remove('hidden');
+            document.getElementById('product-form-modal').classList.add('flex');
+        };
+
+        window.openEditProductModal = function(productId) {
+            const prod = window.appState.products.find(p => p.id === productId);
+            if (!prod) return;
+
+            document.getElementById('product-form-title').innerText = 'Editar Produto';
+            document.getElementById('prod-form-id').value = prod.id;
+            document.getElementById('prod-form-name').value = prod.name;
+            document.getElementById('prod-form-category').value = prod.category;
+            document.getElementById('prod-form-price').value = prod.price;
+            document.getElementById('prod-form-desc').value = prod.description;
+            document.getElementById('prod-form-image').value = prod.image;
+            document.getElementById('prod-form-available').checked = prod.available !== false;
+
+            document.getElementById('product-form-modal').classList.remove('hidden');
+            document.getElementById('product-form-modal').classList.add('flex');
+        };
+
+        window.closeProductFormModal = function() {
+            document.getElementById('product-form-modal').classList.remove('flex');
+            document.getElementById('product-form-modal').classList.add('hidden');
+        };
+
+        window.saveProductFirestore = async function(e) {
+            e.preventDefault();
+            const id = document.getElementById('prod-form-id').value || 'p_' + Date.now();
+            const name = document.getElementById('prod-form-name').value.trim();
+            const category = document.getElementById('prod-form-category').value;
+            const price = parseFloat(document.getElementById('prod-form-price').value);
+            const description = document.getElementById('prod-form-desc').value.trim();
+            const image = document.getElementById('prod-form-image').value.trim();
+            const available = document.getElementById('prod-form-available').checked;
+
+            const productData = { id, name, category, price, description, image, available };
+
+            try {
+                // Save directly to Firestore doc (Rule 1)
+                const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'products', id);
+                await setDoc(docRef, productData);
+
+                closeProductFormModal();
+                showToast('Produto salvo e sincronizado no Firestore!', 'success');
+            } catch (err) {
+                console.error("Firestore Save error:", err);
+                showToast('Erro ao salvar no Firestore. Verifique a conexão.', 'error');
             }
-            products = products.filter(p => p.id !== id);
-            saveCatalog();
-            renderCategoryTabs();
+        };
+
+        window.deleteProductFirestore = async function(productId) {
+            if (!confirm('Deseja realmente excluir este produto do catálogo em tempo real?')) return;
+
+            try {
+                const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'products', productId);
+                await deleteDoc(docRef);
+                showToast('Produto removido com sucesso!', 'success');
+            } catch (err) {
+                console.error("Firestore Delete error:", err);
+                showToast('Erro ao excluir produto.', 'error');
+            }
+        };
+
+        window.filterByCategory = function(catId) {
+            window.appState.currentCategory = catId;
+            renderCategories();
             renderProducts();
-            renderDevTable();
-            showToast("Produto removido.");
-        }
+        };
 
-        function resetCatalogToDefault() {
-            products = [...DEFAULT_CATALOG];
-            saveCatalog();
-            renderCategoryTabs();
+        window.handleSearch = function() {
+            window.appState.searchTerm = document.getElementById('search-input').value;
             renderProducts();
-            renderDevTable();
-            showToast("Catálogo original de 40 produtos restaurado!");
-        }
+        };
 
-        function exportCatalogData() {
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(products, null, 2));
-            const anchor = document.createElement('a');
-            anchor.setAttribute("href", dataStr);
-            anchor.setAttribute("download", "padaria_catalogo.json");
-            document.body.appendChild(anchor);
-            anchor.click();
-            anchor.remove();
-            showToast("Catálogo exportado em arquivo JSON!");
-        }
+        window.scrollToProducts = function() {
+            document.getElementById('catalog-section').scrollIntoView({ behavior: 'smooth' });
+        };
 
-        function triggerImportJson() {
-            handleDevAction('importPrompt');
-            document.getElementById('importFileInput').click();
-        }
-
-        function importCatalogData(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                try {
-                    const imported = JSON.parse(e.target.result);
-                    if (Array.isArray(imported) && imported.length > 0) {
-                        products = imported;
-                        saveCatalog();
-                        renderCategoryTabs();
-                        renderProducts();
-                        showToast(`${imported.length} produtos importados com sucesso!`);
-                    } else {
-                        showToast("Formato JSON inválido.");
-                    }
-                } catch (err) {
-                    showToast("Erro ao ler arquivo JSON.");
-                }
-            };
-            reader.readAsText(file);
-        }
-
-        function openProductDetailModal(id) {
-            const p = products.find(item => item.id === id);
-            if (!p) return;
-
-            const content = document.getElementById('productDetailContent');
-            content.innerHTML = `
-                <button onclick="closeProductDetailModal()" class="absolute top-4 right-4 text-purple-300 hover:text-white text-xl p-2 z-10">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-                <div class="h-56 rounded-2xl overflow-hidden bg-purple-950 relative">
-                    <img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover">
-                    <div class="absolute inset-0 bg-gradient-to-t from-purple-950/80 via-transparent to-transparent"></div>
-                </div>
-                <div class="space-y-2">
-                    <span class="text-xs font-bold text-purple-300 uppercase">${p.category}</span>
-                    <h3 class="text-xl font-bold text-white">${p.name}</h3>
-                    <p class="text-xs text-purple-200/70">${p.description}</p>
-                    <div class="text-2xl font-black text-white neon-text pt-2">R$ ${p.price.toFixed(2).replace('.', ',')}</div>
-                </div>
-                <div class="flex gap-2 pt-2">
-                    <button onclick="addToCart(${p.id}); closeProductDetailModal();" class="w-full neon-btn py-3 rounded-xl font-bold text-white flex items-center justify-center gap-2 text-xs">
-                        <i class="fa-solid fa-cart-plus"></i> Adicionar ao Carrinho
-                    </button>
-                </div>
-            `;
-            document.getElementById('productDetailModal').classList.remove('hidden');
-        }
-
-        function closeProductDetailModal() {
-            document.getElementById('productDetailModal').classList.add('hidden');
-        }
-
-        function showToast(msg) {
-            const container = document.getElementById('toastContainer');
+        // Toast Helper Function
+        window.showToast = function(message, type = 'info') {
+            const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
-            toast.className = 'pointer-events-auto glass-panel border border-purple-400/40 text-purple-100 text-xs px-4 py-3 rounded-xl shadow-2xl flex items-center gap-2 transform transition-all duration-300 translate-y-4 opacity-0';
-            toast.innerHTML = `<i class="fa-solid fa-circle-check text-purple-400"></i> <span>${msg}</span>`;
+            
+            let bgClass = 'bg-purple-950/90 border-purple-500/50 text-purple-200';
+            let icon = 'fa-circle-info text-purple-400';
+
+            if (type === 'success') {
+                bgClass = 'bg-emerald-950/90 border-emerald-500/50 text-emerald-200';
+                icon = 'fa-circle-check text-emerald-400';
+            } else if (type === 'error') {
+                bgClass = 'bg-rose-950/90 border-rose-500/50 text-rose-200';
+                icon = 'fa-circle-xmark text-rose-400';
+            }
+
+            toast.className = `px-4 py-3 rounded-2xl glass-panel border ${bgClass} shadow-xl backdrop-blur-md text-xs font-semibold flex items-center gap-2.5 transition-all duration-300 transform translate-y-2 opacity-0 pointer-events-auto`;
+            toast.innerHTML = `<i class="fa-solid ${icon} text-base"></i> <span>${message}</span>`;
 
             container.appendChild(toast);
 
             setTimeout(() => {
-                toast.classList.remove('translate-y-4', 'opacity-0');
+                toast.classList.remove('translate-y-2', 'opacity-0');
             }, 10);
 
             setTimeout(() => {
                 toast.classList.add('opacity-0', 'translate-y-2');
                 setTimeout(() => toast.remove(), 300);
-            }, 2800);
-        }
+            }, 3000);
+        };
     </script>
 </body>
 </html>
