@@ -1,687 +1,373 @@
+```html
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Padaria Artesanal - Pedidos Online</title>
-  <!-- Supabase JS Client -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Padaria Artesanal - Pedidos & Gestão Online</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Supabase JS v2 Client -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <!-- Google Fonts & FontAwesome Icons -->
+  
+  <!-- Google Fonts Poppins & FontAwesome Icons -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <style>
-    :root {
-      --primary: #7c3aed;
-      --primary-dark: #6d28d9;
-      --secondary: #f43f5e;
-      --bg: #0f172a;
-      --surface: rgba(30, 41, 59, 0.7);
-      --surface-border: rgba(255, 255, 255, 0.1);
-      --text: #f8fafc;
-      --text-muted: #94a3b8;
-      --radius: 16px;
-    }
-
     * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
       font-family: 'Poppins', sans-serif;
       -webkit-tap-highlight-color: transparent;
     }
-
+    
     body {
-      background-color: var(--bg);
-      background-image: 
-        radial-gradient(at 0% 0%, rgba(124, 58, 237, 0.25) 0px, transparent 50%),
-        radial-gradient(at 100% 100%, rgba(244, 63, 94, 0.2) 0px, transparent 50%);
-      background-attachment: fixed;
-      color: var(--text);
+      background-color: #0f172a;
+      color: #f8fafc;
       min-height: 100vh;
-      padding-bottom: 90px;
+      padding-bottom: 110px;
     }
 
-    /* Header */
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: rgba(15, 23, 42, 0.85);
+    /* Background Gradients */
+    .bg-gradient-main {
+      background: radial-gradient(circle at 10% 10%, rgba(124, 58, 237, 0.22) 0%, transparent 40%),
+                  radial-gradient(circle at 90% 90%, rgba(244, 63, 94, 0.18) 0%, transparent 40%),
+                  #0f172a;
+    }
+
+    /* Glassmorphism Surface */
+    .glass-card {
+      background: rgba(30, 41, 59, 0.75);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--surface-border);
-      padding: 16px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      border: 1px solid rgba(255, 255, 255, 0.1);
     }
 
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-weight: 700;
-      font-size: 1.2rem;
-      color: #fff;
+    /* Pulsing Status Indicators */
+    .pulse-green {
+      box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.7);
+      animation: pulse-green 2s infinite;
+    }
+    @keyframes pulse-green {
+      0% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.7); }
+      70% { box-shadow: 0 0 0 8px rgba(74, 222, 128, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0); }
     }
 
-    .logo i {
-      color: var(--primary);
-      font-size: 1.4rem;
+    .pulse-red {
+      box-shadow: 0 0 0 0 rgba(248, 113, 113, 0.7);
+      animation: pulse-red 2s infinite;
+    }
+    @keyframes pulse-red {
+      0% { box-shadow: 0 0 0 0 rgba(248, 113, 113, 0.7); }
+      70% { box-shadow: 0 0 0 8px rgba(248, 113, 113, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(248, 113, 113, 0); }
     }
 
-    .header-actions {
-      display: flex;
-      gap: 12px;
+    /* Custom Scrollbar */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
     }
-
-    .icon-btn {
-      background: var(--surface);
-      border: 1px solid var(--surface-border);
-      color: var(--text);
-      width: 42px;
-      height: 42px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.1rem;
-      cursor: pointer;
-      position: relative;
-      transition: all 0.2s;
-    }
-
-    .icon-btn:active {
-      transform: scale(0.95);
-    }
-
-    .badge {
-      position: absolute;
-      top: -4px;
-      right: -4px;
-      background: var(--secondary);
-      color: white;
-      font-size: 0.75rem;
-      font-weight: 700;
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    /* Categorias */
-    .categories {
-      display: flex;
-      gap: 10px;
-      padding: 16px 20px;
-      overflow-x: auto;
+    .no-scrollbar {
+      -ms-overflow-style: none;
       scrollbar-width: none;
     }
-    .categories::-webkit-scrollbar { display: none; }
 
-    .cat-btn {
-      background: var(--surface);
-      border: 1px solid var(--surface-border);
-      color: var(--text-muted);
-      padding: 8px 18px;
-      border-radius: 30px;
-      font-size: 0.9rem;
-      white-space: nowrap;
-      cursor: pointer;
-      transition: all 0.2s;
+    /* Touch target optimizations */
+    .btn-touch {
+      min-height: 48px;
+      touch-action: manipulation;
     }
-
-    .cat-btn.active {
-      background: var(--primary);
-      color: white;
-      border-color: var(--primary);
-      font-weight: 600;
-    }
-
-    /* Grid de Produtos */
-    .container {
-      padding: 0 20px;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .products-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-      gap: 16px;
-      margin-top: 10px;
-    }
-
-    @media (min-width: 600px) {
-      .products-grid {
-        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-        gap: 20px;
-      }
-    }
-
-    .product-card {
-      background: var(--surface);
-      border: 1px solid var(--surface-border);
-      border-radius: var(--radius);
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      position: relative;
-      backdrop-filter: blur(8px);
-    }
-
-    .product-img {
-      width: 100%;
-      height: 130px;
-      object-fit: cover;
-      background: rgba(255,255,255,0.05);
-    }
-
-    .product-info {
-      padding: 12px;
-      display: flex;
-      flex-direction: column;
-      flex-grow: 1;
-    }
-
-    .product-title {
-      font-size: 0.95rem;
-      font-weight: 600;
-      margin-bottom: 4px;
-      line-height: 1.3;
-    }
-
-    .product-desc {
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      margin-bottom: 10px;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-
-    .product-bottom {
-      margin-top: auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .price {
-      font-size: 1.05rem;
-      font-weight: 700;
-      color: #38bdf8;
-    }
-
-    .add-btn {
-      background: var(--primary);
-      color: white;
-      border: none;
-      width: 34px;
-      height: 34px;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      font-size: 0.9rem;
-    }
-
-    .dev-actions {
-      position: absolute;
-      top: 8px;
-      right: 8px;
-      display: flex;
-      gap: 6px;
-    }
-
-    .dev-btn {
-      background: rgba(0,0,0,0.7);
-      color: white;
-      border: none;
-      width: 28px;
-      height: 28px;
-      border-radius: 6px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.75rem;
-      cursor: pointer;
-    }
-
-    /* Floating Cart Bar */
-    .cart-bar {
-      position: fixed;
-      bottom: 20px;
-      left: 20px;
-      right: 20px;
-      max-width: 500px;
-      margin: 0 auto;
-      background: var(--primary);
-      color: white;
-      padding: 14px 20px;
-      border-radius: 30px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-shadow: 0 10px 25px rgba(124, 58, 237, 0.4);
-      cursor: pointer;
-      z-index: 90;
-      font-weight: 600;
-    }
-
-    /* Modais / Drawers */
-    .modal {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.8);
-      backdrop-filter: blur(5px);
-      z-index: 200;
-      display: none;
-      align-items: flex-end;
-      justify-content: center;
-    }
-
-    .modal.active {
-      display: flex;
-    }
-
-    .modal-content {
-      background: #1e293b;
-      width: 100%;
-      max-width: 500px;
-      max-height: 85vh;
-      border-top-left-radius: 24px;
-      border-top-right-radius: 24px;
-      padding: 24px;
-      overflow-y: auto;
-      position: relative;
-    }
-
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-    }
-
-    .close-btn {
-      background: none;
-      border: none;
-      color: var(--text-muted);
-      font-size: 1.5rem;
-      cursor: pointer;
-    }
-
-    /* Formulários e Inputs */
-    .form-group {
-      margin-bottom: 16px;
-    }
-
-    .form-group label {
-      display: block;
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      margin-bottom: 6px;
-    }
-
-    .form-control {
-      width: 100%;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid var(--surface-border);
-      padding: 12px;
-      border-radius: 10px;
-      color: white;
-      font-size: 0.95rem;
-    }
-
-    .form-control:focus {
-      outline: none;
-      border-color: var(--primary);
-    }
-
-    .btn-submit {
-      width: 100%;
-      background: var(--primary);
-      color: white;
-      border: none;
-      padding: 14px;
-      border-radius: 12px;
-      font-weight: 600;
-      font-size: 1rem;
-      cursor: pointer;
-      margin-top: 10px;
-    }
-
-    /* Lista do Carrinho */
-    .cart-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 12px 0;
-      border-bottom: 1px solid var(--surface-border);
-    }
-
-    .cart-item-controls {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .qty-btn {
-      background: var(--surface);
-      border: 1px solid var(--surface-border);
-      color: white;
-      width: 28px;
-      height: 28px;
-      border-radius: 6px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-    }
-
-    .status-badge {
-      display: inline-block;
-      padding: 4px 10px;
-      border-radius: 20px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      margin-left: 8px;
-    }
-    .status-online { background: rgba(34, 197, 94, 0.2); color: #4ade80; }
-    .status-offline { background: rgba(239, 68, 68, 0.2); color: #f87171; }
   </style>
 </head>
-<body>
+<body class="bg-gradient-main text-slate-100">
+
+  <!-- Toast Notifications Container -->
+  <div id="toast-container" class="fixed top-4 right-4 left-4 z-50 flex flex-col gap-2 pointer-events-none max-w-md mx-auto"></div>
 
   <!-- Header -->
-  <header>
-    <div class="logo">
-      <i class="fa-solid fa-bread-slice"></i>
-      <span>Padaria <span id="sync-status" class="status-badge status-offline">Conectando...</span></span>
-    </div>
-    <div class="header-actions">
-      <button class="icon-btn" onclick="window.promptDevMode()" title="Modo Desenvolvedor">
-        <i class="fa-solid fa-ellipsis-vertical"></i>
-      </button>
-      <button class="icon-btn" onclick="window.openCart()">
-        <i class="fa-solid fa-cart-shopping"></i>
-        <span class="badge" id="cart-count">0</span>
-      </button>
+  <header class="sticky top-0 z-40 bg-slate-900/90 backdrop-blur-md border-b border-white/10 px-4 py-3">
+    <div class="max-w-5xl mx-auto flex items-center justify-between gap-2">
+      <!-- Logo & Connection Status -->
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-purple-600/30 border border-purple-500/30 flex items-center justify-center text-purple-400 text-xl font-bold">
+          🥖
+        </div>
+        <div>
+          <h1 class="font-bold text-base leading-tight">Padaria Artesanal</h1>
+          <button onclick="openDiagnosticsModal()" class="flex items-center gap-1.5 text-xs font-medium hover:underline focus:outline-none">
+            <span id="sync-dot" class="w-2.5 h-2.5 rounded-full bg-yellow-400"></span>
+            <span id="sync-status-text" class="text-slate-300">Conectando...</span>
+            <i class="fa-solid fa-circle-info text-[10px] text-purple-400 ml-0.5"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex items-center gap-2">
+        <button id="dev-toggle-btn" onclick="openPinModal()" class="h-10 px-3 rounded-xl bg-slate-800 border border-white/10 text-amber-400 flex items-center gap-2 text-xs font-semibold hover:bg-slate-700 transition active:scale-95 btn-touch">
+          <i class="fa-solid fa-key"></i>
+          <span class="hidden sm:inline">Modo Dev</span>
+        </button>
+
+        <button onclick="openCartModal()" class="relative h-10 w-10 rounded-xl bg-purple-600 text-white flex items-center justify-center text-lg font-semibold hover:bg-purple-500 transition active:scale-95 shadow-lg shadow-purple-600/30 btn-touch">
+          <i class="fa-solid fa-cart-shopping"></i>
+          <span id="cart-badge" class="absolute -top-1 -right-1 bg-rose-500 text-white text-[10px] font-extrabold w-5 h-5 rounded-full flex items-center justify-center border-2 border-slate-900">0</span>
+        </button>
+      </div>
     </div>
   </header>
 
-  <!-- Categorias -->
-  <div class="categories">
-    <button class="cat-btn active" onclick="window.filterCategory('todos', this)">Todos</button>
-    <button class="cat-btn" onclick="window.filterCategory('Paes', this)">Pães</button>
-    <button class="cat-btn" onclick="window.filterCategory('Doces', this)">Doces & Bolos</button>
-    <button class="cat-btn" onclick="window.filterCategory('Salgados', this)">Salgados</button>
-    <button class="cat-btn" onclick="window.filterCategory('Bebidas', this)">Bebidas</button>
-  </div>
-
-  <!-- Botão Adicionar Produto (Visível apenas em Modo Dev) -->
-  <div class="container" id="dev-panel" style="display: none; margin-bottom: 15px;">
-    <button class="btn-submit" onclick="window.openProductModal()" style="background: #10b981;">
-      <i class="fa-solid fa-plus"></i> Adicionar Novo Produto
-    </button>
-  </div>
-
-  <!-- Grid de Produtos -->
-  <div class="container">
-    <div class="products-grid" id="products-container">
-      <!-- Produtos inseridos via JS -->
-    </div>
-  </div>
-
-  <!-- Barra Flutuante do Carrinho -->
-  <div class="cart-bar" id="cart-bar" onclick="window.openCart()" style="display: none;">
-    <div>
-      <span id="cart-bar-count">0</span> itens no carrinho
-    </div>
-    <div>
-      Ver Pedido: <span id="cart-bar-total">R$ 0,00</span>
-    </div>
-  </div>
-
-  <!-- Modal do Carrinho -->
-  <div class="modal" id="cart-modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3>Seu Pedido</h3>
-        <button class="close-btn" onclick="window.closeCart()">&times;</button>
+  <!-- Developer Mode Active Banner -->
+  <div id="dev-mode-bar" class="hidden bg-amber-500/20 border-b border-amber-500/30 px-4 py-2.5">
+    <div class="max-w-5xl mx-auto flex flex-wrap items-center justify-between gap-2">
+      <div class="flex items-center gap-2 text-amber-300 text-xs font-semibold">
+        <i class="fa-solid fa-shield-halved text-amber-400 text-base"></i>
+        <span>MODO DESENVOLVEDOR ATIVO (PIN 1943)</span>
       </div>
-      <div id="cart-items-list">
-        <!-- Itens do carrinho -->
-      </div>
-      <div style="margin-top: 20px;">
-        <div class="form-group">
-          <label>Endereço de Entrega / Retirada</label>
-          <input type="text" id="cust-address" class="form-control" placeholder="Rua, Número, Bairro">
-        </div>
-        <div class="form-group">
-          <label>Forma de Pagamento</label>
-          <select id="cust-payment" class="form-control">
-            <option value="Pix">Pix</option>
-            <option value="Cartão na Entrega">Cartão na Entrega</option>
-            <option value="Dinheiro">Dinheiro</option>
-          </select>
-        </div>
-        <div style="display: flex; justify-content: space-between; font-weight: 700; font-size: 1.2rem; margin: 15px 0;">
-          <span>Total:</span>
-          <span id="cart-total-modal">R$ 0,00</span>
-        </div>
-        <button class="btn-submit" onclick="window.checkoutWhatsApp()">
-          <i class="fa-brands fa-whatsapp"></i> Enviar Pedido pelo WhatsApp
+      <div class="flex items-center gap-2 w-full sm:w-auto">
+        <button onclick="openProductModal()" class="flex-1 sm:flex-none h-10 px-4 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-lg flex items-center justify-center gap-2 shadow-md shadow-emerald-600/30 btn-touch">
+          <i class="fa-solid fa-plus text-sm"></i>
+          <span>+ NOVO PRODUTO</span>
+        </button>
+        <button onclick="testSupabaseConnection(true)" class="h-10 px-3 bg-slate-800 border border-amber-500/30 text-amber-300 text-xs font-semibold rounded-lg flex items-center justify-center gap-1.5 btn-touch" title="Testar Banco">
+          <i class="fa-solid fa-rotate"></i>
+          <span class="hidden sm:inline">Testar Banco</span>
+        </button>
+        <button onclick="disableDevMode()" class="h-10 px-3 bg-rose-600/30 text-rose-300 hover:bg-rose-600/40 text-xs font-semibold rounded-lg flex items-center justify-center gap-1 btn-touch">
+          <i class="fa-solid fa-xmark"></i>
+          <span class="hidden sm:inline">Sair</span>
         </button>
       </div>
     </div>
   </div>
 
-  <!-- Modal Cadastro/Edição de Produto -->
-  <div class="modal" id="product-modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3 id="modal-title">Novo Produto</h3>
-        <button class="close-btn" onclick="window.closeProductModal()">&times;</button>
+  <!-- Main Content Container -->
+  <main class="max-w-5xl mx-auto px-4 pt-4">
+
+    <!-- Category Selector -->
+    <div class="flex items-center gap-2 overflow-x-auto no-scrollbar py-2 mb-4">
+      <button onclick="filterCategory('todos', this)" class="cat-btn active px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap transition bg-purple-600 text-white border border-purple-500 shadow-md shadow-purple-600/20 btn-touch">
+        Todos
+      </button>
+      <button onclick="filterCategory('Paes', this)" class="cat-btn px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap transition bg-slate-800 text-slate-300 border border-white/10 hover:border-white/20 btn-touch">
+        🥖 Pães
+      </button>
+      <button onclick="filterCategory('Doces', this)" class="cat-btn px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap transition bg-slate-800 text-slate-300 border border-white/10 hover:border-white/20 btn-touch">
+        🍰 Doces & Bolos
+      </button>
+      <button onclick="filterCategory('Salgados', this)" class="cat-btn px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap transition bg-slate-800 text-slate-300 border border-white/10 hover:border-white/20 btn-touch">
+        🥐 Salgados
+      </button>
+      <button onclick="filterCategory('Bebidas', this)" class="cat-btn px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap transition bg-slate-800 text-slate-300 border border-white/10 hover:border-white/20 btn-touch">
+        ☕ Bebidas
+      </button>
+    </div>
+
+    <!-- Products Grid -->
+    <div id="products-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
+      <!-- Cards renderizados via JS -->
+    </div>
+  </main>
+
+  <!-- Floating Bottom Cart Bar -->
+  <div id="floating-cart-bar" class="hidden fixed bottom-4 left-4 right-4 max-w-lg mx-auto bg-purple-600 text-white p-3.5 rounded-2xl shadow-2xl shadow-purple-900/60 z-30 flex items-center justify-between gap-3 border border-purple-400/30 cursor-pointer active:scale-98 transition" onclick="openCartModal()">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center font-bold text-lg">
+        <i class="fa-solid fa-basket-shopping"></i>
       </div>
-      <form onsubmit="window.saveProduct(event)">
-        <input type="hidden" id="prod-id">
-        <div class="form-group">
-          <label>Nome do Produto</label>
-          <input type="text" id="prod-name" class="form-control" required>
+      <div>
+        <p class="text-xs text-purple-200 font-medium"><span id="cart-item-count">0</span> itens selecionados</p>
+        <p class="text-sm font-bold" id="cart-total-price">R$ 0,00</p>
+      </div>
+    </div>
+    <button class="bg-white text-purple-700 px-4 py-2 rounded-xl text-xs font-extrabold flex items-center gap-1.5 shadow-md">
+      <span>Ver Carrinho</span>
+      <i class="fa-solid fa-arrow-right"></i>
+    </button>
+  </div>
+
+  <!-- PIN Modal (Substitui prompt) -->
+  <div id="pin-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <div class="glass-card rounded-2xl p-6 w-full max-w-xs text-center border border-white/10 shadow-2xl">
+      <div class="w-12 h-12 bg-amber-500/20 text-amber-400 rounded-full flex items-center justify-center mx-auto text-xl mb-3 border border-amber-500/30">
+        <i class="fa-solid fa-lock"></i>
+      </div>
+      <h3 class="font-bold text-lg mb-1">Modo Desenvolvedor</h3>
+      <p class="text-xs text-slate-400 mb-4">Digite o PIN de acesso (1943)</p>
+      
+      <input type="password" id="pin-input" maxlength="4" placeholder="••••" class="w-full text-center tracking-[0.5em] text-2xl font-bold bg-slate-900 border border-white/20 rounded-xl py-3 text-amber-400 mb-4 focus:outline-none focus:border-amber-400">
+      
+      <div class="grid grid-cols-2 gap-2">
+        <button onclick="closePinModal()" class="py-3 bg-slate-800 text-slate-300 rounded-xl text-xs font-semibold btn-touch">Cancelar</button>
+        <button onclick="verifyPin()" class="py-3 bg-amber-500 text-slate-950 rounded-xl text-xs font-bold btn-touch">Acessar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Cadastro/Edição de Produto (Grandes Botões Mobile) -->
+  <div id="product-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div class="glass-card rounded-t-3xl sm:rounded-2xl p-5 sm:p-6 w-full max-w-lg max-h-[90vh] overflow-y-auto border border-white/10 shadow-2xl">
+      <div class="flex items-center justify-between pb-3 border-b border-white/10 mb-4">
+        <h3 id="modal-product-title" class="font-bold text-lg text-emerald-400 flex items-center gap-2">
+          <i class="fa-solid fa-pen-to-square"></i>
+          <span>Editar Produto</span>
+        </h3>
+        <button onclick="closeProductModal()" class="w-9 h-9 bg-slate-800 hover:bg-slate-700 text-slate-400 rounded-full flex items-center justify-center text-lg">
+          &times;
+        </button>
+      </div>
+
+      <form id="product-form" onsubmit="handleProductSubmit(event)" class="space-y-4">
+        <input type="hidden" id="form-prod-id">
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Nome do Produto *</label>
+          <input type="text" id="form-prod-name" required placeholder="Ex: Pão Francês Quentinho" class="w-full bg-slate-900 border border-white/15 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-emerald-500">
         </div>
-        <div class="form-group">
-          <label>Preço (R$)</label>
-          <input type="number" step="0.01" id="prod-price" class="form-control" required>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Preço (R$) *</label>
+            <input type="number" step="0.01" id="form-prod-price" required placeholder="0.00" class="w-full bg-slate-900 border border-white/15 rounded-xl p-3 text-sm text-emerald-400 font-bold focus:outline-none focus:border-emerald-500">
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Categoria *</label>
+            <select id="form-prod-category" required class="w-full bg-slate-900 border border-white/15 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-emerald-500">
+              <option value="Paes">🥖 Pães</option>
+              <option value="Doces">🍰 Doces & Bolos</option>
+              <option value="Salgados">🥐 Salgados</option>
+              <option value="Bebidas">☕ Bebidas</option>
+            </select>
+          </div>
         </div>
-        <div class="form-group">
-          <label>Categoria</label>
-          <select id="prod-category" class="form-control">
-            <option value="Paes">Pães</option>
-            <option value="Doces">Doces & Bolos</option>
-            <option value="Salgados">Salgados</option>
-            <option value="Bebidas">Bebidas</option>
-          </select>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">URL da Imagem (Link da foto)</label>
+          <input type="url" id="form-prod-image" placeholder="https://exemplo.com/foto.jpg" class="w-full bg-slate-900 border border-white/15 rounded-xl p-3 text-xs text-slate-300 focus:outline-none focus:border-emerald-500">
         </div>
-        <div class="form-group">
-          <label>URL da Imagem (Link)</label>
-          <input type="url" id="prod-image" class="form-control" placeholder="https://exemplo.com/imagem.jpg">
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Descrição Curta</label>
+          <textarea id="form-prod-desc" rows="2" placeholder="Ingredientes ou detalhes do produto..." class="w-full bg-slate-900 border border-white/15 rounded-xl p-3 text-xs text-slate-300 focus:outline-none focus:border-emerald-500"></textarea>
         </div>
-        <div class="form-group">
-          <label>Descrição</label>
-          <textarea id="prod-desc" class="form-control" rows="2"></textarea>
-        </div>
-        <button type="submit" class="btn-submit">Salvar no Supabase</button>
+
+        <!-- Botão Gigante Fácil de Clicar no Celular -->
+        <button type="submit" id="save-btn" class="w-full py-4 bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-base rounded-xl shadow-lg shadow-emerald-600/30 transition flex items-center justify-center gap-2 btn-touch mt-6">
+          <i class="fa-solid fa-cloud-arrow-up text-xl"></i>
+          <span>SALVAR NO SUPABASE</span>
+        </button>
       </form>
     </div>
   </div>
 
+  <!-- Modal Confirmação de Exclusão -->
+  <div id="confirm-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <div class="glass-card rounded-2xl p-6 w-full max-w-xs text-center border border-white/10 shadow-2xl">
+      <div class="w-12 h-12 bg-rose-500/20 text-rose-400 rounded-full flex items-center justify-center mx-auto text-xl mb-3 border border-rose-500/30">
+        <i class="fa-solid fa-trash-can"></i>
+      </div>
+      <h3 class="font-bold text-base mb-1">Apagar Produto?</h3>
+      <p id="confirm-modal-text" class="text-xs text-slate-400 mb-5">Esta ação irá remover o produto da nuvem.</p>
+      
+      <div class="grid grid-cols-2 gap-2">
+        <button onclick="closeConfirmModal()" class="py-3 bg-slate-800 text-slate-300 rounded-xl text-xs font-semibold btn-touch">Cancelar</button>
+        <button id="confirm-modal-btn" class="py-3 bg-rose-600 hover:bg-rose-500 text-white rounded-xl text-xs font-bold btn-touch">Excluir</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cart Modal -->
+  <div id="cart-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div class="glass-card rounded-t-3xl sm:rounded-2xl p-5 sm:p-6 w-full max-w-md max-h-[85vh] overflow-y-auto border border-white/10 shadow-2xl flex flex-col">
+      <div class="flex items-center justify-between pb-3 border-b border-white/10 mb-4">
+        <h3 class="font-bold text-lg text-purple-400 flex items-center gap-2">
+          <i class="fa-solid fa-cart-shopping"></i>
+          <span>Seu Pedido</span>
+        </h3>
+        <button onclick="closeCartModal()" class="w-8 h-8 bg-slate-800 text-slate-400 rounded-full flex items-center justify-center text-lg">&times;</button>
+      </div>
+
+      <div id="cart-items-container" class="space-y-3 mb-4 flex-1 overflow-y-auto max-h-56 pr-1">
+        <!-- Itens inseridos via JS -->
+      </div>
+
+      <div class="border-t border-white/10 pt-4 space-y-3">
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Endereço de Entrega / Retirada *</label>
+          <input type="text" id="checkout-address" placeholder="Rua, Número, Bairro" class="w-full bg-slate-900 border border-white/15 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-purple-500">
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Forma de Pagamento</label>
+          <select id="checkout-payment" class="w-full bg-slate-900 border border-white/15 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-purple-500">
+            <option value="Pix">📱 Pix (Chave enviada na confirmação)</option>
+            <option value="Cartão de Crédito/Débito">💳 Cartão na Entrega</option>
+            <option value="Dinheiro">💵 Dinheiro</option>
+          </select>
+        </div>
+
+        <div class="flex items-center justify-between font-bold text-base pt-2">
+          <span>Total a Pagar:</span>
+          <span id="cart-modal-total" class="text-emerald-400 text-lg">R$ 0,00</span>
+        </div>
+
+        <button onclick="sendWhatsAppOrder()" class="w-full py-3.5 bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-sm rounded-xl shadow-lg shadow-emerald-600/30 transition flex items-center justify-center gap-2 btn-touch">
+          <i class="fa-brands fa-whatsapp text-lg"></i>
+          <span>ENVIAR PEDIDO NO WHATSAPP</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Diagnostics & Log Modal -->
+  <div id="diagnostics-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <div class="glass-card rounded-2xl p-5 w-full max-w-lg border border-white/10 shadow-2xl">
+      <div class="flex items-center justify-between pb-3 border-b border-white/10 mb-3">
+        <h3 class="font-bold text-sm text-amber-400 flex items-center gap-2">
+          <i class="fa-solid fa-circle-nodes"></i>
+          <span>Diagnóstico do Supabase</span>
+        </h3>
+        <button onclick="closeDiagnosticsModal()" class="w-7 h-7 bg-slate-800 text-slate-400 rounded-full flex items-center justify-center text-sm">&times;</button>
+      </div>
+
+      <div class="space-y-3 text-xs">
+        <div class="p-3 bg-slate-900 rounded-xl border border-white/5">
+          <p class="text-slate-400">URL do Projeto:</p>
+          <p class="font-mono text-purple-300 break-all select-all">https://sbrfgdkvpgvlufqkmxxz.supabase.co</p>
+        </div>
+
+        <div class="p-3 bg-slate-900 rounded-xl border border-white/5 flex items-center justify-between">
+          <div>
+            <p class="text-slate-400">Status Atual:</p>
+            <p id="diag-status-text" class="font-bold text-yellow-400">Testando Conexão...</p>
+          </div>
+          <button onclick="testSupabaseConnection(true)" class="px-3 py-1.5 bg-purple-600 text-white font-semibold rounded-lg">Testar Agora</button>
+        </div>
+
+        <div class="p-3 bg-slate-900 rounded-xl border border-white/5">
+          <p class="text-slate-400 mb-1">Relatório de Diagnóstico:</p>
+          <div id="diag-log-box" class="font-mono text-[11px] p-2 bg-slate-950 rounded border border-white/10 text-slate-300 max-h-40 overflow-y-auto whitespace-pre-wrap">
+            Iniciando testes...
+          </div>
+        </div>
+
+        <div class="p-3 bg-amber-500/10 border border-amber-500/30 rounded-xl text-amber-200 text-[11px]">
+          <p class="font-bold mb-1"><i class="fa-solid fa-triangle-exclamation mr-1"></i> Se der erro de RLS (Row Level Security):</p>
+          <p>Rode no SQL Editor do Supabase:</p>
+          <code class="block bg-slate-950 p-1.5 rounded mt-1 text-amber-300 font-mono select-all">alter table produtos disable row level security;</code>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script>
-    // Configurações do Supabase
+    // Configuration Constants
     const SUPABASE_URL = 'https://sbrfgdkvpgvlufqkmxxz.supabase.co';
     const SUPABASE_KEY = 'sb_publishable_8HjFeiILlQpA3QAYaSZD1w_xySKAMrv';
-    const WHATSAPP_NUMBER = '64996609321';
+    const WHATSAPP_NUMBER = '5564996609321';
+    const DEV_PIN = '1943';
 
-    let db = null;
-    let products = [];
-    let cart = [];
-    let isDevMode = false;
-    let currentCategory = 'todos';
-
-    // Produtos Iniciais Padrão (se o banco estiver vazio)
-    const initialProducts = [
-      { id: '1', nome: 'Pão Francês (kg)', preco: 14.90, categoria: 'Paes', imagem: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400', descricao: 'Pão quentinho e crocante.' },
-      { id: '2', nome: 'Bolo de Cenoura', preco: 22.00, categoria: 'Doces', imagem: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400', descricao: 'Com cobertura de chocolate.' },
-      { id: '3', nome: 'Coxinha de Frango', preco: 7.50, categoria: 'Salgados', imagem: 'https://images.unsplash.com/photo-1562967914-608f82629710?w=400', descricao: 'Recheio cremoso e crocante.' },
-      { id: '4', nome: 'Café com Leite', preco: 5.00, categoria: 'Bebidas', imagem: 'https://images.unsplash.com/photo-1517256064527-09c73fc73e38?w=400', descricao: 'Café expresso com leite vaporizado.' }
-    ];
-
-    // Inicialização
-    window.addEventListener('DOMContentLoaded', async () => {
-      try {
-        if (window.supabase) {
-          db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-          updateStatus(true);
-          await loadProducts();
-          subscribeRealtime();
-        } else {
-          updateStatus(false);
-          products = initialProducts;
-          renderProducts();
-        }
-      } catch (e) {
-        console.error("Erro na inicialização:", e);
-        updateStatus(false);
-        products = initialProducts;
-        renderProducts();
-      }
-    });
-
-    function updateStatus(online) {
-      const el = document.getElementById('sync-status');
-      if (online) {
-        el.className = 'status-badge status-online';
-        el.innerText = 'Online';
-      } else {
-        el.className = 'status-badge status-offline';
-        el.innerText = 'Offline';
-      }
-    }
-
-    // Carregar Produtos do Supabase
-    async function loadProducts() {
-      if (!db) return;
-      try {
-        const { data, error } = await db.from('produtos').select('*');
-        if (error) throw error;
-
-        if (data && data.length > 0) {
-          products = data;
-        } else {
-          // Se o banco estiver vazio, semeia os produtos iniciais
-          for (let item of initialProducts) {
-            await db.from('produtos').insert([item]);
-          }
-          products = initialProducts;
-        }
-        renderProducts();
-      } catch (err) {
-        console.warn("Falha ao carregar do Supabase. Usando produtos padrão:", err.message);
-        products = initialProducts;
-        renderProducts();
-      }
-    }
-
-    // Sincronização em Tempo Real
-    function subscribeRealtime() {
-      if (!db) return;
-      db.channel('produtos_changes')
-        .on('postgres_changes', { event: '*', schema: 'public', table: 'produtos' }, () => {
-          loadProducts();
-        })
-        .subscribe();
-    }
-
-    // Renderizar Produtos na Tela
-    function renderProducts() {
-      const container = document.getElementById('products-container');
-      container.innerHTML = '';
-
-      const filtered = currentCategory === 'todos' 
-        ? products 
-        : products.filter(p => p.categoria === currentCategory);
-
-      if (filtered.length === 0) {
-        container.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 40px 0;">Nenhum produto nesta categoria.</p>`;
-        return;
-      }
-
-      filtered.forEach(p => {
-        const card = document.createElement('div');
-        card.className = 'product-card';
-        card.innerHTML = `
-          ${isDevMode ? `
-            <div class="dev-actions">
-              <button class="dev-btn" onclick="window.editProduct('${p.id}')"><i class="fa-solid fa-pen"></i></button>
-              <button class="dev-btn" style="background:#ef4444;" onclick="window.deleteProduct('${p.id}')"><i class="fa-solid fa-trash"></i></button>
-            </div>
-          ` : ''}
-          <img src="${p.imagem || 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400'}" class="product-img" alt="${p.nome}">
-          <div class="product-info">
-            <div class="product-title">${p.nome}</div>
-            <div class="product-desc">${p.descricao || ''}</div>
-            <div class="product-bottom">
-              <div class="price">R$ ${Number(p.preco).toFixed(2).replace('.', ',')}</div>
-              <button class="add-btn" onclick="window.addToCart('${p.id}')"><i class="fa-solid fa-plus"></i></button>
-            </div>
-          </div>
-        `;
-        container.appendChild(card);
-      });
-    }
-
-    // Filtrar Categoria
-    window.filterCategory = function(cat, btn) {
-      currentCategory = cat;
-      document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      renderProducts();
-    };
-
-    // Modo Desenvolvedor
-    window.promptDevMode = function() {
-      if (isDevMode) {
-        isDevMode = false;
-        document.getElementById('dev-panel').style.display = 'none';
-        alert("Modo Desenvolvedor desativado.");
-      } else {
-        const pin = prompt("Digite o PIN do Desenvolvedor:");
-        if (pin === "1943") {
-          isDevMode = true;
-          document.getElementById('dev-panel').style.display = 'block';
-          alert("Modo Desenvolvedor ativado!");
-        } else if (pin !== null) {
-          alert("PIN incorreto!");
-        }
-      }
-      renderProducts();
-    };
-
-    // Modal de Produto
-    window.openProductModal = function() {
-      document.getElementById('prod-id').value = '';
-      document.getElementById('prod-name').value = '';
-      document.getElementById('prod-price').value = '';
-      document.getElementById('prod-category').value = 'Paes';
-      document.getElementById('prod-image').value = '';
-      document.getElementById('prod-desc').value = '';
-      document.getElementById('modal-title').in
+    // G
