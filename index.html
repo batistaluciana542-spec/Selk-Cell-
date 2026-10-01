@@ -248,7 +248,9 @@ async function loadProducts(){
       {
         headers:{
           "apikey":SUPABASE_ANON_KEY,
-          "Authorization":"Bearer " + SUPABASE_ANON_KEY
+          "headers:{
+  "apikey":SUPABASE_ANON_KEY
+        }
         }
       }
     );
