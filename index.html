@@ -310,12 +310,12 @@ async function loadProducts(){
 
   }catch(error){
 
-    console.error(error);
+  console.error(error);
 
-    status.textContent =
-      "Não foi possível carregar os produtos.";
+  status.textContent =
+    "ERRO: " + error.message;
 
-  }
+    }
 }
 
 function toggleMenu(){
